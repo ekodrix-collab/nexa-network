@@ -62,10 +62,10 @@ const testimonials = [
 
 export default function AboutPage() {
   return (
-    <div className="pt-20 bg-[#070f12] text-white">
+    <div className="pt-20 bg-[#F4F6F8] dark:bg-[#070f12] text-slate-800 dark:text-white transition-colors duration-300">
       
       {/* 1. Header / Hero Section */}
-      <section className="relative py-28 overflow-hidden bg-[#070f12] border-b border-white/[0.03]">
+      <section className="relative py-28 overflow-hidden bg-white dark:bg-[#070f12] border-b border-black/5 dark:border-white/[0.03] transition-colors duration-300">
         {/* Glowing backgrounds */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-b from-[#F05B1B]/5 to-transparent blur-3xl pointer-events-none" />
         
@@ -83,10 +83,10 @@ export default function AboutPage() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F05B1B]/10 border border-[#F05B1B]/20 text-[#F05B1B] text-xs font-bold tracking-[0.2em] uppercase mb-4">
               About Us
             </div>
-            <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-none mb-6">
+            <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-none mb-6 text-slate-800 dark:text-white">
               Securing Your <span className="text-[#F05B1B] bg-clip-text">Digital Future</span>
             </h1>
-            <p className="text-white/60 text-lg sm:text-xl leading-relaxed max-w-2xl">
+            <p className="text-slate-600 dark:text-white/60 text-lg sm:text-xl leading-relaxed max-w-2xl">
               Nexa Network Solutions is Qatar's leading systems integrator, delivering state-of-the-art network infrastructure, threat defense, and smart cloud architectures.
             </p>
           </div>
@@ -94,7 +94,7 @@ export default function AboutPage() {
       </section>
 
       {/* 2. Who We Are Section */}
-      <section className="py-24 relative overflow-hidden">
+      <section className="py-24 relative overflow-hidden bg-[#F4F6F8] dark:bg-[#070f12] transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             
@@ -107,13 +107,13 @@ export default function AboutPage() {
               className="lg:col-span-5 relative group"
             >
               <div className="absolute inset-0 bg-[#F05B1B] rounded-[28px] blur-xl opacity-10 group-hover:opacity-15 transition-opacity duration-500" />
-              <div className="relative rounded-[28px] overflow-hidden border border-white/5 bg-[#0a1113] aspect-[4/3] sm:aspect-square">
+              <div className="relative rounded-[28px] overflow-hidden border border-black/5 dark:border-white/5 bg-[#F4F6F8] dark:bg-[#0a1113] aspect-[4/3] sm:aspect-square">
                 <img 
                   src="/images/about_who_we_are.png" 
                   alt="Nexa Network Engineers" 
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-103" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#070f12]/50 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#F4F6F8]/50 dark:from-[#070f12]/50 via-transparent to-transparent pointer-events-none" />
               </div>
             </motion.div>
 
@@ -128,16 +128,16 @@ export default function AboutPage() {
               <span className="text-[#F05B1B] text-xs font-extrabold tracking-[0.25em] uppercase mb-3">
                 Who We Are
               </span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-6">
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-800 dark:text-white mb-6">
                 Providing Enterprise-Grade Connectivity & Defense
               </h2>
-              <p className="text-white/70 text-base leading-relaxed mb-6">
+              <p className="text-slate-600 dark:text-white/70 text-base leading-relaxed mb-6">
                 Nexa Network Solutions delivers end-to-end IT and cybersecurity services that help businesses stay secure, connected, and future-ready. With over a decade of industry experience, we leverage advanced technologies, intelligent automation, and proven strategies to protect critical data, strengthen infrastructure, and enhance overall performance.
               </p>
-              <p className="text-white/70 text-base leading-relaxed mb-6">
+              <p className="text-slate-600 dark:text-white/70 text-base leading-relaxed mb-6">
                 Our solutions are designed to adapt to evolving digital challenges while ensuring reliability, scalability, and long-term growth. We focus on delivering customized solutions tailored to each client's unique business needs.
               </p>
-              <p className="text-white/70 text-base leading-relaxed">
+              <p className="text-slate-600 dark:text-white/70 text-base leading-relaxed">
                 Our expert team ensures seamless integration, proactive support, and continuous innovation across all services. By combining technology expertise with industry best practices, we help organizations improve efficiency, reduce risks, and achieve sustainable success. We are committed to building long-term partnerships through trust, quality, and consistent service excellence.
               </p>
             </motion.div>
@@ -147,14 +147,14 @@ export default function AboutPage() {
       </section>
 
       {/* 3. Mission, Vision, Values Section */}
-      <section className="py-24 relative overflow-hidden bg-[#0d1619]/30 border-y border-white/[0.03]">
+      <section className="py-24 relative overflow-hidden bg-white dark:bg-[#0d1619]/30 border-y border-black/5 dark:border-white/[0.03] transition-colors duration-300">
         {/* Custom SVG Networking Circuit Background Pattern */}
         <div className="absolute inset-0 opacity-[0.05] pointer-events-none overflow-hidden">
           <svg className="w-full h-full" viewBox="0 0 1000 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M100 80 L300 80 L350 130 L700 130 L750 80 L900 80" stroke="white" strokeWidth="1.5" strokeDasharray="6 6" />
-            <path d="M50 250 L200 250 L250 200 L600 200 L650 250 L950 250" stroke="white" strokeWidth="1.5" strokeDasharray="6 6" />
-            <circle cx="350" cy="130" r="4" fill="white" />
-            <circle cx="650" cy="250" r="4" fill="white" />
+            <path d="M100 80 L300 80 L350 130 L700 130 L750 80 L900 80" stroke="currentColor" className="text-slate-200 dark:text-white/10" strokeWidth="1.5" strokeDasharray="6 6" />
+            <path d="M50 250 L200 250 L250 200 L600 200 L650 250 L950 250" stroke="currentColor" className="text-slate-200 dark:text-white/10" strokeWidth="1.5" strokeDasharray="6 6" />
+            <circle cx="350" cy="130" r="4" fill="currentColor" className="text-slate-200 dark:text-white/10" />
+            <circle cx="650" cy="250" r="4" fill="currentColor" className="text-slate-200 dark:text-white/10" />
           </svg>
         </div>
 
@@ -169,15 +169,15 @@ export default function AboutPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="group relative bg-[#0a1113]/60 backdrop-blur-md border border-white/[0.04] p-8 rounded-[24px] hover:border-[#F05B1B]/20 hover:bg-[#0a1113]/90 transition-all duration-400 flex flex-col items-start min-h-[250px]"
+                  className="group relative bg-[#F4F6F8] dark:bg-[#0a1113]/60 backdrop-blur-md border border-black/5 dark:border-white/[0.04] p-8 rounded-[24px] hover:border-[#F05B1B]/20 hover:bg-white dark:hover:bg-[#0a1113]/90 transition-all duration-400 flex flex-col items-start min-h-[250px] shadow-sm dark:shadow-none hover:shadow-lg dark:hover:shadow-none"
                 >
                   <div className="w-12 h-12 rounded-xl bg-[#F05B1B]/10 border border-[#F05B1B]/20 flex items-center justify-center text-[#F05B1B] mb-6 group-hover:bg-[#F05B1B] group-hover:text-white transition-all duration-300">
                     <Icon className="w-6 h-6 stroke-[1.5]" />
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#F05B1B] transition-colors duration-300">
+                  <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-3 group-hover:text-[#F05B1B] transition-colors duration-300">
                     {val.title}
                   </h3>
-                  <p className="text-white/60 text-sm leading-relaxed">
+                  <p className="text-slate-500 dark:text-white/60 text-sm leading-relaxed">
                     {val.desc}
                   </p>
                 </motion.div>
@@ -188,7 +188,7 @@ export default function AboutPage() {
       </section>
 
       {/* 4. Why Choose Us Section */}
-      <section className="py-24 relative overflow-hidden">
+      <section className="py-24 relative overflow-hidden bg-[#F4F6F8] dark:bg-[#070f12] transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             
@@ -203,7 +203,7 @@ export default function AboutPage() {
               <span className="text-[#F05B1B] text-xs font-extrabold tracking-[0.25em] uppercase mb-3">
                 Why Choose Us
               </span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-10 leading-tight">
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-800 dark:text-white mb-10 leading-tight">
                 Your Trusted Partner for Technology-Driven Transformation
               </h2>
               
@@ -212,12 +212,12 @@ export default function AboutPage() {
                   const Icon = benefit.icon
                   return (
                     <div key={benefit.title} className="flex gap-5">
-                      <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-[#F05B1B] shadow-inner">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-100 border border-black/5 dark:bg-white/[0.02] dark:border-white/[0.05] flex items-center justify-center text-[#F05B1B] shadow-inner">
                         <Icon className="w-5 h-5 stroke-[1.5]" />
                       </div>
                       <div>
-                        <h4 className="text-lg font-bold text-white mb-2">{benefit.title}</h4>
-                        <p className="text-white/60 text-sm leading-relaxed">{benefit.desc}</p>
+                        <h4 className="text-lg font-bold text-slate-800 dark:text-white mb-2">{benefit.title}</h4>
+                        <p className="text-slate-500 dark:text-white/60 text-sm leading-relaxed">{benefit.desc}</p>
                       </div>
                     </div>
                   )
@@ -234,13 +234,13 @@ export default function AboutPage() {
               className="lg:col-span-5 relative group order-1 lg:order-2"
             >
               <div className="absolute inset-0 bg-[#F05B1B] rounded-[28px] blur-xl opacity-10 group-hover:opacity-15 transition-opacity duration-500" />
-              <div className="relative rounded-[28px] overflow-hidden border border-white/5 bg-[#0a1113] aspect-[4/3] sm:aspect-square">
+              <div className="relative rounded-[28px] overflow-hidden border border-black/5 dark:border-white/5 bg-[#F4F6F8] dark:bg-[#0a1113] aspect-[4/3] sm:aspect-square">
                 <img 
                   src="/images/about_why_choose_us.png" 
                   alt="Hands typing on laptop" 
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-103" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#070f12]/50 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#F4F6F8]/50 dark:from-[#070f12]/50 via-transparent to-transparent pointer-events-none" />
               </div>
             </motion.div>
 
@@ -249,7 +249,7 @@ export default function AboutPage() {
       </section>
 
       {/* 5. Testimonials Section */}
-      <section className="py-24 bg-[#0d1619]/20 border-t border-white/[0.03] relative overflow-hidden">
+      <section className="py-24 bg-white dark:bg-[#0d1619]/20 border-t border-black/5 dark:border-white/[0.03] relative overflow-hidden transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
           
           {/* Header */}
@@ -257,7 +257,7 @@ export default function AboutPage() {
             <span className="text-[#F05B1B] text-xs font-extrabold tracking-[0.25em] uppercase block mb-3">
               Testimonials
             </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 dark:text-white tracking-tight leading-tight">
               What Our Happy Clients Are Saying
             </h2>
           </div>
@@ -271,7 +271,7 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group relative bg-[#0a1113]/55 backdrop-blur-md rounded-[24px] border border-white/[0.04] p-8 hover:border-[#F05B1B]/20 hover:bg-[#0a1113]/80 transition-all duration-300 flex flex-col justify-between min-h-[250px]"
+                className="group relative bg-[#F4F6F8] dark:bg-[#0a1113]/55 backdrop-blur-md rounded-[24px] border border-black/5 dark:border-white/[0.04] p-8 hover:border-[#F05B1B]/20 hover:bg-white dark:hover:bg-[#0a1113]/80 transition-all duration-300 flex flex-col justify-between min-h-[250px] shadow-sm dark:shadow-none hover:shadow-lg dark:hover:shadow-none"
               >
                 <div>
                   {/* Five Stars layout */}
@@ -282,16 +282,16 @@ export default function AboutPage() {
                   </div>
 
                   {/* Client quote */}
-                  <p className="text-white/70 text-sm italic leading-relaxed mb-6">
+                  <p className="text-slate-600 dark:text-white/70 text-sm italic leading-relaxed mb-6">
                     "{test.quote}"
                   </p>
                 </div>
 
                 {/* Footer details */}
-                <div className="pt-4 border-t border-white/[0.04] flex items-center justify-between">
+                <div className="pt-4 border-t border-black/5 dark:border-white/[0.04] flex items-center justify-between">
                   <div>
                     <h5 className="text-sm font-bold text-[#F05B1B]">{test.name}</h5>
-                    <p className="text-white/40 text-xs mt-0.5">{test.role}</p>
+                    <p className="text-slate-400 dark:text-white/40 text-xs mt-0.5">{test.role}</p>
                   </div>
                 </div>
               </motion.div>
@@ -302,13 +302,13 @@ export default function AboutPage() {
       </section>
 
       {/* 6. Call to Action (CTA) Section */}
-      <section className="py-24 relative overflow-hidden bg-[#070f12]">
+      <section className="py-24 relative overflow-hidden bg-[#F4F6F8] dark:bg-[#070f12] transition-colors duration-300">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-[#F05B1B]/5 rounded-full blur-[150px] pointer-events-none" />
         <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-white mb-6 tracking-tight leading-tight">
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-800 dark:text-white mb-6 tracking-tight leading-tight">
             Ready to <span className="text-[#F05B1B]">Get Started?</span>
           </h2>
-          <p className="text-white/60 text-lg mb-8 max-w-lg mx-auto leading-relaxed">
+          <p className="text-slate-600 dark:text-white/60 text-lg mb-8 max-w-lg mx-auto leading-relaxed">
             Let us help you transform your business with smart IT infrastructure and cybersecurity solutions.
           </p>
           <Link 

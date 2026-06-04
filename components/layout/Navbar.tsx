@@ -1,39 +1,37 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useTheme } from 'next-themes'
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import {
-  Menu, X, ChevronDown, Phone, ArrowRight,
-  Network, Shield, Cloud, DoorOpen, Camera, Truck,
+  Menu, X, ChevronDown, Phone, ArrowRight, Sun, Moon,
+  Network, Shield, Cloud, DoorOpen, Camera, Truck, Monitor, Globe,
   Building2, Factory, Heart, GraduationCap
 } from 'lucide-react'
 
 const serviceItems = [
-  { icon: Network, label: 'Network Infrastructure', desc: 'Active & passive enterprise backbones', href: '/services#network', color: '#3B82F6' },
-  { icon: Shield, label: 'Cyber Security Solutions', desc: 'Zero-trust threat protection & compliance', href: '/services#security', color: '#EF4444' },
-  { icon: Cloud, label: 'Cloud Computing Services', desc: 'SaaS setup, Azure, AWS & migrations', href: '/services#cloud', color: '#A855F7' },
+  { icon: Network, label: 'Network Infrastructure & Passive Infrastructure', desc: 'Active & passive enterprise backbones', href: '/services#network', color: '#3B82F6' },
+  { icon: Shield, label: 'IT Solutions & Integration Services', desc: 'Zero-trust threat protection & compliance', href: '/services#security', color: '#EF4444' },
+  { icon: Cloud, label: 'Cloud Computing & IT Software Services', desc: 'SaaS setup, Azure, AWS & migrations', href: '/services#cloud', color: '#A855F7' },
+  { icon: Monitor, label: 'Conference Room & Office IT Services', desc: 'Office AV systems & hardware procurement', href: '/services#conference', color: '#D946EF' },
   { icon: DoorOpen, label: 'Smart Entry Management', desc: 'RFID cards, biometrics & barrier gates', href: '/services#access', color: '#22C55E' },
-  { icon: Camera, label: 'CCTV & Surveillance Systems', desc: 'SSD-compliant HD video feeds', href: '/services#cctv', color: '#EAB308' },
+  { icon: Globe, label: 'Website Development & Digital Solutions', desc: 'Custom web platforms, apps & SEO tools', href: '/services#webdev', color: '#06B6D4' },
   { icon: Truck, label: 'Vehicle Tracking Solutions', desc: 'GPS fleet telemetry & route optimization', href: '/services#tracking', color: '#F97316' },
-]
-
-const industryItems = [
-  { icon: Building2, label: 'Government & Public Sector', desc: 'Compliant municipal infrastructures', href: '/industries#government' },
-  { icon: Factory, label: 'Corporate Enterprise', desc: 'Secure environments for smart offices', href: '/industries#corporate' },
-  { icon: Heart, label: 'Healthcare', desc: 'Patient telemetry & secure clinical networks', href: '/industries#healthcare' },
-  { icon: GraduationCap, label: 'Education', desc: 'High-density school campus WiFi networks', href: '/industries#education' },
+  { icon: Camera, label: 'CCTV & Surveillance Systems', desc: 'SSD-compliant HD video feeds', href: '/services#cctv', color: '#EAB308' },
 ]
 
 const navLinks = [
+  { label: 'Home', href: '/' },
   { label: 'About Us', href: '/about' },
-  { label: 'Solutions', href: '/services', hasDropdown: true, items: serviceItems },
-  { label: 'Industries', href: '/industries', hasDropdown: true, items: industryItems },
-  { label: 'Projects', href: '/projects' },
-  { label: 'Resources', href: '/resources', hasDropdown: false },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Our Services', href: '/services', hasDropdown: true, items: serviceItems },
+  { label: 'Contact Us', href: '/contact' },
 ]
 
 export default function Navbar() {
+  const { theme, setTheme } = useTheme()
+  const pathname = usePathname()
+  const [mounted, setMounted] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
@@ -41,6 +39,10 @@ export default function Navbar() {
 
   const { scrollY } = useScroll()
   const navOpacity = useTransform(scrollY, [0, 100], [0, 1])
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30)
@@ -67,6 +69,12 @@ export default function Navbar() {
     setDropdownTimer(timer)
   }, [])
 
+  const currentTheme = mounted ? theme : 'dark'
+  const isHome = pathname === '/'
+  const useDarkStyle = isHome && !scrolled
+  const logoSrc = (currentTheme === 'light' && !useDarkStyle) ? '/images/logo-light.png' : '/images/logo.png'
+  const themeLogoSrc = currentTheme === 'light' ? '/images/logo-light.png' : '/images/logo.png'
+
   return (
     <>
       <motion.nav
@@ -76,8 +84,8 @@ export default function Navbar() {
       >
         {/* Background */}
         <motion.div
-          className="absolute inset-0 bg-[#0D1C22]/95 backdrop-blur-2xl
-                     border-b border-white/5"
+          className="absolute inset-0 bg-white/90 dark:bg-[#0D1C22]/95 backdrop-blur-2xl
+                     border-b border-black/5 dark:border-white/5 transition-colors duration-300"
           style={{ opacity: navOpacity }}
         />
 
@@ -87,35 +95,11 @@ export default function Navbar() {
             {/* ── LOGO ── */}
             <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
               <img 
-                src="/images/logo.png" 
+                src={logoSrc} 
                 alt="Nexa Network Solutions Logo" 
                 className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
               />
             </Link>
-            {/* Old logo elements removed below */}
-            <div className="hidden">
-              <div className="relative">
-                <div className="w-10 h-10 bg-[#F05B1B] rounded-xl flex items-center
-                               justify-center shadow-orange transition-all duration-300
-                               group-hover:scale-110 group-hover:rotate-6">
-                  {/* Distinct White Icon on Orange */}
-                  <svg viewBox="0 0 40 40" fill="none" className="w-6 h-6">
-                    <path d="M12 12 C12 12, 16 8, 20 12 C24 16, 28 20, 28 28 C28 28, 24 32, 20 28 C16 24, 12 20, 12 12 Z" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M16 24 C20 20, 24 16, 24 16" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
-                  </svg>
-                </div>
-                <div className="absolute -inset-1 bg-[#F05B1B]/20 rounded-xl blur-sm
-                               opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-white font-black text-lg leading-none tracking-tight">
-                  nexa
-                </span>
-                <span className="text-[#F05B1B] text-[9px] font-bold tracking-[0.25em] uppercase">
-                  Network Solutions
-                </span>
-              </div>
-            </div>
 
             {/* ── DESKTOP NAV ── */}
             <div className="hidden xl:flex items-center gap-1">
@@ -126,20 +110,22 @@ export default function Navbar() {
                   onMouseEnter={() => link.hasDropdown && handleDropdownEnter(link.label)}
                   onMouseLeave={() => link.hasDropdown && handleDropdownLeave()}
                 >
-                  <Link
+                   <Link
                     href={link.href}
                     className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm
                                font-medium transition-all duration-200 group
                                ${activeDropdown === link.label
-                                 ? 'text-white bg-white/5'
-                                 : 'text-white/65 hover:text-white hover:bg-white/5'
+                                 ? 'text-[#F05B1B] bg-black/5 dark:text-white dark:bg-white/5'
+                                 : (useDarkStyle
+                                     ? 'text-white/70 hover:text-white hover:bg-white/5'
+                                     : 'text-slate-700 hover:text-[#F05B1B] hover:bg-black/5 dark:text-white/65 dark:hover:text-white dark:hover:bg-white/5')
                                 }`}
                   >
                     {link.label}
                     {link.hasDropdown && (
                       <ChevronDown
                         className={`w-3.5 h-3.5 transition-transform duration-300 ${
-                          activeDropdown === link.label ? 'rotate-180 text-[#F05B1B]' : ''
+                          activeDropdown === link.label ? 'rotate-180 text-[#F05B1B]' : (useDarkStyle ? 'text-white/40' : 'text-slate-400 dark:text-white/45')
                         }`}
                       />
                     )}
@@ -154,59 +140,45 @@ export default function Navbar() {
                         exit={{ opacity: 0, y: 8, scale: 0.97 }}
                         transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
                         className={`absolute top-full left-1/2 -translate-x-1/2 mt-3
-                                   bg-[#070e10]/98 backdrop-blur-2xl border border-white/10
-                                   rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden
-                                   z-50 flex ${
-                                     link.label === 'Solutions' ? 'w-[780px]' : 'w-[680px]'
+                                   bg-white/98 dark:bg-[#070e10]/98 backdrop-blur-2xl border border-black/10 dark:border-white/10
+                                   rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden
+                                   z-50 flex transition-colors duration-300 ${
+                                     link.label === 'Our Services' ? 'w-[780px]' : 'w-[680px]'
                                    }`}
                         onMouseEnter={() => handleDropdownEnter(link.label)}
                         onMouseLeave={handleDropdownLeave}
                       >
                         {/* Main Grid Area */}
                         <div className="flex-1 p-6">
-                          <div className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em] mb-4 text-left">
-                            {link.label === 'Solutions' ? 'Our Technology Verticals' : 'Nexa Specialized Sectors'}
-                          </div>
-                          
                           <div className="grid grid-cols-2 gap-2">
-                            {link.items?.map((item) => {
-                              const itemAny = item as any
-                              const Icon = itemAny.icon || Building2
+                            {link.items?.map((itemAny) => {
+                              const IconComponent = (itemAny as any).icon
                               return (
                                 <Link
                                   key={itemAny.label}
                                   href={itemAny.href}
                                   onClick={() => setActiveDropdown(null)}
-                                  className="flex items-start gap-4 p-3 rounded-xl
-                                             text-white/65 hover:text-white hover:bg-white/[0.03]
-                                             transition-all duration-200 group/item border border-transparent hover:border-white/5"
+                                  className="flex gap-4 p-4 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-300 group/item text-left"
                                 >
-                                  {/* Icon Container */}
-                                  <div
-                                    className="w-10 h-10 rounded-xl flex items-center justify-center
-                                               flex-shrink-0 transition-all duration-300
-                                               group-hover/item:scale-110 shadow-lg"
+                                  {/* Icon container */}
+                                  <div 
+                                    className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover/item:scale-110"
                                     style={{
-                                      background: itemAny.color
-                                        ? `${itemAny.color}15`
-                                        : 'rgba(240,91,27,0.08)',
-                                      border: `1px solid ${itemAny.color ? `${itemAny.color}25` : 'rgba(240,91,27,0.15)'}`
+                                      backgroundColor: `${(itemAny as any).color || '#F05B1B'}12`,
                                     }}
                                   >
-                                    <Icon
-                                      className="w-4.5 h-4.5 transition-transform duration-300 group-hover/item:rotate-3"
-                                      style={{
-                                        color: itemAny.color || '#F05B1B'
-                                      }}
+                                    <IconComponent 
+                                      className="w-5 h-5" 
+                                      style={{ color: (itemAny as any).color || '#F05B1B' }}
                                     />
                                   </div>
-                                  
-                                  {/* Label and Description */}
-                                  <div className="flex flex-col gap-0.5 mt-0.5 text-left">
-                                    <span className="font-bold text-xs text-white/90 group-hover/item:text-[#F05B1B] transition-colors duration-200">
+
+                                  <div className="flex flex-col">
+                                    <span className="text-xs font-bold text-slate-800 dark:text-white group-hover/item:text-[#F05B1B] transition-colors flex items-center gap-1.5">
                                       {itemAny.label}
+                                      <ArrowRight className="w-3.5 h-3.5 text-[#F05B1B] opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-300" />
                                     </span>
-                                    <span className="text-[10px] text-white/45 font-medium leading-normal max-w-[240px]">
+                                    <span className="text-[10px] text-slate-500 dark:text-white/45 mt-1 leading-relaxed">
                                       {itemAny.desc}
                                     </span>
                                   </div>
@@ -217,31 +189,31 @@ export default function Navbar() {
                         </div>
 
                         {/* Side Feature Panel (Premium Callout) */}
-                        <div className="w-[240px] bg-white/[0.01] border-l border-white/5 p-6 flex flex-col justify-between text-left">
+                        <div className="w-[240px] bg-slate-50/50 dark:bg-white/[0.01] border-l border-slate-200 dark:border-white/5 p-6 flex flex-col justify-between text-left transition-colors duration-300">
                           <div>
                             <div className="text-[10px] font-bold text-[#F05B1B] uppercase tracking-[0.25em] mb-3">
-                              {link.label === 'Solutions' ? 'Featured Tech' : 'Qatar Compliance'}
+                              {link.label === 'Our Services' ? 'Featured Tech' : 'Qatar Compliance'}
                             </div>
                             
-                            <h4 className="text-sm font-bold text-white mb-2 leading-snug">
-                              {link.label === 'Solutions' 
+                            <h4 className="text-sm font-bold text-slate-800 dark:text-white mb-2 leading-snug">
+                              {link.label === 'Our Services' 
                                 ? 'State-Of-The-Art Systems Integration' 
                                 : 'SSD & QCDD Certified Standards'}
                             </h4>
                             
-                            <p className="text-[10px] text-white/45 leading-relaxed mb-4">
-                              {link.label === 'Solutions'
+                            <p className="text-[10px] text-slate-500 dark:text-white/45 leading-relaxed mb-4">
+                              {link.label === 'Our Services'
                                 ? 'End-to-end active networks, cybersecurity audits, and storage setup for Qatar enterprises.'
                                 : 'Tailored designs that satisfy Civil Defense regulations for immediate operational approval.'}
                             </p>
                           </div>
 
                           <Link
-                            href={link.label === 'Solutions' ? '/contact' : '/case-studies'}
+                            href={link.label === 'Our Services' ? '/contact' : '/case-studies'}
                             onClick={() => setActiveDropdown(null)}
                             className="group inline-flex items-center gap-1.5 py-2.5 px-4 bg-[#F05B1B]/10 hover:bg-[#F05B1B] text-[#F05B1B] hover:text-white border border-[#F05B1B]/20 hover:border-transparent rounded-xl text-[10px] font-black tracking-wider uppercase transition-all duration-300 mt-4 text-center justify-center shadow-lg hover:shadow-[#F05B1B]/20"
                           >
-                            {link.label === 'Solutions' ? 'Consult An Expert' : 'View Success Stories'}
+                            {link.label === 'Our Services' ? 'Consult An Expert' : 'View Success Stories'}
                             <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
                           </Link>
                         </div>
@@ -252,37 +224,61 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* ── RIGHT CTA ── */}
+                 {/* ── RIGHT CTA (Desktop) ── */}
             <div className="hidden xl:flex items-center gap-4">
+              {/* Theme Toggle Button */}
+              <button
+                onClick={() => setTheme(currentTheme === 'light' ? 'dark' : 'light')}
+                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  useDarkStyle
+                    ? 'border border-white/10 hover:bg-white/5 text-white'
+                    : 'border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-slate-700 dark:text-white'
+                }`}
+                aria-label="Toggle theme"
+              >
+                {currentTheme === 'light' ? <Moon className="w-4.5 h-4.5" /> : <Sun className="w-4.5 h-4.5" />}
+              </button>
+
               <Link
                 href="/contact"
-                className="px-6 py-2.5 border border-[#F05B1B] text-white text-xs
-                           font-bold rounded-full transition-all duration-300
-                           hover:bg-[#F05B1B] hover:shadow-orange"
+                className={`px-6 py-2.5 border border-[#F05B1B] text-xs font-bold rounded-full transition-all duration-300 hover:bg-[#F05B1B] hover:text-white hover:shadow-orange ${
+                  useDarkStyle ? 'text-white' : 'text-slate-800 dark:text-white'
+                }`}
               >
                 Schedule a Meeting
               </Link>
-
-              <button
-                onClick={() => setMobileOpen(true)}
-                className="w-10 h-10 rounded-full border border-white/10 hover:border-white/20
-                           flex items-center justify-center text-white transition-all duration-300"
-                aria-label="Open menu"
-              >
-                <Menu className="w-4 h-4" />
-              </button>
             </div>
 
-            {/* ── MOBILE TOGGLE ── */}
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="xl:hidden relative w-10 h-10 flex flex-col items-center
-                         justify-center gap-1.5 rounded-full border border-white/10
-                         hover:border-white/20 transition-all duration-300"
-              aria-label="Toggle menu"
-            >
-              <Menu className="w-4 h-4 text-white" />
-            </button>
+            {/* ── MOBILE TOGGLE & THEME ── */}
+            <div className="flex xl:hidden items-center gap-2">
+              <button
+                onClick={() => setTheme(currentTheme === 'light' ? 'dark' : 'light')}
+                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  useDarkStyle
+                    ? 'border border-white/10 hover:bg-white/5 text-white'
+                    : 'border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-slate-700 dark:text-white'
+                }`}
+                aria-label="Toggle theme"
+              >
+                {currentTheme === 'light' ? <Moon className="w-4.5 h-4.5" /> : <Sun className="w-4.5 h-4.5" />}
+              </button>
+
+              <button
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className={`relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-full transition-all duration-300 ${
+                  useDarkStyle
+                    ? 'border border-white/10 hover:border-white/20'
+                    : 'border border-black/10 dark:border-white/10 hover:border-black/15 dark:hover:border-white/20'
+                }`}
+                aria-label="Toggle menu"
+              >
+                {mobileOpen ? (
+                  <X className={`w-4 h-4 ${useDarkStyle ? 'text-white' : 'text-slate-700 dark:text-white'}`} />
+                ) : (
+                  <Menu className={`w-4 h-4 ${useDarkStyle ? 'text-white' : 'text-slate-700 dark:text-white'}`} />
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </motion.nav>
@@ -295,25 +291,25 @@ export default function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed inset-0 z-[99] bg-[#0a1518] flex flex-col xl:hidden"
+            className="fixed inset-0 z-[110] bg-white dark:bg-[#0a1518] flex flex-col xl:hidden transition-colors duration-300"
           >
             {/* Mobile Header */}
             <div className="flex items-center justify-between px-6 py-5
-                           border-b border-white/5">
+                           border-b border-black/5 dark:border-white/5">
               <Link href="/" onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-3">
                 <img 
-                  src="/images/logo.png" 
+                  src={themeLogoSrc} 
                   alt="Nexa Network Solutions Logo" 
-                  className="h-8.5 w-auto object-contain"
+                  className="h-8 w-auto object-contain"
                 />
               </Link>
               <button
                 onClick={() => setMobileOpen(false)}
                 className="w-9 h-9 flex items-center justify-center rounded-lg
-                           border border-white/10"
+                           border border-black/10 dark:border-white/10 text-slate-700 dark:text-white"
               >
-                <X className="w-5 h-5 text-white" />
+                <X className="w-5 h-5" />
               </button>
             </div>
 
@@ -330,7 +326,7 @@ export default function Navbar() {
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center justify-between py-4 border-b
-                               border-white/5 text-white/70 hover:text-white
+                               border-black/5 dark:border-white/5 text-slate-700 dark:text-white/70 hover:text-[#F05B1B] dark:hover:text-white
                                text-lg font-medium transition-colors"
                   >
                     {link.label}
@@ -341,10 +337,10 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Footer */}
-            <div className="px-6 py-6 border-t border-white/5 space-y-3">
+            <div className="px-6 py-6 border-t border-black/5 dark:border-white/5 space-y-3">
               <a
                 href="tel:+97441459393"
-                className="flex items-center gap-3 text-white/60 text-sm"
+                className="flex items-center gap-3 text-slate-500 dark:text-white/60 text-sm"
               >
                 <Phone className="w-4 h-4 text-[#F05B1B]" />
                 +974 4145 9393

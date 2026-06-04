@@ -41,6 +41,7 @@ const nextConfig = {
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https:",
               "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
+              "frame-src 'self' https://maps.google.com https://www.google.com",
             ].join('; '),
           },
         ],

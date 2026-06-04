@@ -29,3 +29,6 @@ yarn-error.log*
 # typescript build info
 *.tsbuildinfo
 next-env.d.ts
+
+# heavy raw media sources
+public/videos/3141208-uhd_3840_2160_25fps.mp4

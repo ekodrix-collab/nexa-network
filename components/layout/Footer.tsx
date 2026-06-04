@@ -1,4 +1,7 @@
+'use client'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useTheme } from 'next-themes'
 import {
   Phone, Mail, MapPin, Linkedin, Facebook,
   Instagram, Youtube
@@ -7,19 +10,19 @@ import {
 const quickLinks = [
   { label: 'Home', href: '/' },
   { label: 'About Us', href: '/about' },
-  { label: 'Services', href: '/services' },
-  { label: 'Projects', href: '/projects' },
-  { label: 'Industries', href: '/industries' },
+  { label: 'Our Services', href: '/services' },
   { label: 'Contact Us', href: '/contact' },
 ]
 
 const services = [
-  { label: 'Network Infrastructure', href: '/services#network' },
-  { label: 'Cyber Security Solutions', href: '/services#security' },
-  { label: 'Cloud & IT Services', href: '/services#cloud' },
+  { label: 'Network Infrastructure & Passive Infrastructure', href: '/services#network' },
+  { label: 'IT Solutions & Integration Services', href: '/services#security' },
+  { label: 'Cloud Computing & IT Software Services', href: '/services#cloud' },
+  { label: 'Conference Room & Office IT Services', href: '/services#conference' },
   { label: 'Smart Entry Management', href: '/services#access' },
-  { label: 'CCTV & Surveillance', href: '/services#cctv' },
+  { label: 'Website Development & Digital Solutions', href: '/services#webdev' },
   { label: 'Vehicle Tracking Solutions', href: '/services#tracking' },
+  { label: 'CCTV & Surveillance Systems', href: '/services#cctv' },
 ]
 
 const resources = [
@@ -38,13 +41,23 @@ const socials = [
 ]
 
 export default function Footer() {
+  const { theme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const currentTheme = mounted ? theme : 'dark'
+  const logoSrc = currentTheme === 'light' ? '/images/logo-light.png' : '/images/logo.png'
+
   return (
-    <footer className="bg-[#070f12] relative overflow-hidden">
+    <footer className="bg-white dark:bg-[#070f12] relative overflow-hidden border-t border-black/5 dark:border-white/5 transition-colors duration-300">
       {/* Top glow */}
       <div className="absolute top-0 left-0 right-0 h-px
                      bg-gradient-to-r from-transparent via-[#F05B1B]/30 to-transparent" />
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2
-                     w-[600px] h-[200px] bg-[#F05B1B]/3 blur-[100px]" />
+                     w-[600px] h-[200px] bg-[#F05B1B]/[0.02] blur-[100px]" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
 
@@ -56,25 +69,13 @@ export default function Footer() {
             {/* Logo */}
             <Link href="/" className="inline-flex items-center gap-3 mb-6 group">
               <img 
-                src="/images/logo.png" 
+                src={logoSrc} 
                 alt="Nexa Network Solutions Logo" 
                 className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
               />
             </Link>
-            {/* Old footer logo elements hidden below */}
-            <div className="hidden">
-              <div className="w-11 h-11 bg-[#F05B1B] rounded-xl flex items-center">
-                <span className="text-white font-black text-lg">N</span>
-              </div>
-              <div>
-                <div className="text-white font-black text-lg leading-none">nexa</div>
-                <div className="text-[#F05B1B] text-[9px] font-bold tracking-[0.25em] uppercase">
-                  Network Solutions
-                </div>
-              </div>
-            </div>
 
-            <p className="text-white/40 text-sm leading-relaxed mb-6 max-w-xs">
+            <p className="text-slate-500 dark:text-white/40 text-sm leading-relaxed mb-6 max-w-xs transition-colors duration-300">
               Empowering businesses through smart infrastructure, secure solutions,
               and innovative technology across Qatar.
             </p>
@@ -84,8 +85,8 @@ export default function Footer() {
               {['ISO 27001', 'CNIA', 'Microsoft Partner'].map((cert) => (
                 <div
                   key={cert}
-                  className="px-2.5 py-1 rounded-lg border border-white/8 bg-white/3
-                             text-[10px] text-white/40 font-semibold"
+                  className="px-2.5 py-1 rounded-lg border border-black/10 bg-slate-50 dark:border-white/10 dark:bg-white/5
+                             text-[10px] text-slate-500 dark:text-white/60 font-semibold transition-colors duration-300"
                 >
                   {cert}
                 </div>
@@ -101,9 +102,9 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="w-9 h-9 rounded-xl bg-white/4 border border-white/8
-                             flex items-center justify-center text-white/40
-                             hover:text-white hover:bg-[#F05B1B]/15 hover:border-[#F05B1B]/30
+                  className="w-9 h-9 rounded-xl bg-slate-50 border border-black/10 dark:bg-white/5 dark:border-white/10
+                             flex items-center justify-center text-slate-500 dark:text-white/60
+                             hover:text-[#F05B1B] dark:hover:text-[#F05B1B] hover:bg-[#F05B1B]/10 dark:hover:bg-[#F05B1B]/15 hover:border-[#F05B1B]/30
                              transition-all duration-300"
                 >
                   <Icon className="w-4 h-4" />
@@ -114,7 +115,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-white font-bold text-xs tracking-[0.2em] uppercase mb-5">
+            <h4 className="text-slate-800 dark:text-white font-bold text-xs tracking-[0.2em] uppercase mb-5 transition-colors duration-300">
               Quick Links
             </h4>
             <ul className="space-y-2.5">
@@ -122,7 +123,7 @@ export default function Footer() {
                 <li key={label}>
                   <Link
                     href={href}
-                    className="flex items-center gap-2 text-white/40 hover:text-white
+                    className="flex items-center gap-2 text-slate-500 hover:text-slate-900 dark:text-white/40 dark:hover:text-white
                                text-sm transition-colors duration-200 group animated-underline"
                   >
                     <div className="w-1 h-1 rounded-full bg-[#F05B1B]/40
@@ -136,7 +137,7 @@ export default function Footer() {
 
           {/* Services */}
           <div>
-            <h4 className="text-white font-bold text-xs tracking-[0.2em] uppercase mb-5">
+            <h4 className="text-slate-800 dark:text-white font-bold text-xs tracking-[0.2em] uppercase mb-5 transition-colors duration-300">
               Our Services
             </h4>
             <ul className="space-y-2.5">
@@ -144,7 +145,7 @@ export default function Footer() {
                 <li key={label}>
                   <Link
                     href={href}
-                    className="flex items-center gap-2 text-white/40 hover:text-white
+                    className="flex items-center gap-2 text-slate-500 hover:text-slate-900 dark:text-white/40 dark:hover:text-white
                                text-sm transition-colors duration-200 group"
                   >
                     <div className="w-1 h-1 rounded-full bg-[#F05B1B]/40
@@ -158,7 +159,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="text-white font-bold text-xs tracking-[0.2em] uppercase mb-5">
+            <h4 className="text-slate-800 dark:text-white font-bold text-xs tracking-[0.2em] uppercase mb-5 transition-colors duration-300">
               Contact Info
             </h4>
             <ul className="space-y-4">
@@ -173,11 +174,11 @@ export default function Footer() {
                     <Phone className="w-3.5 h-3.5 text-[#F05B1B]" />
                   </div>
                   <div>
-                    <div className="text-white/25 text-[10px] uppercase tracking-widest mb-0.5">
+                    <div className="text-slate-400 dark:text-white/25 text-[10px] uppercase tracking-widest mb-0.5 transition-colors duration-300">
                       Phone
                     </div>
-                    <div className="text-white/70 text-sm font-medium
-                                   group-hover:text-white transition-colors">
+                    <div className="text-slate-700 dark:text-white/70 text-sm font-medium
+                                   group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-300">
                       +974 4145 9393
                     </div>
                   </div>
@@ -194,11 +195,11 @@ export default function Footer() {
                     <Mail className="w-3.5 h-3.5 text-[#F05B1B]" />
                   </div>
                   <div>
-                    <div className="text-white/25 text-[10px] uppercase tracking-widest mb-0.5">
+                    <div className="text-slate-400 dark:text-white/25 text-[10px] uppercase tracking-widest mb-0.5 transition-colors duration-300">
                       Email
                     </div>
-                    <div className="text-white/70 text-sm font-medium
-                                   group-hover:text-white transition-colors">
+                    <div className="text-slate-700 dark:text-white/70 text-sm font-medium
+                                   group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-300">
                       support@nexa.com.qa
                     </div>
                   </div>
@@ -211,10 +212,10 @@ export default function Footer() {
                     <MapPin className="w-3.5 h-3.5 text-[#F05B1B]" />
                   </div>
                   <div>
-                    <div className="text-white/25 text-[10px] uppercase tracking-widest mb-0.5">
+                    <div className="text-slate-400 dark:text-white/25 text-[10px] uppercase tracking-widest mb-0.5 transition-colors duration-300">
                       Office
                     </div>
-                    <div className="text-white/60 text-xs leading-relaxed">
+                    <div className="text-slate-600 dark:text-white/60 text-xs leading-relaxed transition-colors duration-300">
                       Hilalyton Tower, Floor 7 – Office 33<br />
                       Al Saflya St · Doha – Qatar
                     </div>
@@ -224,8 +225,8 @@ export default function Footer() {
             </ul>
 
             {/* Resources */}
-            <div className="mt-6 pt-6 border-t border-white/5">
-              <h4 className="text-white font-bold text-xs tracking-[0.2em] uppercase mb-4">
+            <div className="mt-6 pt-6 border-t border-black/5 dark:border-white/5 transition-colors duration-300">
+              <h4 className="text-slate-800 dark:text-white font-bold text-xs tracking-[0.2em] uppercase mb-4 transition-colors duration-300">
                 Resources
               </h4>
               <div className="flex flex-wrap gap-2">
@@ -233,7 +234,7 @@ export default function Footer() {
                   <Link
                     key={label}
                     href={href}
-                    className="text-white/35 hover:text-white text-xs transition-colors"
+                    className="text-slate-400 hover:text-slate-800 dark:text-white/35 dark:hover:text-white text-xs transition-colors duration-300"
                   >
                     {label}
                   </Link>
@@ -244,23 +245,23 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/5 py-6 flex flex-col md:flex-row
-                       items-center justify-between gap-4">
-          <p className="text-white/20 text-xs">
-            © 2025 Nexa Network Solutions. All Rights Reserved.
+        <div className="border-t border-black/5 dark:border-white/5 py-6 flex flex-col md:flex-row
+                       items-center justify-between gap-4 transition-colors duration-300">
+          <p className="text-slate-400 dark:text-white/20 text-xs transition-colors duration-300">
+            © 2026 Nexa Network Solutions. All Rights Reserved. • Redesigned by <a href="https://ekodrix.com" target="_blank" rel="noopener noreferrer" className="text-[#F05B1B] font-bold hover:underline">Ekodrix</a>
           </p>
           <div className="flex items-center gap-6">
-            <Link href="/privacy" className="text-white/20 hover:text-white/60
-                                            text-xs transition-colors">
+            <Link href="/privacy" className="text-slate-400 hover:text-slate-600 dark:text-white/20 dark:hover:text-white/60
+                                            text-xs transition-colors duration-300">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="text-white/20 hover:text-white/60
-                                          text-xs transition-colors">
+            <Link href="/terms" className="text-slate-400 hover:text-slate-600 dark:text-white/20 dark:hover:text-white/60
+                                          text-xs transition-colors duration-300">
               Terms & Conditions
             </Link>
             <div className="flex items-center gap-1.5">
               <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-              <span className="text-white/20 text-xs">All systems operational</span>
+              <span className="text-slate-400 dark:text-white/20 text-xs transition-colors duration-300">All systems operational</span>
             </div>
           </div>
         </div>

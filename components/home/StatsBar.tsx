@@ -1,5 +1,6 @@
 'use client'
 import { motion } from 'framer-motion'
+import ScrollReveal from '@/components/ui/ScrollReveal'
 
 export default function StatsBar() {
   const logos = [
@@ -93,13 +94,10 @@ export default function StatsBar() {
   ]
 
   return (
-    <section className="relative bg-[#070f12] py-16 overflow-hidden">
+    <section className="relative bg-white dark:bg-[#070f12] py-16 overflow-hidden transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+        <ScrollReveal
+          direction="up"
           className="relative bg-gradient-to-br from-[#E24611] via-[#F36F35] to-[#E04B0B] rounded-[32px] p-8 md:p-12 lg:py-16 lg:px-8 overflow-hidden shadow-2xl shadow-[#F05B1B]/15"
         >
           {/* Tech Dotted Mesh & Circuit Trace Background representing IT Networking Infrastructure */}
@@ -268,7 +266,7 @@ export default function StatsBar() {
               ))}
             </div>
           </div>
-        </motion.div>
+        </ScrollReveal>
       </div>
     </section>
   )

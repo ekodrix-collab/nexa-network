@@ -1,6 +1,7 @@
 'use client'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { useTheme } from 'next-themes'
 import { Building2, Factory, Heart, GraduationCap, ArrowRight, CheckCircle2 } from 'lucide-react'
 import ScrollReveal from '@/components/ui/ScrollReveal'
 
@@ -75,11 +76,22 @@ const industries = [
   }
 ]
 
+import { useState, useEffect } from 'react'
+
 export default function IndustriesPage() {
+  const { theme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const currentTheme = mounted ? theme : 'dark'
+
   return (
-    <div className="pt-20">
+    <div className="pt-20 bg-[#F4F6F8] dark:bg-[#070f12] text-slate-800 dark:text-white transition-colors duration-300">
       {/* Hero Header */}
-      <section className="relative py-24 bg-[#0D1C22] overflow-hidden">
+      <section className="relative py-24 bg-white dark:bg-[#0D1C22] border-b border-black/5 dark:border-white/[0.03] overflow-hidden transition-colors duration-300">
         <div className="absolute inset-0 grid-pattern opacity-60" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#F05B1B]/5 rounded-full blur-[150px]" />
         
@@ -90,10 +102,10 @@ export default function IndustriesPage() {
                 <div className="w-8 h-px bg-[#F05B1B]" />
                 <span className="text-[#F05B1B] text-xs font-bold tracking-[0.25em] uppercase">Industries We Serve</span>
               </div>
-              <h1 className="text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
+              <h1 className="text-5xl lg:text-6xl font-black text-slate-800 dark:text-white leading-tight mb-6">
                 Tailored IT for Qatar's <span className="text-[#F05B1B]">Key Verticals</span>
               </h1>
-              <p className="text-white/50 text-lg leading-relaxed">
+              <p className="text-slate-600 dark:text-white/50 text-lg leading-relaxed">
                 Enterprise technology infrastructure designed, integrated, and supported to meet the unique challenges of Qatar's public, enterprise, and educational institutions.
               </p>
             </div>
@@ -102,16 +114,20 @@ export default function IndustriesPage() {
       </section>
 
       {/* Main Verticals List */}
-      <section className="py-24 bg-[#0a1518]">
+      <section className="py-24 bg-[#F4F6F8] dark:bg-[#070f12] transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 space-y-12">
           {industries.map((ind, i) => {
             const Icon = ind.icon
+            const cardBgImage = currentTheme === 'light'
+              ? `linear-gradient(135deg, ${ind.accent}08 0%, rgba(255,255,255,0.9) 100%)`
+              : ind.bgImage
+
             return (
               <ScrollReveal key={ind.title} delay={0.1}>
                 <div 
                   id={ind.id} 
-                  className="glass rounded-3xl p-8 lg:p-10 border border-white/8 hover:border-white/15 transition-all duration-300 scroll-mt-24"
-                  style={{ backgroundImage: ind.bgImage }}
+                  className="bg-white dark:bg-transparent rounded-3xl p-8 lg:p-10 border border-black/5 dark:border-white/10 hover:border-black/10 dark:hover:border-white/15 shadow-sm dark:shadow-none hover:shadow-lg dark:hover:shadow-none transition-all duration-300 scroll-mt-24"
+                  style={{ backgroundImage: cardBgImage }}
                 >
                   <div className="grid lg:grid-cols-2 gap-8 items-start">
                     <div>
@@ -124,10 +140,10 @@ export default function IndustriesPage() {
                       <div className="text-xs font-bold tracking-[0.2em] uppercase mb-2" style={{ color: ind.accent }}>
                         {ind.subtitle}
                       </div>
-                      <h2 className="text-3xl font-black text-white mb-4">
+                      <h2 className="text-3xl font-black text-slate-800 dark:text-white mb-4">
                         {ind.title}
                       </h2>
-                      <p className="text-white/50 leading-relaxed mb-6">
+                      <p className="text-slate-500 dark:text-white/50 leading-relaxed mb-6">
                         {ind.description}
                       </p>
                       <Link 
@@ -140,9 +156,9 @@ export default function IndustriesPage() {
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {ind.features.map((f) => (
-                        <div key={f} className="flex items-center gap-3 p-3 rounded-xl bg-[#070f12]/40 border border-white/5">
+                        <div key={f} className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-[#070f12]/40 border border-black/5 dark:border-white/5 transition-colors duration-300">
                           <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: ind.accent }} />
-                          <span className="text-white/70 text-sm">{f}</span>
+                          <span className="text-slate-600 dark:text-white/70 text-sm">{f}</span>
                         </div>
                       ))}
                     </div>

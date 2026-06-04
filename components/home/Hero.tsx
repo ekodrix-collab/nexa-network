@@ -1,9 +1,11 @@
 'use client'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowRight, Play } from 'lucide-react'
+import { ArrowRight, Download } from 'lucide-react'
 import ParticleCanvas from '@/components/ui/ParticleCanvas'
 
+// ... in the component body ...
+// We will target the replace range to cover lines 1 to 154, so let's write the complete replacement block here.
 export default function Hero() {
   const { scrollYProgress } = useScroll()
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
@@ -18,15 +20,26 @@ export default function Hero() {
         {/* Base dark cover */}
         <div className="absolute inset-0 bg-[#0D1C22]" />
 
-        {/* City/tech background image - Qatar West Bay Skyline + Server Racks blended */}
+        {/* Video Background (highly optimized 3.7MB, no audio, styled blur layer) */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-40 filter blur-[2px] scale-[1.01] pointer-events-none"
+        >
+          <source src="/videos/hero-bg-compressed.mp4" type="video/mp4" />
+        </video>
+
+        {/* Fallback Static background image if video doesn't load */}
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-35"
-          style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-15 pointer-events-none"
+          style={{ backgroundImage: "url('/images/hero-bg.jpg')", zIndex: -1 }}
         />
 
         {/* Gradient overlays matching layout */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0D1C22]/90 via-[#0D1C22]/60 to-[#0D1C22]/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0D1C22] via-transparent to-[#0D1C22]/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0D1C22]/95 via-[#0D1C22]/60 to-[#0D1C22]/20 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0D1C22] via-transparent to-[#0D1C22]/20 pointer-events-none" />
       </div>
 
       {/* ── PARTICLE CANVAS ── */}
@@ -127,18 +140,19 @@ export default function Hero() {
                                group-hover:translate-y-0 transition-transform duration-300" />
               </Link>
 
-              <button
-                onClick={() => {}}
+              <a
+                href="/documents/nexa-brochure.pdf"
+                download
                 className="group flex items-center gap-3 text-white font-bold text-xs
                            hover:text-[#F05B1B] transition-colors duration-300"
               >
                 <div className="w-10 h-10 border border-white/10 rounded-full
                                flex items-center justify-center transition-all duration-300
                                group-hover:border-[#F05B1B]/40 group-hover:bg-white/5">
-                  <Play className="w-3.5 h-3.5 text-white fill-white ml-0.5 group-hover:text-[#F05B1B] group-hover:fill-[#F05B1B]" />
+                  <Download className="w-3.5 h-3.5 text-white transition-transform duration-300 group-hover:scale-110" />
                 </div>
-                Watch Our Story
-              </button>
+                Download Brochure
+              </a>
             </motion.div>
           </div>
 
