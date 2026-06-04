@@ -1,0 +1,41 @@
+{
+  "name": "nexa-network-solutions",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.5.3",
+    "@supabase/supabase-js": "^2.44.4",
+    "@supabase/ssr": "^0.4.0",
+    "framer-motion": "^11.3.8",
+    "gsap": "^3.12.5",
+    "three": "^0.167.0",
+    "@types/three": "^0.167.0",
+    "lottie-react": "^2.4.0",
+    "lucide-react": "^0.408.0",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.4.0",
+    "react-intersection-observer": "^9.13.0",
+    "react-hot-toast": "^2.4.1",
+    "next-themes": "^0.3.0",
+    "sharp": "^0.33.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.11",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.6",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.2.5"
+  }
+}
