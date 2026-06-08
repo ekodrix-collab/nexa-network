@@ -379,27 +379,29 @@ export default function Navbar() {
                     className="border-b border-black/5 dark:border-white/5"
                   >
                     <div className="flex items-center justify-between">
-                      <Link
-                        href={link.href}
-                        onClick={() => setMobileOpen(false)}
-                        className={`flex-1 py-4 text-lg font-medium transition-colors ${
-                          isActive
-                            ? 'text-[#F05B1B] dark:text-[#F05B1B]'
-                            : 'text-slate-700 dark:text-white/70 hover:text-[#F05B1B] dark:hover:text-white'
-                        }`}
-                      >
-                        {link.label}
-                      </Link>
-                      
                       {link.hasDropdown ? (
                         <button 
                           onClick={() => setActiveDropdown(activeDropdown === link.label ? null : link.label)}
-                          className="p-4 -mr-4"
+                          className={`flex-1 flex items-center justify-between py-4 text-left w-full text-lg font-medium transition-colors ${
+                            activeDropdown === link.label || isActive
+                              ? 'text-[#F05B1B] dark:text-[#F05B1B]'
+                              : 'text-slate-700 dark:text-white/70 hover:text-[#F05B1B] dark:hover:text-white'
+                          }`}
                         >
+                          {link.label}
                           <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${activeDropdown === link.label ? 'rotate-180 text-[#F05B1B]' : ''}`} />
                         </button>
                       ) : (
-                        <Link href={link.href} onClick={() => setMobileOpen(false)} className="p-4 -mr-4">
+                        <Link
+                          href={link.href}
+                          onClick={() => setMobileOpen(false)}
+                          className={`flex-1 flex items-center justify-between py-4 w-full text-lg font-medium transition-colors ${
+                            isActive
+                              ? 'text-[#F05B1B] dark:text-[#F05B1B]'
+                              : 'text-slate-700 dark:text-white/70 hover:text-[#F05B1B] dark:hover:text-white'
+                          }`}
+                        >
+                          {link.label}
                           <ArrowRight className="w-4 h-4 text-[#F05B1B]" />
                         </Link>
                       )}
@@ -422,7 +424,7 @@ export default function Navbar() {
                                   key={sub.label} 
                                   href={sub.href}
                                   onClick={() => setMobileOpen(false)}
-                                  className="flex items-center gap-3 text-sm text-slate-600 dark:text-white/60 hover:text-[#F05B1B] dark:hover:text-[#F05B1B] transition-colors"
+                                  className="flex items-center gap-3 py-2 text-sm text-slate-600 dark:text-white/60 hover:text-[#F05B1B] dark:hover:text-[#F05B1B] transition-colors w-full"
                                 >
                                   <SubIcon className="w-4 h-4 text-[#F05B1B]" />
                                   <span className="leading-tight">{sub.label}</span>

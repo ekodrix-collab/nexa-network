@@ -20,7 +20,7 @@ export default function ServicesPage() {
     <div className="pt-20 bg-[#F4F6F8] dark:bg-[#070f12] text-slate-800 dark:text-white transition-colors duration-300">
       <section className="relative py-24 bg-white dark:bg-[#0D1C22] border-b border-black/5 dark:border-white/[0.03] overflow-hidden transition-colors duration-300">
         <div className="absolute inset-0 grid-pattern opacity-60" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#F05B1B]/5 rounded-full blur-[150px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#F05B1B]/5 rounded-full blur-[150px] pointer-events-none" />
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
           <ScrollReveal>
             <div className="max-w-3xl">
@@ -47,9 +47,9 @@ export default function ServicesPage() {
                       <div className="text-xs font-bold tracking-[0.2em] uppercase mb-2" style={{ color: service.accent }}>{service.subtitle}</div>
                       <h2 className="text-3xl font-black text-slate-800 dark:text-white mb-4">{service.title}</h2>
                       <p className="text-slate-500 dark:text-white/45 leading-relaxed mb-6">{service.description}</p>
-                      <div className="flex flex-wrap items-center gap-4">
-                        <Link href={`/services/${service.slug}`} className="inline-flex items-center gap-2 px-6 py-3 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-800 dark:text-white font-bold text-sm rounded-xl transition-all duration-300">View Details</Link>
-                        <Link href="/contact" className="inline-flex items-center gap-2 px-6 py-3 bg-[#F05B1B] hover:bg-[#FF6B2B] text-white font-bold text-sm rounded-xl transition-all duration-300 hover:shadow-orange">Get a Quote<ArrowRight className="w-4 h-4" /></Link>
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 relative z-20">
+                        <Link href={`/services/${service.slug}`} className="inline-flex justify-center items-center gap-2 px-6 py-3.5 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-800 dark:text-white font-bold text-sm rounded-xl transition-all duration-300 w-full sm:w-auto">View Details</Link>
+                        <Link href="/contact" className="inline-flex justify-center items-center gap-2 px-6 py-3.5 bg-[#F05B1B] hover:bg-[#FF6B2B] text-white font-bold text-sm rounded-xl transition-all duration-300 hover:shadow-orange w-full sm:w-auto">Get a Quote<ArrowRight className="w-4 h-4" /></Link>
                       </div>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
