@@ -43,7 +43,6 @@ export const metadata: Metadata = {
     images: ['/og-image.jpg'],
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
-  icons: { icon: '/favicon.ico', shortcut: '/favicon-16x16.png', apple: '/apple-touch-icon.png' },
 }
 
 export const viewport: Viewport = {

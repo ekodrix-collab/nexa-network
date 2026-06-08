@@ -1,9 +1,15 @@
 'use client'
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 
 export default function PageTransition({ children }: { children: React.ReactNode }) {
   const [ready, setReady] = useState(false)
+  const pathname = usePathname()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
 
   useEffect(() => {
     // If intro was already seen, show content immediately

@@ -4,7 +4,7 @@ import StatsBar from '@/components/home/StatsBar'
 import Services from '@/components/home/Services'
 import About from '@/components/home/About'
 import Projects from '@/components/home/Projects'
-import Technologies from '@/components/home/Technologies'
+
 import CTA from '@/components/home/CTA'
 import type { Metadata } from 'next'
 
@@ -22,7 +22,7 @@ export default function HomePage() {
       <Services />
       <About />
       <Projects />
-      <Technologies />
+
       <CTA />
     </>
   )
