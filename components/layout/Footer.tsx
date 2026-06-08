@@ -245,7 +245,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-black/5 dark:border-white/5 py-6 flex flex-col md:flex-row
+        <div className="border-t border-black/5 dark:border-white/5 py-6 flex flex-col-reverse md:flex-row
                        items-center justify-between gap-4 transition-colors duration-300">
           <p className="text-slate-400 dark:text-white/20 text-xs transition-colors duration-300">
             © 2026 Nexa Network Solutions. All Rights Reserved. • Crafted by <a href="https://ekodrix.com" target="_blank" rel="noopener noreferrer" className="text-[#F05B1B] font-bold hover:underline">Ekodrix</a>
