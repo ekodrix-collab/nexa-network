@@ -7,7 +7,7 @@ import ScrollReveal from '@/components/ui/ScrollReveal'
 const services = [
   {
     num: '01',
-    title: 'Network Infrastructure & Passive Infrastructure',
+    title: 'Network Infrastructure',
     description: 'Design and implement reliable network infrastructure that ensures secure connectivity, seamless communication, and efficient business operations.',
     icon: Network,
     bgImage: '/images/service_network.jpg',
@@ -16,7 +16,7 @@ const services = [
   },
   {
     num: '02',
-    title: 'IT Solutions & Integration Services',
+    title: 'Cyber Security Solutions',
     description: 'Protect your IT systems and digital assets with advanced cybersecurity solutions designed to prevent threats and data breaches.',
     icon: Shield,
     bgImage: '/images/service_security.jpg',
@@ -25,7 +25,7 @@ const services = [
   },
   {
     num: '03',
-    title: 'Cloud Computing & IT Software Services',
+    title: 'Cloud Computing Services',
     description: 'Secure and scalable cloud solutions that enable businesses to securely store, manage, and access data efficiently from anywhere.',
     icon: Cloud,
     bgImage: '/images/service_cloud.jpg',
@@ -34,15 +34,6 @@ const services = [
   },
   {
     num: '04',
-    title: 'Conference Room & Office IT Services',
-    description: 'Deploy next-generation conference room audio-visual setups, smart projectors, interactive displays, and robust office IT integration.',
-    icon: Monitor,
-    bgImage: '/images/about_who_we_are.png',
-    href: '/services#conference',
-    tag: 'Smart Collaboration'
-  },
-  {
-    num: '05',
     title: 'Smart Entry Management',
     description: 'Advanced access control systems that help organizations manage entry points, monitor attendance, and maintain workplace security.',
     icon: Key,
@@ -51,31 +42,22 @@ const services = [
     tag: 'Biometric & RFID Access'
   },
   {
-    num: '06',
-    title: 'Website Development & Digital Solutions',
-    description: 'Establish a powerful online presence with bespoke website design, enterprise web applications, e-commerce stores, and custom software.',
-    icon: Globe,
-    bgImage: '/images/about_why_choose_us.png',
-    href: '/services#webdev',
-    tag: 'Custom Web Apps'
-  },
-  {
-    num: '07',
-    title: 'Vehicle Tracking Solutions',
-    description: 'Smart GPS tracking systems that allow businesses to monitor fleets, optimize routes, and improve operational efficiency and productivity.',
-    icon: MapPin,
-    bgImage: '/images/service_tracking.jpg',
-    href: '/services#tracking',
-    tag: 'Real-time GPS Analytics'
-  },
-  {
-    num: '08',
+    num: '05',
     title: 'CCTV & Surveillance Systems',
     description: 'High-definition surveillance solutions that provide real-time monitoring, remote access, and enhanced security for business environments.',
     icon: Camera,
     bgImage: '/images/service_cctv.jpg',
     href: '/services#cctv',
     tag: 'High-Definition Vision'
+  },
+  {
+    num: '06',
+    title: 'Vehicle Tracking Solutions',
+    description: 'Smart GPS tracking systems that allow businesses to monitor fleets, optimize routes, and improve operational efficiency and productivity.',
+    icon: MapPin,
+    bgImage: '/images/service_tracking.jpg',
+    href: '/services#tracking',
+    tag: 'Real-time GPS Analytics'
   }
 ]
 
@@ -172,12 +154,14 @@ export default function Services() {
 
                 {/* Card Actions Footer */}
                 <div className="px-2 pb-2 flex items-center gap-4 pt-4 border-t border-black/5 dark:border-white/[0.04]">
-                  <Link
-                    href={`/contact?service=${encodeURIComponent(service.title)}`}
+                  <a
+                    href={`https://api.whatsapp.com/send/?phone=%2B97471394477&text=${encodeURIComponent('Hi, I am interested in your ' + service.title + ' service.')}&type=phone_number&app_absent=0`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center justify-center bg-[#F05B1B] hover:bg-[#FF6B2B] text-white px-5 py-2.5 rounded-xl text-xs font-bold tracking-wider uppercase transition-all duration-300 shadow-sm shadow-[#F05B1B]/10 hover:shadow-md hover:shadow-[#F05B1B]/20 hover:-translate-y-0.5"
                   >
                     Enquire Now
-                  </Link>
+                  </a>
                   
                   <Link
                     href={service.href}
