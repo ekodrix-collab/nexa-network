@@ -88,6 +88,11 @@ export default function Navbar() {
     return () => { document.body.style.overflow = '' }
   }, [mobileOpen])
 
+  useEffect(() => {
+    // Automatically close mobile menu when route changes
+    setMobileOpen(false)
+  }, [pathname])
+
   const handleDropdownEnter = useCallback((label: string) => {
     if (dropdownTimer) clearTimeout(dropdownTimer)
     setActiveDropdown(label)
@@ -371,20 +376,63 @@ export default function Navbar() {
                     initial={{ opacity: 0, x: 30 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
+                    className="border-b border-black/5 dark:border-white/5"
                   >
-                    <Link
-                      href={link.href}
-                      onClick={() => setMobileOpen(false)}
-                      className={`flex items-center justify-between py-4 border-b
-                               border-black/5 dark:border-white/5 text-lg font-medium transition-colors
-                               ${isActive
-                          ? 'text-[#F05B1B] dark:text-[#F05B1B]'
-                          : 'text-slate-700 dark:text-white/70 hover:text-[#F05B1B] dark:hover:text-white'
+                    <div className="flex items-center justify-between">
+                      <Link
+                        href={link.href}
+                        onClick={() => setMobileOpen(false)}
+                        className={`flex-1 py-4 text-lg font-medium transition-colors ${
+                          isActive
+                            ? 'text-[#F05B1B] dark:text-[#F05B1B]'
+                            : 'text-slate-700 dark:text-white/70 hover:text-[#F05B1B] dark:hover:text-white'
                         }`}
-                    >
-                      {link.label}
-                      <ArrowRight className="w-4 h-4 text-[#F05B1B]" />
-                    </Link>
+                      >
+                        {link.label}
+                      </Link>
+                      
+                      {link.hasDropdown ? (
+                        <button 
+                          onClick={() => setActiveDropdown(activeDropdown === link.label ? null : link.label)}
+                          className="p-4 -mr-4"
+                        >
+                          <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${activeDropdown === link.label ? 'rotate-180 text-[#F05B1B]' : ''}`} />
+                        </button>
+                      ) : (
+                        <Link href={link.href} onClick={() => setMobileOpen(false)} className="p-4 -mr-4">
+                          <ArrowRight className="w-4 h-4 text-[#F05B1B]" />
+                        </Link>
+                      )}
+                    </div>
+                    
+                    {/* Mobile Sub-menu items */}
+                    <AnimatePresence>
+                      {link.hasDropdown && activeDropdown === link.label && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="pb-4 pl-4 space-y-4 border-l border-black/5 dark:border-white/10 ml-2">
+                            {link.items?.map((sub) => {
+                              const SubIcon = sub.icon as any
+                              return (
+                                <Link 
+                                  key={sub.label} 
+                                  href={sub.href}
+                                  onClick={() => setMobileOpen(false)}
+                                  className="flex items-center gap-3 text-sm text-slate-600 dark:text-white/60 hover:text-[#F05B1B] dark:hover:text-[#F05B1B] transition-colors"
+                                >
+                                  <SubIcon className="w-4 h-4 text-[#F05B1B]" />
+                                  <span className="leading-tight">{sub.label}</span>
+                                </Link>
+                              )
+                            })}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </motion.div>
                 )
               })}

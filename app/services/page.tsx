@@ -25,7 +25,7 @@ export default function ServicesPage() {
           <ScrollReveal>
             <div className="max-w-3xl">
               <div className="flex items-center gap-2 mb-4"><div className="w-8 h-px bg-[#F05B1B]" /><span className="text-[#F05B1B] text-xs font-bold tracking-[0.25em] uppercase">Our Services</span></div>
-              <h1 className="text-5xl lg:text-6xl font-black text-slate-800 dark:text-white leading-tight mb-6">Comprehensive IT <span className="text-[#F05B1B]">Solutions</span></h1>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-800 dark:text-white leading-tight mb-6">Comprehensive IT <span className="text-[#F05B1B]">Solutions</span></h1>
               <p className="text-slate-600 dark:text-white/50 text-lg leading-relaxed">End-to-end technology services designed to empower your business with reliable, secure, and future-ready IT infrastructure.</p>
             </div>
           </ScrollReveal>
