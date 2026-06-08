@@ -15,14 +15,14 @@ const quickLinks = [
 ]
 
 const services = [
-  { label: 'Network Infrastructure & Passive Infrastructure', href: '/services#network' },
-  { label: 'IT Solutions & Integration Services', href: '/services#security' },
-  { label: 'Cloud Computing & IT Software Services', href: '/services#cloud' },
-  { label: 'Conference Room & Office IT Services', href: '/services#conference' },
-  { label: 'Smart Entry Management', href: '/services#access' },
-  { label: 'Website Development & Digital Solutions', href: '/services#webdev' },
-  { label: 'Vehicle Tracking Solutions', href: '/services#tracking' },
-  { label: 'CCTV & Surveillance Systems', href: '/services#cctv' },
+  { label: 'Network Infrastructure & Passive Infrastructure', href: '/services/network-infrastructure' },
+  { label: 'IT Solutions & Integration Services', href: '/services/cyber-security' },
+  { label: 'Cloud Computing & IT Software Services', href: '/services/cloud-computing' },
+  { label: 'Conference Room & Office IT Services', href: '/services/conference-room' },
+  { label: 'Smart Entry Management', href: '/services/smart-entry' },
+  { label: 'Website Development & Digital Solutions', href: '/services/web-development' },
+  { label: 'Vehicle Tracking Solutions', href: '/services/vehicle-tracking' },
+  { label: 'CCTV & Surveillance Systems', href: '/services/cctv-surveillance' },
 ]
 
 const resources = [
@@ -68,9 +68,9 @@ export default function Footer() {
           <div className="xl:col-span-2">
             {/* Logo */}
             <Link href="/" className="inline-flex items-center gap-3 mb-6 group">
-              <img 
-                src={logoSrc} 
-                alt="Nexa Network Solutions Logo" 
+              <img
+                src={logoSrc}
+                alt="Nexa Network Solutions Logo"
                 className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
               />
             </Link>
@@ -248,14 +248,14 @@ export default function Footer() {
         <div className="border-t border-black/5 dark:border-white/5 py-6 flex flex-col md:flex-row
                        items-center justify-between gap-4 transition-colors duration-300">
           <p className="text-slate-400 dark:text-white/20 text-xs transition-colors duration-300">
-            © 2026 Nexa Network Solutions. All Rights Reserved. • Redesigned by <a href="https://ekodrix.com" target="_blank" rel="noopener noreferrer" className="text-[#F05B1B] font-bold hover:underline">Ekodrix</a>
+            © 2026 Nexa Network Solutions. All Rights Reserved. • Crafted by <a href="https://ekodrix.com" target="_blank" rel="noopener noreferrer" className="text-[#F05B1B] font-bold hover:underline">Ekodrix</a>
           </p>
           <div className="flex items-center gap-6">
-            <Link href="/privacy" className="text-slate-400 hover:text-slate-600 dark:text-white/20 dark:hover:text-white/60
+            <Link href="#" className="text-slate-400 hover:text-slate-600 dark:text-white/20 dark:hover:text-white/60
                                             text-xs transition-colors duration-300">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="text-slate-400 hover:text-slate-600 dark:text-white/20 dark:hover:text-white/60
+            <Link href="#" className="text-slate-400 hover:text-slate-600 dark:text-white/20 dark:hover:text-white/60
                                           text-xs transition-colors duration-300">
               Terms & Conditions
             </Link>

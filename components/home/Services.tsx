@@ -11,7 +11,7 @@ const services = [
     description: 'Design and implement reliable network infrastructure that ensures secure connectivity, seamless communication, and efficient business operations.',
     icon: Network,
     bgImage: '/images/service_network.jpg',
-    href: '/services#network',
+    href: '/services/network-infrastructure',
     tag: 'Enterprise Connectivity'
   },
   {
@@ -20,7 +20,7 @@ const services = [
     description: 'Protect your IT systems and digital assets with advanced cybersecurity solutions designed to prevent threats and data breaches.',
     icon: Shield,
     bgImage: '/images/service_security.jpg',
-    href: '/services#security',
+    href: '/services/cyber-security',
     tag: 'Advanced Threat Defense'
   },
   {
@@ -29,7 +29,7 @@ const services = [
     description: 'Secure and scalable cloud solutions that enable businesses to securely store, manage, and access data efficiently from anywhere.',
     icon: Cloud,
     bgImage: '/images/service_cloud.jpg',
-    href: '/services#cloud',
+    href: '/services/cloud-computing',
     tag: 'Virtual Infrastructure'
   },
   {
@@ -38,7 +38,7 @@ const services = [
     description: 'Advanced access control systems that help organizations manage entry points, monitor attendance, and maintain workplace security.',
     icon: Key,
     bgImage: '/images/service_access.jpg',
-    href: '/services#access',
+    href: '/services/smart-entry',
     tag: 'Biometric & RFID Access'
   },
   {
@@ -47,7 +47,7 @@ const services = [
     description: 'High-definition surveillance solutions that provide real-time monitoring, remote access, and enhanced security for business environments.',
     icon: Camera,
     bgImage: '/images/service_cctv.jpg',
-    href: '/services#cctv',
+    href: '/services/cctv-surveillance',
     tag: 'High-Definition Vision'
   },
   {
@@ -56,7 +56,7 @@ const services = [
     description: 'Smart GPS tracking systems that allow businesses to monitor fleets, optimize routes, and improve operational efficiency and productivity.',
     icon: MapPin,
     bgImage: '/images/service_tracking.jpg',
-    href: '/services#tracking',
+    href: '/services/vehicle-tracking',
     tag: 'Real-time GPS Analytics'
   }
 ]

@@ -1,9 +1,9 @@
 'use client'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTheme } from 'next-themes'
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent } from 'framer-motion'
 import {
   Menu, X, ChevronDown, Phone, ArrowRight, Sun, Moon,
   Network, Shield, Cloud, DoorOpen, Camera, Truck, Monitor, Globe,
@@ -11,14 +11,14 @@ import {
 } from 'lucide-react'
 
 const serviceItems = [
-  { icon: Network, label: 'Network Infrastructure & Passive Infrastructure', desc: 'Active & passive enterprise backbones', href: '/services#network', color: '#3B82F6' },
-  { icon: Shield, label: 'IT Solutions & Integration Services', desc: 'Zero-trust threat protection & compliance', href: '/services#security', color: '#EF4444' },
-  { icon: Cloud, label: 'Cloud Computing & IT Software Services', desc: 'SaaS setup, Azure, AWS & migrations', href: '/services#cloud', color: '#A855F7' },
-  { icon: Monitor, label: 'Conference Room & Office IT Services', desc: 'Office AV systems & hardware procurement', href: '/services#conference', color: '#D946EF' },
-  { icon: DoorOpen, label: 'Smart Entry Management', desc: 'RFID cards, biometrics & barrier gates', href: '/services#access', color: '#22C55E' },
-  { icon: Globe, label: 'Website Development & Digital Solutions', desc: 'Custom web platforms, apps & SEO tools', href: '/services#webdev', color: '#06B6D4' },
-  { icon: Truck, label: 'Vehicle Tracking Solutions', desc: 'GPS fleet telemetry & route optimization', href: '/services#tracking', color: '#F97316' },
-  { icon: Camera, label: 'CCTV & Surveillance Systems', desc: 'SSD-compliant HD video feeds', href: '/services#cctv', color: '#EAB308' },
+  { icon: Network, label: 'Network Infrastructure & Passive Infrastructure', desc: 'Active & passive enterprise backbones', href: '/services/network-infrastructure', color: '#3B82F6' },
+  { icon: Shield, label: 'IT Solutions & Integration Services', desc: 'Zero-trust threat protection & compliance', href: '/services/cyber-security', color: '#EF4444' },
+  { icon: Cloud, label: 'Cloud Computing & IT Software Services', desc: 'SaaS setup, Azure, AWS & migrations', href: '/services/cloud-computing', color: '#A855F7' },
+  { icon: Monitor, label: 'Conference Room & Office IT Services', desc: 'Office AV systems & hardware procurement', href: '/services/conference-room', color: '#D946EF' },
+  { icon: DoorOpen, label: 'Smart Entry Management', desc: 'RFID cards, biometrics & barrier gates', href: '/services/smart-entry', color: '#22C55E' },
+  { icon: Globe, label: 'Website Development & Digital Solutions', desc: 'Custom web platforms, apps & SEO tools', href: '/services/web-development', color: '#06B6D4' },
+  { icon: Truck, label: 'Vehicle Tracking Solutions', desc: 'GPS fleet telemetry & route optimization', href: '/services/vehicle-tracking', color: '#F97316' },
+  { icon: Camera, label: 'CCTV & Surveillance Systems', desc: 'SSD-compliant HD video feeds', href: '/services/cctv-surveillance', color: '#EAB308' },
 ]
 
 const navLinks = [
@@ -36,16 +36,45 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const [dropdownTimer, setDropdownTimer] = useState<NodeJS.Timeout | null>(null)
+  const [hidden, setHidden] = useState(false)
 
   const { scrollY } = useScroll()
   const navOpacity = useTransform(scrollY, [0, 100], [0, 1])
+
+  const lastScrollYRef = useRef(0)
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 30)
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+
+      // Update scrolled state for background opacity
+      setScrolled(currentScrollY > 30)
+
+      // Calculate how much was scrolled since last check
+      const scrollDifference = Math.abs(currentScrollY - lastScrollYRef.current)
+
+      // Only toggle hidden state if we scrolled more than 10px (prevents flickering)
+      if (scrollDifference > 10) {
+        if (currentScrollY > lastScrollYRef.current && currentScrollY > 100) {
+          // Scrolling down past 100px: hide navbar
+          setHidden(true)
+        } else {
+          // Scrolling up: show navbar
+          setHidden(false)
+        }
+        lastScrollYRef.current = currentScrollY
+      }
+
+      // Safety check: always show navbar when at the very top of the page
+      if (currentScrollY < 50) {
+        setHidden(false)
+      }
+    }
+
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
@@ -77,10 +106,10 @@ export default function Navbar() {
 
   return (
     <>
-      <motion.nav
-        className={`fixed top-0 left-0 right-0 z-[100] transition-[padding] duration-300 ${
+      <nav
+        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
           scrolled ? 'py-0' : 'py-2'
-        }`}
+        } ${hidden ? '-translate-y-full' : 'translate-y-0'}`}
       >
         {/* Background */}
         <motion.div
@@ -94,146 +123,168 @@ export default function Navbar() {
 
             {/* ── LOGO ── */}
             <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
-              <img 
-                src={logoSrc} 
-                alt="Nexa Network Solutions Logo" 
+              <img
+                src={logoSrc}
+                alt="Nexa Network Solutions Logo"
                 className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
               />
             </Link>
 
             {/* ── DESKTOP NAV ── */}
             <div className="hidden xl:flex items-center gap-1">
-              {navLinks.map((link) => (
-                <div
-                  key={link.label}
-                  className="relative"
-                  onMouseEnter={() => link.hasDropdown && handleDropdownEnter(link.label)}
-                  onMouseLeave={() => link.hasDropdown && handleDropdownLeave()}
-                >
-                   <Link
-                    href={link.href}
-                    className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm
+              {navLinks.map((link) => {
+                const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
+                return (
+                  <div
+                    key={link.label}
+                    className="relative"
+                    onMouseEnter={() => link.hasDropdown && handleDropdownEnter(link.label)}
+                    onMouseLeave={() => link.hasDropdown && handleDropdownLeave()}
+                  >
+                    <Link
+                      href={link.href}
+                      className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm
                                font-medium transition-all duration-200 group
                                ${activeDropdown === link.label
-                                 ? 'text-[#F05B1B] bg-black/5 dark:text-white dark:bg-white/5'
-                                 : (useDarkStyle
-                                     ? 'text-white/70 hover:text-white hover:bg-white/5'
-                                     : 'text-slate-700 hover:text-[#F05B1B] hover:bg-black/5 dark:text-white/65 dark:hover:text-white dark:hover:bg-white/5')
-                                }`}
-                  >
-                    {link.label}
-                    {link.hasDropdown && (
-                      <ChevronDown
-                        className={`w-3.5 h-3.5 transition-transform duration-300 ${
-                          activeDropdown === link.label ? 'rotate-180 text-[#F05B1B]' : (useDarkStyle ? 'text-white/40' : 'text-slate-400 dark:text-white/45')
+                          ? 'text-[#F05B1B] bg-black/5 dark:text-white dark:bg-white/5'
+                          : isActive
+                            ? (useDarkStyle ? 'text-[#F05B1B] bg-white/10' : 'text-[#F05B1B] bg-[#F05B1B]/10 dark:text-[#F05B1B] dark:bg-[#F05B1B]/10')
+                            : (useDarkStyle
+                              ? 'text-white/70 hover:text-white hover:bg-white/5'
+                              : 'text-slate-700 hover:text-[#F05B1B] hover:bg-black/5 dark:text-white/65 dark:hover:text-white dark:hover:bg-white/5')
                         }`}
-                      />
-                    )}
-                  </Link>
+                    >
+                      {link.label}
+                      {link.hasDropdown && (
+                        <ChevronDown
+                          className={`w-3.5 h-3.5 transition-transform duration-300 ${activeDropdown === link.label ? 'rotate-180 text-[#F05B1B]' : (useDarkStyle ? 'text-white/40' : 'text-slate-400 dark:text-white/45')
+                            }`}
+                        />
+                      )}
+                    </Link>
 
-                  {/* Dropdown */}
-                  <AnimatePresence>
-                    {link.hasDropdown && activeDropdown === link.label && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 8, scale: 0.97 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 8, scale: 0.97 }}
-                        transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
-                        className={`absolute top-full left-1/2 -translate-x-1/2 mt-3
-                                   bg-white/98 dark:bg-[#070e10]/98 backdrop-blur-2xl border border-black/10 dark:border-white/10
-                                   rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden
-                                   z-50 flex transition-colors duration-300 ${
-                                     link.label === 'Our Services' ? 'w-[780px]' : 'w-[680px]'
+                    {/* Dropdown */}
+                    <AnimatePresence>
+                      {link.hasDropdown && activeDropdown === link.label && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 8, scale: 0.97 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 8, scale: 0.97 }}
+                          transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                          className={`absolute top-full left-1/2 -translate-x-1/2 mt-3
+                                   backdrop-blur-2xl overflow-hidden
+                                   rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)]
+                                   z-50 flex transition-colors duration-300 ${link.label === 'Our Services' ? 'w-[780px]' : 'w-[680px]'}
+                                   ${useDarkStyle 
+                                     ? 'bg-[#070e10]/95 border border-white/10' 
+                                     : 'bg-white/95 dark:bg-[#070e10]/95 border border-black/10 dark:border-white/10'
                                    }`}
-                        onMouseEnter={() => handleDropdownEnter(link.label)}
-                        onMouseLeave={handleDropdownLeave}
-                      >
-                        {/* Main Grid Area */}
-                        <div className="flex-1 p-6">
-                          <div className="grid grid-cols-2 gap-2">
-                            {link.items?.map((itemAny) => {
-                              const IconComponent = (itemAny as any).icon
-                              return (
-                                <Link
-                                  key={itemAny.label}
-                                  href={itemAny.href}
-                                  onClick={() => setActiveDropdown(null)}
-                                  className="flex gap-4 p-4 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-300 group/item text-left"
-                                >
-                                  {/* Icon container */}
-                                  <div 
-                                    className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover/item:scale-110"
-                                    style={{
-                                      backgroundColor: `${(itemAny as any).color || '#F05B1B'}12`,
-                                    }}
+                          onMouseEnter={() => handleDropdownEnter(link.label)}
+                          onMouseLeave={handleDropdownLeave}
+                        >
+                          {/* Main Grid Area */}
+                          <div className="flex-1 p-6">
+                            <div className="grid grid-cols-2 gap-2">
+                              {link.items?.map((itemAny) => {
+                                const IconComponent = (itemAny as any).icon
+                                const isDropdownItemActive = pathname === itemAny.href;
+                                return (
+                                  <Link
+                                    key={itemAny.label}
+                                    href={itemAny.href}
+                                    onClick={() => setActiveDropdown(null)}
+                                    className={`flex gap-4 p-4 rounded-2xl transition-all duration-300 group/item text-left ${
+                                      isDropdownItemActive
+                                        ? (useDarkStyle ? 'bg-white/10' : 'bg-black/5 dark:bg-white/10')
+                                        : (useDarkStyle ? 'hover:bg-white/5' : 'hover:bg-black/5 dark:hover:bg-white/5')
+                                    }`}
                                   >
-                                    <IconComponent 
-                                      className="w-5 h-5" 
-                                      style={{ color: (itemAny as any).color || '#F05B1B' }}
-                                    />
-                                  </div>
+                                    {/* Icon container */}
+                                    <div
+                                      className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover/item:scale-110"
+                                      style={{
+                                        backgroundColor: `${(itemAny as any).color || '#F05B1B'}12`,
+                                      }}
+                                    >
+                                      <IconComponent
+                                        className="w-5 h-5"
+                                        style={{ color: (itemAny as any).color || '#F05B1B' }}
+                                      />
+                                    </div>
 
-                                  <div className="flex flex-col">
-                                    <span className="text-xs font-bold text-slate-800 dark:text-white group-hover/item:text-[#F05B1B] transition-colors flex items-center gap-1.5">
-                                      {itemAny.label}
-                                      <ArrowRight className="w-3.5 h-3.5 text-[#F05B1B] opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-300" />
-                                    </span>
-                                    <span className="text-[10px] text-slate-500 dark:text-white/45 mt-1 leading-relaxed">
-                                      {itemAny.desc}
-                                    </span>
-                                  </div>
-                                </Link>
-                              )
-                            })}
-                          </div>
-                        </div>
-
-                        {/* Side Feature Panel (Premium Callout) */}
-                        <div className="w-[240px] bg-slate-50/50 dark:bg-white/[0.01] border-l border-slate-200 dark:border-white/5 p-6 flex flex-col justify-between text-left transition-colors duration-300">
-                          <div>
-                            <div className="text-[10px] font-bold text-[#F05B1B] uppercase tracking-[0.25em] mb-3">
-                              {link.label === 'Our Services' ? 'Featured Tech' : 'Qatar Compliance'}
+                                    <div className="flex flex-col">
+                                      <span className={`text-xs font-bold group-hover/item:text-[#F05B1B] transition-colors flex items-center gap-1.5 ${
+                                        useDarkStyle ? 'text-white' : 'text-slate-800 dark:text-white'
+                                      }`}>
+                                        {itemAny.label}
+                                        <ArrowRight className="w-3.5 h-3.5 text-[#F05B1B] opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-300" />
+                                      </span>
+                                      <span className={`text-[10px] mt-1 leading-relaxed ${
+                                        useDarkStyle ? 'text-white/45' : 'text-slate-500 dark:text-white/45'
+                                      }`}>
+                                        {itemAny.desc}
+                                      </span>
+                                    </div>
+                                  </Link>
+                                )
+                              })}
                             </div>
-                            
-                            <h4 className="text-sm font-bold text-slate-800 dark:text-white mb-2 leading-snug">
-                              {link.label === 'Our Services' 
-                                ? 'State-Of-The-Art Systems Integration' 
-                                : 'SSD & QCDD Certified Standards'}
-                            </h4>
-                            
-                            <p className="text-[10px] text-slate-500 dark:text-white/45 leading-relaxed mb-4">
-                              {link.label === 'Our Services'
-                                ? 'End-to-end active networks, cybersecurity audits, and storage setup for Qatar enterprises.'
-                                : 'Tailored designs that satisfy Civil Defense regulations for immediate operational approval.'}
-                            </p>
                           </div>
 
-                          <Link
-                            href={link.label === 'Our Services' ? '/contact' : '/case-studies'}
-                            onClick={() => setActiveDropdown(null)}
-                            className="group inline-flex items-center gap-1.5 py-2.5 px-4 bg-[#F05B1B]/10 hover:bg-[#F05B1B] text-[#F05B1B] hover:text-white border border-[#F05B1B]/20 hover:border-transparent rounded-xl text-[10px] font-black tracking-wider uppercase transition-all duration-300 mt-4 text-center justify-center shadow-lg hover:shadow-[#F05B1B]/20"
-                          >
-                            {link.label === 'Our Services' ? 'Consult An Expert' : 'View Success Stories'}
-                            <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
-                          </Link>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ))}
+                          {/* Side Feature Panel (Premium Callout) */}
+                          <div className={`w-[240px] p-6 flex flex-col justify-between text-left transition-colors duration-300 border-l ${
+                            useDarkStyle 
+                              ? 'bg-white/[0.01] border-white/5' 
+                              : 'bg-slate-50/50 dark:bg-white/[0.01] border-slate-200 dark:border-white/5'
+                          }`}>
+                            <div>
+                              <div className="text-[10px] font-bold text-[#F05B1B] uppercase tracking-[0.25em] mb-3">
+                                {link.label === 'Our Services' ? 'Featured Tech' : 'Qatar Compliance'}
+                              </div>
+
+                              <h4 className={`text-sm font-bold mb-2 leading-snug ${
+                                useDarkStyle ? 'text-white' : 'text-slate-800 dark:text-white'
+                              }`}>
+                                {link.label === 'Our Services'
+                                  ? 'State-Of-The-Art Systems Integration'
+                                  : 'SSD & QCDD Certified Standards'}
+                              </h4>
+
+                              <p className={`text-[10px] leading-relaxed mb-4 ${
+                                useDarkStyle ? 'text-white/45' : 'text-slate-500 dark:text-white/45'
+                              }`}>
+                                {link.label === 'Our Services'
+                                  ? 'End-to-end active networks, cybersecurity audits, and storage setup for Qatar enterprises.'
+                                  : 'Tailored designs that satisfy Civil Defense regulations for immediate operational approval.'}
+                              </p>
+                            </div>
+
+                            <Link
+                              href={link.label === 'Our Services' ? '/contact' : '/case-studies'}
+                              onClick={() => setActiveDropdown(null)}
+                              className="group inline-flex items-center gap-1.5 py-2.5 px-4 bg-[#F05B1B]/10 hover:bg-[#F05B1B] text-[#F05B1B] hover:text-white border border-[#F05B1B]/20 hover:border-transparent rounded-xl text-[10px] font-black tracking-wider uppercase transition-all duration-300 mt-4 text-center justify-center shadow-lg hover:shadow-[#F05B1B]/20"
+                            >
+                              {link.label === 'Our Services' ? 'Consult An Expert' : 'View Success Stories'}
+                              <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+                            </Link>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )
+              })}
             </div>
 
-                 {/* ── RIGHT CTA (Desktop) ── */}
+            {/* ── RIGHT CTA (Desktop) ── */}
             <div className="hidden xl:flex items-center gap-4">
               {/* Theme Toggle Button */}
               <button
                 onClick={() => setTheme(currentTheme === 'light' ? 'dark' : 'light')}
-                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
-                  useDarkStyle
+                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${useDarkStyle
                     ? 'border border-white/10 hover:bg-white/5 text-white'
                     : 'border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-slate-700 dark:text-white'
-                }`}
+                  }`}
                 aria-label="Toggle theme"
               >
                 {currentTheme === 'light' ? <Moon className="w-4.5 h-4.5" /> : <Sun className="w-4.5 h-4.5" />}
@@ -241,9 +292,8 @@ export default function Navbar() {
 
               <Link
                 href="/contact"
-                className={`px-6 py-2.5 border border-[#F05B1B] text-xs font-bold rounded-full transition-all duration-300 hover:bg-[#F05B1B] hover:text-white hover:shadow-orange ${
-                  useDarkStyle ? 'text-white' : 'text-slate-800 dark:text-white'
-                }`}
+                className={`px-6 py-2.5 border border-[#F05B1B] text-xs font-bold rounded-full transition-all duration-300 hover:bg-[#F05B1B] hover:text-white hover:shadow-orange ${useDarkStyle ? 'text-white' : 'text-slate-800 dark:text-white'
+                  }`}
               >
                 Schedule a Meeting
               </Link>
@@ -253,11 +303,10 @@ export default function Navbar() {
             <div className="flex xl:hidden items-center gap-2">
               <button
                 onClick={() => setTheme(currentTheme === 'light' ? 'dark' : 'light')}
-                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
-                  useDarkStyle
+                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${useDarkStyle
                     ? 'border border-white/10 hover:bg-white/5 text-white'
                     : 'border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-slate-700 dark:text-white'
-                }`}
+                  }`}
                 aria-label="Toggle theme"
               >
                 {currentTheme === 'light' ? <Moon className="w-4.5 h-4.5" /> : <Sun className="w-4.5 h-4.5" />}
@@ -265,11 +314,10 @@ export default function Navbar() {
 
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
-                className={`relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-full transition-all duration-300 ${
-                  useDarkStyle
+                className={`relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-full transition-all duration-300 ${useDarkStyle
                     ? 'border border-white/10 hover:border-white/20'
                     : 'border border-black/10 dark:border-white/10 hover:border-black/15 dark:hover:border-white/20'
-                }`}
+                  }`}
                 aria-label="Toggle menu"
               >
                 {mobileOpen ? (
@@ -281,7 +329,7 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-      </motion.nav>
+      </nav>
 
       {/* ── MOBILE MENU ── */}
       <AnimatePresence>
@@ -297,10 +345,10 @@ export default function Navbar() {
             <div className="flex items-center justify-between px-6 py-5
                            border-b border-black/5 dark:border-white/5">
               <Link href="/" onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-3">
-                <img 
-                  src={themeLogoSrc} 
-                  alt="Nexa Network Solutions Logo" 
+                className="flex items-center gap-3">
+                <img
+                  src={themeLogoSrc}
+                  alt="Nexa Network Solutions Logo"
                   className="h-8 w-auto object-contain"
                 />
               </Link>
@@ -315,25 +363,31 @@ export default function Navbar() {
 
             {/* Mobile Links */}
             <div className="flex-1 overflow-y-auto px-6 py-6 space-y-1">
-              {navLinks.map((link, index) => (
-                <motion.div
-                  key={link.label}
-                  initial={{ opacity: 0, x: 30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                >
-                  <Link
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className="flex items-center justify-between py-4 border-b
-                               border-black/5 dark:border-white/5 text-slate-700 dark:text-white/70 hover:text-[#F05B1B] dark:hover:text-white
-                               text-lg font-medium transition-colors"
+              {navLinks.map((link, index) => {
+                const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
+                return (
+                  <motion.div
+                    key={link.label}
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
                   >
-                    {link.label}
-                    <ArrowRight className="w-4 h-4 text-[#F05B1B]" />
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className={`flex items-center justify-between py-4 border-b
+                               border-black/5 dark:border-white/5 text-lg font-medium transition-colors
+                               ${isActive
+                          ? 'text-[#F05B1B] dark:text-[#F05B1B]'
+                          : 'text-slate-700 dark:text-white/70 hover:text-[#F05B1B] dark:hover:text-white'
+                        }`}
+                    >
+                      {link.label}
+                      <ArrowRight className="w-4 h-4 text-[#F05B1B]" />
+                    </Link>
+                  </motion.div>
+                )
+              })}
             </div>
 
             {/* Mobile Footer */}
