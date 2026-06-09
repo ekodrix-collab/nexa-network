@@ -17,16 +17,39 @@ const services = [
 
 export default function ServicesPage() {
   return (
-    <div className="pt-20 bg-[#F4F6F8] dark:bg-[#070f12] text-slate-800 dark:text-white transition-colors duration-300">
-      <section className="relative py-24 bg-white dark:bg-[#0D1C22] border-b border-black/5 dark:border-white/[0.03] overflow-hidden transition-colors duration-300">
-        <div className="absolute inset-0 grid-pattern opacity-60" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#F05B1B]/5 rounded-full blur-[150px] pointer-events-none" />
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
+    <div className="bg-[#F4F6F8] dark:bg-[#070f12] text-slate-800 dark:text-white transition-colors duration-300">
+      <section
+        className="relative pt-10 border-b min-h-[450px] border-black/5 dark:border-white/[0.03] overflow-hidden transition-colors duration-300 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: "url('/images/our-services.png')",
+        }}
+      >
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/60" />
+
+        {/* Optional Grid Pattern */}
+        <div className="absolute inset-0 grid-pattern opacity-20" />
+
+        {/* Orange Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#F05B1B]/10 rounded-full blur-[150px] pointer-events-none" />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-20">
           <ScrollReveal>
             <div className="max-w-3xl">
-              <div className="flex items-center gap-2 mb-4"><div className="w-8 h-px bg-[#F05B1B]" /><span className="text-[#F05B1B] text-xs font-bold tracking-[0.25em] uppercase">Our Services</span></div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-800 dark:text-white leading-tight mb-6">Comprehensive IT <span className="text-[#F05B1B]">Solutions</span></h1>
-              <p className="text-slate-600 dark:text-white/50 text-lg leading-relaxed">End-to-end technology services designed to empower your business with reliable, secure, and future-ready IT infrastructure.</p>
+              <div className="flex items-center gap-2">
+                <span className="text-[#F05B1B] text-xs font-extrabold tracking-[0.25em] uppercase mb-4 block">
+                  Our Services
+                </span>
+              </div>
+
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-black font-bold text-white leading-tight mb-6">
+                Comprehensive <br /> IT <span className="text-[#F05B1B]">Solutions</span>
+              </h1>
+
+              <p className="text-white/80 text-sm leading-relaxed">
+                End-to-end technology services designed to empower your business with
+                reliable, secure, and future-ready IT infrastructure.
+              </p>
             </div>
           </ScrollReveal>
         </div>
@@ -38,18 +61,18 @@ export default function ServicesPage() {
             const Icon = service.icon
             return (
               <ScrollReveal key={service.title} delay={0.1}>
-                <div id={service.slug} className="bg-white dark:bg-[#0d1c22]/60 backdrop-blur-md rounded-3xl p-8 lg:p-10 border border-black/5 dark:border-white/10 hover:border-black/10 dark:hover:border-white/15 shadow-sm dark:shadow-none hover:shadow-lg dark:hover:shadow-none transition-all duration-300 scroll-mt-24">
-                  <div className="grid lg:grid-cols-2 gap-8 items-start">
+                <div id={service.slug} className="bg-white dark:bg-[#0d1c22]/60 backdrop-blur-md rounded-[5px] p-8 lg:p-10 border border-black/5 dark:border-white/10 hover:border-black/10 dark:hover:border-white/15 shadow-sm dark:shadow-none hover:shadow-lg dark:hover:shadow-none transition-all duration-300 scroll-mt-24">
+                  <div className="grid lg:grid-cols-2 gap-8 items-center">
                     <div>
                       <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style={{ background: `${service.accent}18` }}>
                         <Icon className="w-7 h-7" style={{ color: service.accent }} />
                       </div>
                       <div className="text-xs font-bold tracking-[0.2em] uppercase mb-2" style={{ color: service.accent }}>{service.subtitle}</div>
-                      <h2 className="text-3xl font-black text-slate-800 dark:text-white mb-4">{service.title}</h2>
-                      <p className="text-slate-500 dark:text-white/45 leading-relaxed mb-6">{service.description}</p>
+                      <h2 className="text-[20px] font-black text-slate-800 font-bold dark:text-white mb-4">{service.title}</h2>
+                      <p className="text-slate-500 test-[10px] dark:text-white/45 mb-6">{service.description}</p>
                       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 relative z-20">
-                        <Link href={`/services/${service.slug}`} className="inline-flex justify-center items-center gap-2 px-6 py-3.5 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-800 dark:text-white font-bold text-sm rounded-xl transition-all duration-300 w-full sm:w-auto">View Details</Link>
-                        <Link href="/contact" className="inline-flex justify-center items-center gap-2 px-6 py-3.5 bg-[#F05B1B] hover:bg-[#FF6B2B] text-white font-bold text-sm rounded-xl transition-all duration-300 hover:shadow-orange w-full sm:w-auto">Get a Quote<ArrowRight className="w-4 h-4" /></Link>
+                        <Link href={`/services/${service.slug}`} className="inline-flex justify-center items-center gap-2 px-6 py-3.5 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-800 dark:text-white font-bold text-sm rounded-[5px] transition-all duration-300 w-full sm:w-auto">View Details</Link>
+                        <Link href="/contact" className="inline-flex justify-center items-center gap-2 px-6 py-3.5 bg-[#F05B1B] hover:bg-[#FF6B2B] text-white font-bold text-sm rounded-[5px] transition-all duration-300 hover:shadow-orange w-full sm:w-auto">Get a Quote<ArrowRight className="w-4 h-4" /></Link>
                       </div>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
