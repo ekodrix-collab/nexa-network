@@ -33,8 +33,8 @@ export default function Welcome() {
   return (
     <section className="py-24 bg-[#F4F6F8] dark:bg-[#070f12] relative overflow-hidden transition-colors duration-300">
       {/* Background ambient glows */}
-      <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-[#F05B1B]/[0.02] rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-1/3 left-1/4 w-[500px] h-[500px] bg-[#F05B1B]/[0.02] rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-[#F05B1B]/[0.02] rounded-[5px] blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-1/3 left-1/4 w-[500px] h-[500px] bg-[#F05B1B]/[0.02] rounded-[5px] blur-[150px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         
@@ -47,7 +47,7 @@ export default function Welcome() {
                 key={card.title}
                 direction="up"
                 delay={idx * 0.08}
-                className="group relative bg-white dark:bg-[#0d1619]/40 backdrop-blur-md rounded-[24px] border border-black/5 dark:border-white/[0.04] p-8 hover:-translate-y-1.5 hover:border-[#F05B1B]/20 dark:hover:bg-[#0d1619]/60 shadow-sm dark:shadow-none hover:shadow-xl hover:shadow-[#F05B1B]/8 transition-all duration-300 flex flex-col items-start"
+                className="group relative bg-white dark:bg-[#0d1619]/40 backdrop-blur-md rounded-[5px] border border-black/5 dark:border-white/[0.04] p-8 hover:-translate-y-1.5 hover:border-[#F05B1B]/20 dark:hover:bg-[#0d1619]/60 shadow-sm dark:shadow-none hover:shadow-xl hover:shadow-[#F05B1B]/8 transition-all duration-300 flex flex-col items-start"
               >
                 {/* Glowing bottom border effect */}
                 <div className="absolute bottom-0 left-0 h-[2.5px] bg-[#F05B1B] w-0 group-hover:w-full transition-all duration-500 rounded-b-[24px]" />
@@ -78,7 +78,7 @@ export default function Welcome() {
             className="lg:col-span-5 relative group"
           >
             <div className="absolute inset-0 bg-[#F05B1B] rounded-[28px] blur-xl opacity-[0.08] group-hover:opacity-12 transition-opacity duration-500" />
-            <div className="relative rounded-[28px] overflow-hidden border border-black/5 dark:border-white/5 bg-[#F4F6F8] dark:bg-[#0a1113] aspect-[4/3] sm:aspect-square">
+            <div className="relative rounded-[5px] overflow-hidden border border-black/5 dark:border-white/5 bg-[#F4F6F8] dark:bg-[#0a1113] aspect-[4/3] sm:aspect-square">
               <img 
                 src="/images/service_security.jpg" 
                 alt="Security Operation Command Center" 
@@ -104,7 +104,7 @@ export default function Welcome() {
             </p>
 
             {/* Glowing outlined checklist container */}
-            <div className="bg-[#F05B1B]/[0.02] border border-[#F05B1B]/15 rounded-[24px] p-6 sm:p-8 shadow-inner shadow-black/5 dark:shadow-black/20">
+            <div className="bg-[#F05B1B]/[0.02] border border-[#F05B1B]/15 rounded-[5px] p-6 sm:p-8 shadow-inner shadow-black/5 dark:shadow-black/20">
               <ul className="space-y-4">
                 {checklist.map((item, idx) => (
                   <motion.li
@@ -115,7 +115,7 @@ export default function Welcome() {
                     transition={{ duration: 0.3, delay: idx * 0.05 }}
                     className="flex items-center gap-4 text-slate-700 dark:text-white/80 group/item"
                   >
-                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#F05B1B]/10 border border-[#F05B1B]/30 flex items-center justify-center text-[#F05B1B] group-hover/item:bg-[#F05B1B] group-hover/item:text-white transition-all duration-300">
+                    <div className="flex-shrink-0 w-6 h-6 rounded-[5px] bg-[#F05B1B]/10 border border-[#F05B1B]/30 flex items-center justify-center text-[#F05B1B] group-hover/item:bg-[#F05B1B] group-hover/item:text-white transition-all duration-300">
                       <Check className="w-3.5 h-3.5 stroke-[3]" />
                     </div>
                     <span className="text-sm font-semibold tracking-wide group-hover/item:text-slate-900 dark:group-hover/item:text-white transition-colors duration-300">

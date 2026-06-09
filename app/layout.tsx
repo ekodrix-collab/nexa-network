@@ -61,9 +61,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${poppins.variable} font-sans bg-[#F4F6F8] text-slate-800 dark:bg-brand-navy dark:text-white antialiased transition-colors duration-300`}>
         <ThemeProvider>
           <CinemaIntro />
+          <ScrollProgress />
+          <Navbar />
           <PageTransition>
-            <ScrollProgress />
-            <Navbar />
             <main className="relative">{children}</main>
             <Footer />
           </PageTransition>

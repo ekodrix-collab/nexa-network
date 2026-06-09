@@ -63,7 +63,7 @@ const services = [
 
 export default function Services() {
   return (
-    <section className="py-28 bg-[#F4F6F8] dark:bg-[#070f12] relative overflow-hidden transition-colors duration-300">
+    <section className="py-28 bg-[#F4F6F8] dark:bg-[#070f12] relative overflow-hidden transition-colors duration-300 cursor-pointer">
       {/* Background Soft Glows */}
       <div className="absolute top-10 left-1/4 w-[500px] h-[500px] bg-[#F05B1B]/[0.02] rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-10 right-1/4 w-[600px] h-[600px] bg-[#F05B1B]/[0.03] rounded-full blur-[180px] pointer-events-none" />
@@ -80,19 +80,19 @@ export default function Services() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
         
         {/* Header Section with "More Details" button */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-16">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F05B1B]/10 border border-[#F05B1B]/20 text-[#F05B1B] text-xs font-bold tracking-[0.2em] uppercase mb-4">
+            <div className="text-[#F05B1B] text-xs font-extrabold tracking-[0.25em] uppercase mb-4 block">
               What We Offer
             </div>
             <h2 className="text-3xl md:text-5xl font-extrabold text-slate-800 dark:text-white tracking-tight leading-tight">
-              Innovative IT Solutions for Secure and Connected Businesses
+              Innovative IT Solutions for Secure and Connected <span className='text-[#F05B1B]'>Businesses</span> 
             </h2>
           </div>
           
           <Link
             href="/services"
-            className="group inline-flex items-center gap-3 bg-gradient-to-r from-[#F05B1B] to-[#FF6B2B] text-white px-7 py-3.5 rounded-full text-sm font-extrabold tracking-wider uppercase shadow-lg shadow-[#F05B1B]/25 hover:shadow-xl hover:shadow-[#F05B1B]/35 hover:-translate-y-0.5 transition-all duration-300"
+            className="group inline-flex hidden md:flex items-center gap-3 bg-gradient-to-r from-[#F05B1B] to-[#FF6B2B] text-white px-7 py-3.5 rounded-full text-sm font-extrabold tracking-wider uppercase shadow-lg shadow-[#F05B1B]/25 hover:shadow-xl hover:shadow-[#F05B1B]/35 hover:-translate-y-0.5 transition-all duration-300"
           >
             More Details
             <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -108,13 +108,13 @@ export default function Services() {
                 key={service.num}
                 direction="up"
                 delay={index * 0.06}
-                className="group relative bg-white dark:bg-[#0d1619]/50 backdrop-blur-md rounded-[28px] border border-black/5 dark:border-white/[0.04] p-5 hover:-translate-y-1.5 hover:border-[#F05B1B]/30 dark:hover:bg-[#0d1619]/85 shadow-sm dark:shadow-none hover:shadow-2xl hover:shadow-[#F05B1B]/8 transition-all duration-300 flex flex-col justify-between"
+                className="group relative bg-white dark:bg-[#0d1619]/50 backdrop-blur-md rounded-[5px] border border-black/5 dark:border-white/[0.04] hover:-translate-y-1.5 hover:border-[#F05B1B]/30 dark:hover:bg-[#0d1619]/85 shadow-sm dark:shadow-none hover:shadow-2xl hover:shadow-[#F05B1B]/8 transition-all duration-300 flex flex-col justify-between"
               >
                 <div>
                   {/* Image & Icon Wrapper */}
                   <div className="relative mb-8">
                     {/* Standard Image Container at the top of the card */}
-                    <div className="relative h-48 w-full rounded-2xl overflow-hidden">
+                    <div className="relative h-60 w-full rounded-t-[5px] overflow-hidden">
                       {/* The Background Photo at full visibility */}
                       <div 
                         className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" 
@@ -137,8 +137,8 @@ export default function Services() {
                   </div>
 
                   {/* Title & Tag Content */}
-                  <div className="px-2 mt-2">
-                    <span className="text-slate-400 dark:text-white/40 text-[9px] font-black tracking-[0.2em] uppercase block mb-1.5">
+                  <div className="px-4 mt-2">
+                    <span className="text-slate-400 dark:text-white/40 font-bold text-[9px] font-black tracking-[0.2em] uppercase block mb-1.5">
                       {service.tag}
                     </span>
                     <h3 className="text-xl font-bold text-slate-800 dark:text-white tracking-tight mb-3 group-hover:text-[#F05B1B] transition-colors duration-300">
@@ -153,19 +153,19 @@ export default function Services() {
                 </div>
 
                 {/* Card Actions Footer */}
-                <div className="px-2 pb-2 flex items-center gap-4 pt-4 border-t border-black/5 dark:border-white/[0.04] relative z-20">
+                <div className="px-4 pb-2 flex items-center gap-4 pt-4 border-t border-black/5 dark:border-white/[0.04] relative z-20">
                   <a
                     href={`https://api.whatsapp.com/send/?phone=%2B97471394477&text=${encodeURIComponent('Hi, I am interested in your ' + service.title + ' service.')}&type=phone_number&app_absent=0`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 md:flex-none inline-flex items-center justify-center bg-[#F05B1B] hover:bg-[#FF6B2B] text-white px-5 py-3 rounded-xl text-xs font-bold tracking-wider uppercase transition-all duration-300 shadow-sm shadow-[#F05B1B]/10 hover:shadow-md hover:shadow-[#F05B1B]/20 hover:-translate-y-0.5 relative z-20"
+                    className="flex-1 md:flex-none inline-flex items-center justify-center bg-[#F05B1B] hover:bg-[#FF6B2B] text-white px-5 py-3 rounded-[5px] text-xs font-bold tracking-wider uppercase transition-all duration-300 shadow-sm shadow-[#F05B1B]/10 hover:shadow-md hover:shadow-[#F05B1B]/20 hover:-translate-y-0.5 relative z-20"
                   >
                     Enquire Now
                   </a>
                   
                   <Link
                     href={service.href}
-                    className="inline-flex items-center gap-1.5 py-3 pl-3 text-slate-400 dark:text-white/40 hover:text-[#F05B1B] text-xs font-extrabold tracking-wider uppercase transition-colors duration-300 ml-auto relative z-20"
+                    className="inline-flex items-center font-bold gap-1.5 py-3 pl-3 dark:text-white/40 hover:text-[#F05B1B] text-xs font-extrabold tracking-wider uppercase transition-colors duration-300 ml-auto relative z-20"
                   >
                     Details
                     <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />

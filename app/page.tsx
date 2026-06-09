@@ -15,15 +15,14 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <>
+    <div>
       <Hero />
       <Welcome />
       <StatsBar />
       <Services />
       <About />
       <Projects />
-
       <CTA />
-    </>
+    </div>
   )
 }

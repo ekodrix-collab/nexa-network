@@ -112,9 +112,8 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
-          scrolled ? 'py-0' : 'py-2'
-        } ${hidden ? '-translate-y-full' : 'translate-y-0'}`}
+        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${scrolled ? 'py-0' : 'py-2'
+          }`}
       >
         {/* Background */}
         <motion.div
@@ -124,7 +123,7 @@ export default function Navbar() {
         />
 
         <div className="relative max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-16">
 
             {/* ── LOGO ── */}
             <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
@@ -148,15 +147,15 @@ export default function Navbar() {
                   >
                     <Link
                       href={link.href}
-                      className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm
+                      className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-[12px]
                                font-medium transition-all duration-200 group
                                ${activeDropdown === link.label
-                          ? 'text-[#F05B1B] bg-black/5 dark:text-white dark:bg-white/5'
+                          ? 'text-[#F05B1B] dark:text-white '
                           : isActive
-                            ? (useDarkStyle ? 'text-[#F05B1B] bg-white/10' : 'text-[#F05B1B] bg-[#F05B1B]/10 dark:text-[#F05B1B] dark:bg-[#F05B1B]/10')
+                            ? (useDarkStyle ? 'text-[#F05B1B]' : 'text-[#F05B1B]  dark:text-[#F05B1B]')
                             : (useDarkStyle
-                              ? 'text-white/70 hover:text-white hover:bg-white/5'
-                              : 'text-slate-700 hover:text-[#F05B1B] hover:bg-black/5 dark:text-white/65 dark:hover:text-white dark:hover:bg-white/5')
+                              ? 'text-white/70 hover:text-white '
+                              : 'text-slate-700 hover:text-[#F05B1B] dark:text-white/65 dark:hover:text-white')
                         }`}
                     >
                       {link.label}
@@ -176,14 +175,14 @@ export default function Navbar() {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 8, scale: 0.97 }}
                           transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
-                          className={`absolute top-full left-1/2 -translate-x-1/2 mt-3
+                          className={`absolute top-full left-[-250%] mt-3
                                    backdrop-blur-2xl overflow-hidden
                                    rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)]
                                    z-50 flex transition-colors duration-300 ${link.label === 'Our Services' ? 'w-[780px]' : 'w-[680px]'}
-                                   ${useDarkStyle 
-                                     ? 'bg-[#070e10]/95 border border-white/10' 
-                                     : 'bg-white/95 dark:bg-[#070e10]/95 border border-black/10 dark:border-white/10'
-                                   }`}
+                                   ${useDarkStyle
+                              ? 'bg-[#070e10]/95 border border-white/10'
+                              : 'bg-white/95 dark:bg-[#070e10]/95 border border-black/10 dark:border-white/10'
+                            }`}
                           onMouseEnter={() => handleDropdownEnter(link.label)}
                           onMouseLeave={handleDropdownLeave}
                         >
@@ -198,11 +197,10 @@ export default function Navbar() {
                                     key={itemAny.label}
                                     href={itemAny.href}
                                     onClick={() => setActiveDropdown(null)}
-                                    className={`flex gap-4 p-4 rounded-2xl transition-all duration-300 group/item text-left ${
-                                      isDropdownItemActive
+                                    className={`flex gap-4 p-4 rounded-2xl transition-all duration-300 group/item text-left ${isDropdownItemActive
                                         ? (useDarkStyle ? 'bg-white/10' : 'bg-black/5 dark:bg-white/10')
                                         : (useDarkStyle ? 'hover:bg-white/5' : 'hover:bg-black/5 dark:hover:bg-white/5')
-                                    }`}
+                                      }`}
                                   >
                                     {/* Icon container */}
                                     <div
@@ -218,15 +216,13 @@ export default function Navbar() {
                                     </div>
 
                                     <div className="flex flex-col">
-                                      <span className={`text-xs font-bold group-hover/item:text-[#F05B1B] transition-colors flex items-center gap-1.5 ${
-                                        useDarkStyle ? 'text-white' : 'text-slate-800 dark:text-white'
-                                      }`}>
+                                      <span className={`text-xs font-bold group-hover/item:text-[#F05B1B] transition-colors flex items-center gap-1.5 ${useDarkStyle ? 'text-white' : 'text-slate-800 dark:text-white'
+                                        }`}>
                                         {itemAny.label}
                                         <ArrowRight className="w-3.5 h-3.5 text-[#F05B1B] opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-300" />
                                       </span>
-                                      <span className={`text-[10px] mt-1 leading-relaxed ${
-                                        useDarkStyle ? 'text-white/45' : 'text-slate-500 dark:text-white/45'
-                                      }`}>
+                                      <span className={`text-[10px] mt-1 leading-relaxed ${useDarkStyle ? 'text-white/45' : 'text-slate-500 dark:text-white/45'
+                                        }`}>
                                         {itemAny.desc}
                                       </span>
                                     </div>
@@ -237,27 +233,24 @@ export default function Navbar() {
                           </div>
 
                           {/* Side Feature Panel (Premium Callout) */}
-                          <div className={`w-[240px] p-6 flex flex-col justify-between text-left transition-colors duration-300 border-l ${
-                            useDarkStyle 
-                              ? 'bg-white/[0.01] border-white/5' 
+                          <div className={`w-[240px] p-6 flex flex-col justify-between text-left transition-colors duration-300 border-l ${useDarkStyle
+                              ? 'bg-white/[0.01] border-white/5'
                               : 'bg-slate-50/50 dark:bg-white/[0.01] border-slate-200 dark:border-white/5'
-                          }`}>
+                            }`}>
                             <div>
                               <div className="text-[10px] font-bold text-[#F05B1B] uppercase tracking-[0.25em] mb-3">
                                 {link.label === 'Our Services' ? 'Featured Tech' : 'Qatar Compliance'}
                               </div>
 
-                              <h4 className={`text-sm font-bold mb-2 leading-snug ${
-                                useDarkStyle ? 'text-white' : 'text-slate-800 dark:text-white'
-                              }`}>
+                              <h4 className={`text-sm font-bold mb-2 leading-snug ${useDarkStyle ? 'text-white' : 'text-slate-800 dark:text-white'
+                                }`}>
                                 {link.label === 'Our Services'
                                   ? 'State-Of-The-Art Systems Integration'
                                   : 'SSD & QCDD Certified Standards'}
                               </h4>
 
-                              <p className={`text-[10px] leading-relaxed mb-4 ${
-                                useDarkStyle ? 'text-white/45' : 'text-slate-500 dark:text-white/45'
-                              }`}>
+                              <p className={`text-[10px] leading-relaxed mb-4 ${useDarkStyle ? 'text-white/45' : 'text-slate-500 dark:text-white/45'
+                                }`}>
                                 {link.label === 'Our Services'
                                   ? 'End-to-end active networks, cybersecurity audits, and storage setup for Qatar enterprises.'
                                   : 'Tailored designs that satisfy Civil Defense regulations for immediate operational approval.'}
@@ -287,8 +280,8 @@ export default function Navbar() {
               <button
                 onClick={() => setTheme(currentTheme === 'light' ? 'dark' : 'light')}
                 className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${useDarkStyle
-                    ? 'border border-white/10 hover:bg-white/5 text-white'
-                    : 'border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-slate-700 dark:text-white'
+                  ? 'border border-white/10 hover:bg-white/5 text-white'
+                  : 'border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-slate-700 dark:text-white'
                   }`}
                 aria-label="Toggle theme"
               >
@@ -309,8 +302,8 @@ export default function Navbar() {
               <button
                 onClick={() => setTheme(currentTheme === 'light' ? 'dark' : 'light')}
                 className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${useDarkStyle
-                    ? 'border border-white/10 hover:bg-white/5 text-white'
-                    : 'border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-slate-700 dark:text-white'
+                  ? 'border border-white/10 hover:bg-white/5 text-white'
+                  : 'border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-slate-700 dark:text-white'
                   }`}
                 aria-label="Toggle theme"
               >
@@ -320,8 +313,8 @@ export default function Navbar() {
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
                 className={`relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-full transition-all duration-300 ${useDarkStyle
-                    ? 'border border-white/10 hover:border-white/20'
-                    : 'border border-black/10 dark:border-white/10 hover:border-black/15 dark:hover:border-white/20'
+                  ? 'border border-white/10 hover:border-white/20'
+                  : 'border border-black/10 dark:border-white/10 hover:border-black/15 dark:hover:border-white/20'
                   }`}
                 aria-label="Toggle menu"
               >
@@ -380,13 +373,12 @@ export default function Navbar() {
                   >
                     <div className="flex items-center justify-between">
                       {link.hasDropdown ? (
-                        <button 
+                        <button
                           onClick={() => setActiveDropdown(activeDropdown === link.label ? null : link.label)}
-                          className={`flex-1 flex items-center justify-between py-4 text-left w-full text-lg font-medium transition-colors ${
-                            activeDropdown === link.label || isActive
+                          className={`flex-1 flex items-center justify-between py-4 text-left w-full text-lg font-medium transition-colors ${activeDropdown === link.label || isActive
                               ? 'text-[#F05B1B] dark:text-[#F05B1B]'
                               : 'text-slate-700 dark:text-white/70 hover:text-[#F05B1B] dark:hover:text-white'
-                          }`}
+                            }`}
                         >
                           {link.label}
                           <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${activeDropdown === link.label ? 'rotate-180 text-[#F05B1B]' : ''}`} />
@@ -395,18 +387,17 @@ export default function Navbar() {
                         <Link
                           href={link.href}
                           onClick={() => setMobileOpen(false)}
-                          className={`flex-1 flex items-center justify-between py-4 w-full text-lg font-medium transition-colors ${
-                            isActive
+                          className={`flex-1 flex items-center justify-between py-4 w-full text-lg font-medium transition-colors ${isActive
                               ? 'text-[#F05B1B] dark:text-[#F05B1B]'
                               : 'text-slate-700 dark:text-white/70 hover:text-[#F05B1B] dark:hover:text-white'
-                          }`}
+                            }`}
                         >
                           {link.label}
                           <ArrowRight className="w-4 h-4 text-[#F05B1B]" />
                         </Link>
                       )}
                     </div>
-                    
+
                     {/* Mobile Sub-menu items */}
                     <AnimatePresence>
                       {link.hasDropdown && activeDropdown === link.label && (
@@ -420,8 +411,8 @@ export default function Navbar() {
                             {link.items?.map((sub) => {
                               const SubIcon = sub.icon as any
                               return (
-                                <Link 
-                                  key={sub.label} 
+                                <Link
+                                  key={sub.label}
                                   href={sub.href}
                                   onClick={() => setMobileOpen(false)}
                                   className="flex items-center gap-3 py-2 text-sm text-slate-600 dark:text-white/60 hover:text-[#F05B1B] dark:hover:text-[#F05B1B] transition-colors w-full"
