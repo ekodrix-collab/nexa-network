@@ -1,6 +1,5 @@
 'use client'
 import { useRef, useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import ScrollReveal from '@/components/ui/ScrollReveal'
@@ -59,16 +58,18 @@ export default function Projects() {
 
   return (
     <section className="py-24 bg-white dark:bg-[#070f12] relative overflow-hidden border-b border-black/5 dark:border-white/5 transition-colors duration-300">
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-        
+      <div className="relative flex flex-col z-10 max-w-7xl mx-auto px-6 lg:px-8">
+
         {/* Header Block */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div className="flex items-start justify-between mb-16">
+
+          {/* LEFT: Label + Heading + Link */}
           <div>
             <span className="text-[#F05B1B] text-xs font-extrabold tracking-[0.25em] uppercase mb-3 block">
               Featured Projects
             </span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-slate-800 dark:text-white leading-tight">
-              Real solutions.<br />Real results.
+              Real solutions Real results.
             </h2>
             <Link
               href="/projects"
@@ -79,8 +80,8 @@ export default function Projects() {
             </Link>
           </div>
 
-          {/* Nav Buttons */}
-          <div className="flex items-center gap-3">
+          {/* RIGHT: Nav Buttons — hidden on mobile, visible md+ */}
+          <div className="hidden md:flex items-center gap-3 flex-shrink-0">
             <button
               onClick={() => scroll('left')}
               disabled={!canScrollLeft}
@@ -106,13 +107,45 @@ export default function Projects() {
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
+
         </div>
 
-        {/* Horizontal Carousel */}
+        {/* Mobile: 2-column grid */}
+        <div className="grid grid-cols-2 gap-4 md:hidden">
+          {projects.map((project, index) => (
+            <ScrollReveal
+              key={project.id}
+              direction="up"
+              delay={index * 0.08}
+              className="group cursor-pointer hover:-translate-y-1 transition-transform duration-300"
+            >
+              {/* Cover Photo */}
+              <div className="relative h-36 rounded-[5px] overflow-hidden border border-black/5 dark:border-white/5 mb-3">
+                <div
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                  style={{ backgroundImage: `url('${project.image}')` }}
+                />
+                <div className="absolute inset-0 bg-[#070f12]/15 group-hover:bg-[#070f12]/5 transition-colors duration-300" />
+              </div>
+
+              {/* Title & Info */}
+              <div>
+                <h3 className="text-slate-800 dark:text-white font-bold text-xs leading-snug mb-1 group-hover:text-[#F05B1B] transition-colors duration-300 line-clamp-2">
+                  {project.title}
+                </h3>
+                <span className="text-[#F05B1B] text-[9px] font-bold tracking-wider uppercase">
+                  {project.category}
+                </span>
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
+
+        {/* Desktop: Horizontal Carousel (md and above) */}
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="flex gap-6 overflow-x-auto pb-6 scrollbar-none"
+          className="hidden md:flex gap-6 overflow-x-auto pb-6 scrollbar-none"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {projects.map((project, index) => (
@@ -123,12 +156,11 @@ export default function Projects() {
               className="flex-shrink-0 w-80 group cursor-pointer hover:-translate-y-1.5 transition-transform duration-300"
             >
               {/* Cover Photo */}
-              <div className="relative h-56 rounded-2xl overflow-hidden border border-black/5 dark:border-white/5 mb-4">
+              <div className="relative h-56 rounded-[5px] overflow-hidden border border-black/5 dark:border-white/5 mb-4">
                 <div
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                   style={{ backgroundImage: `url('${project.image}')` }}
                 />
-                {/* Subtle dark overlay */}
                 <div className="absolute inset-0 bg-[#070f12]/15 group-hover:bg-[#070f12]/5 transition-colors duration-300" />
               </div>
 

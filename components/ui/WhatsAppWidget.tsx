@@ -32,7 +32,7 @@ export default function WhatsAppWidget() {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-[999] flex flex-col items-end">
+    <div className="fixed bottom-6 right-6 flex flex-col items-end pointer-events-none z-50">
       {/* Chat Window */}
       <div
         className={`w-[340px] sm:w-[360px] rounded-3xl overflow-hidden border border-black/10 dark:border-white/10 shadow-2xl bg-white dark:bg-[#0d1c22] transition-all duration-500 ease-out origin-bottom-right mb-4 ${
@@ -113,7 +113,7 @@ export default function WhatsAppWidget() {
       <button
         onClick={isOpen ? handleClose : handleOpen}
         aria-label="Toggle WhatsApp Chat"
-        className="relative w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-transform duration-300 z-50 animate-pulse-orange"
+        className="relative w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-transform duration-300 z-50 animate-pulse-orange pointer-events-auto"
       >
         {isOpen ? (
           <X className="w-6 h-6 text-white" />

@@ -6,7 +6,7 @@ import ScrollReveal from '@/components/ui/ScrollReveal'
 
 export default function CTA() {
   return (
-    <section className="relative py-32 bg-white dark:bg-[#070f12] overflow-hidden border-b border-black/5 dark:border-white/5 transition-colors duration-300">
+    <section className="relative py-32 bg-white dark:bg-[#070f12] overflow-hidden  transition-colors duration-300">
       {/* Doha Skyline Backdrop */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"

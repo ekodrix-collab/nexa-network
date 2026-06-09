@@ -88,7 +88,7 @@ export default function Hero() {
               transition={{ duration: 0.7, delay: 0.1 }}
             >
               <h1 className="text-4xl sm:text-5xl md:text-6.5xl lg:text-7xl font-black text-white
-                             leading-[1.1] tracking-tight mb-8 select-none">
+                             leading-[1.1] tracking-tight mb-8 font-bold select-none">
                 <span className="block text-white filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
                   INFRASTRUCTURE
                 </span>
