@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next'
 import { Poppins } from 'next/font/google'
-// @ts-expect-error CSS import lacks type declarations
 import './globals.css'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
