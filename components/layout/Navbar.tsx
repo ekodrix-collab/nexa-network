@@ -147,15 +147,15 @@ export default function Navbar() {
                   >
                     <Link
                       href={link.href}
-                      className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm
+                      className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-[12px]
                                font-medium transition-all duration-200 group
                                ${activeDropdown === link.label
-                          ? 'text-[#F05B1B] bg-black/5 dark:text-white dark:bg-white/5'
+                          ? 'text-[#F05B1B] dark:text-white '
                           : isActive
-                            ? (useDarkStyle ? 'text-[#F05B1B] bg-white/10' : 'text-[#F05B1B] bg-[#F05B1B]/10 dark:text-[#F05B1B] dark:bg-[#F05B1B]/10')
+                            ? (useDarkStyle ? 'text-[#F05B1B]' : 'text-[#F05B1B]  dark:text-[#F05B1B]')
                             : (useDarkStyle
-                              ? 'text-white/70 hover:text-white hover:bg-white/5'
-                              : 'text-slate-700 hover:text-[#F05B1B] hover:bg-black/5 dark:text-white/65 dark:hover:text-white dark:hover:bg-white/5')
+                              ? 'text-white/70 hover:text-white '
+                              : 'text-slate-700 hover:text-[#F05B1B] dark:text-white/65 dark:hover:text-white')
                         }`}
                     >
                       {link.label}
