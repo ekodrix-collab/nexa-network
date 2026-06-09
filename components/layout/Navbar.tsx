@@ -105,7 +105,8 @@ export default function Navbar() {
 
   const currentTheme = mounted ? theme : 'dark'
   const isHome = pathname === '/'
-  const useDarkStyle = isHome && !scrolled
+  const isTransparentPage = pathname === '/' || pathname === '/about' || pathname === '/services' || pathname === '/contact'
+  const useDarkStyle = isTransparentPage && !scrolled
   const logoSrc = (currentTheme === 'light' && !useDarkStyle) ? '/images/logo-light.png' : '/images/logo.png'
   const themeLogoSrc = currentTheme === 'light' ? '/images/logo-light.png' : '/images/logo.png'
 
@@ -117,7 +118,7 @@ export default function Navbar() {
       >
         {/* Background */}
         <motion.div
-          className="absolute inset-0 bg-white/90 dark:bg-[#0D1C22]/95 backdrop-blur-2xl
+          className="absolute inset-0 bg-white dark:bg-[#0D1C22]/95 backdrop-blur-2xl
                      border-b border-black/5 dark:border-white/5 transition-colors duration-300"
           style={{ opacity: navOpacity }}
         />
@@ -130,7 +131,7 @@ export default function Navbar() {
               <img
                 src={logoSrc}
                 alt="Nexa Network Solutions Logo"
-                className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+                className="h-8 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
               />
             </Link>
 
@@ -198,8 +199,8 @@ export default function Navbar() {
                                     href={itemAny.href}
                                     onClick={() => setActiveDropdown(null)}
                                     className={`flex gap-4 p-4 rounded-2xl transition-all duration-300 group/item text-left ${isDropdownItemActive
-                                        ? (useDarkStyle ? 'bg-white/10' : 'bg-black/5 dark:bg-white/10')
-                                        : (useDarkStyle ? 'hover:bg-white/5' : 'hover:bg-black/5 dark:hover:bg-white/5')
+                                      ? (useDarkStyle ? 'bg-white/10' : 'bg-black/5 dark:bg-white/10')
+                                      : (useDarkStyle ? 'hover:bg-white/5' : 'hover:bg-black/5 dark:hover:bg-white/5')
                                       }`}
                                   >
                                     {/* Icon container */}
@@ -234,8 +235,8 @@ export default function Navbar() {
 
                           {/* Side Feature Panel (Premium Callout) */}
                           <div className={`w-[240px] p-6 flex flex-col justify-between text-left transition-colors duration-300 border-l ${useDarkStyle
-                              ? 'bg-white/[0.01] border-white/5'
-                              : 'bg-slate-50/50 dark:bg-white/[0.01] border-slate-200 dark:border-white/5'
+                            ? 'bg-white/[0.01] border-white/5'
+                            : 'bg-slate-50/50 dark:bg-white/[0.01] border-slate-200 dark:border-white/5'
                             }`}>
                             <div>
                               <div className="text-[10px] font-bold text-[#F05B1B] uppercase tracking-[0.25em] mb-3">
@@ -376,8 +377,8 @@ export default function Navbar() {
                         <button
                           onClick={() => setActiveDropdown(activeDropdown === link.label ? null : link.label)}
                           className={`flex-1 flex items-center justify-between py-4 text-left w-full text-lg font-medium transition-colors ${activeDropdown === link.label || isActive
-                              ? 'text-[#F05B1B] dark:text-[#F05B1B]'
-                              : 'text-slate-700 dark:text-white/70 hover:text-[#F05B1B] dark:hover:text-white'
+                            ? 'text-[#F05B1B] dark:text-[#F05B1B]'
+                            : 'text-slate-700 dark:text-white/70 hover:text-[#F05B1B] dark:hover:text-white'
                             }`}
                         >
                           {link.label}
@@ -388,8 +389,8 @@ export default function Navbar() {
                           href={link.href}
                           onClick={() => setMobileOpen(false)}
                           className={`flex-1 flex items-center justify-between py-4 w-full text-lg font-medium transition-colors ${isActive
-                              ? 'text-[#F05B1B] dark:text-[#F05B1B]'
-                              : 'text-slate-700 dark:text-white/70 hover:text-[#F05B1B] dark:hover:text-white'
+                            ? 'text-[#F05B1B] dark:text-[#F05B1B]'
+                            : 'text-slate-700 dark:text-white/70 hover:text-[#F05B1B] dark:hover:text-white'
                             }`}
                         >
                           {link.label}
