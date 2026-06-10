@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
+  provider  = "mysql"
 }
 
 model AdminUser {
@@ -38,7 +38,7 @@ model Service {
   subtitle    String
   description String   @db.Text
   icon        String
-  features    String[]
+  features    Json
   orderIndex  Int      @default(0)
   active      Boolean  @default(true)
   imageUrl    String?
@@ -51,7 +51,7 @@ model Project {
   category    String
   description String   @db.Text
   imageUrl    String?
-  tags        String[]
+  tags        Json
   featured    Boolean  @default(false)
   orderIndex  Int      @default(0)
   createdAt   DateTime @default(now())
