@@ -141,7 +141,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
       </section>
 
       {/* ── OVERVIEW SECTION ── */}
-      <section className="py-24 bg-[#F4F6F8] dark:bg-[#050505] transition-colors duration-300">
+      <section className="py-24 bg-[#F4F6F8] dark:bg-[#050505] transition-colors duration-300 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left Image */}
@@ -295,7 +295,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
             </div>
 
             {/* Right FAQs */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 overflow-hidden">
               <ScrollReveal direction="left" delay={0.2}>
                 <div className="flex items-center gap-4 mb-8">
 

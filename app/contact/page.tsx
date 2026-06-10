@@ -81,7 +81,7 @@ function ContactContent() {
         </div>
       </section>
 
-      <section className="py-24 bg-[#F4F6F8] dark:bg-[#070f12] transition-colors duration-300">
+      <section className="py-24 bg-[#F4F6F8] dark:bg-[#070f12] transition-colors duration-300 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-5 gap-12">
             {/* Contact Info */}

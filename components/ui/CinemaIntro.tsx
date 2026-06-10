@@ -1,14 +1,18 @@
 'use client'
 import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function CinemaIntro() {
   const [visible, setVisible] = useState(true)
   const [phase, setPhase] = useState(0)
+  const pathname = usePathname()
   // phase 0: dark void
   // phase 1: logo fades in with scale + glow
   // phase 2: light sweep across logo
   // phase 3: fade out entire overlay
+
+  if (pathname?.startsWith('/admin')) return null
 
   useEffect(() => {
     const hasSeen = sessionStorage.getItem('nexa_seen_intro')

@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useTheme } from 'next-themes'
 import {
   Phone, Mail, MapPin, Linkedin, Facebook,
@@ -63,9 +64,12 @@ function NavLink({
 
 export default function Footer() {
   const { theme } = useTheme()
+  const pathname = usePathname()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => { setMounted(true) }, [])
+
+  if (pathname?.startsWith('/admin')) return null
 
   return (
     <footer className="bg-white dark:bg-[#070f12] border-t border-black/5 dark:border-white/5 font-sans transition-colors duration-300 relative overflow-hidden">

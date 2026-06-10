@@ -12,7 +12,7 @@ const stats = [
 
 export default function About() {
   return (
-    <section className="md:pt-5 pb-10 bg-[#F4F6F8] dark:bg-[#070A11]  transition-colors duration-300">
+    <section className="md:pt-5 pb-10 bg-[#F4F6F8] dark:bg-[#070A11] transition-colors duration-300 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
         {/* Single unified panel */}
