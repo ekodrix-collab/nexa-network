@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import prisma from '@/lib/prisma'
+// import prisma from '@/lib/prisma'
 import { verifyToken } from '@/lib/auth'
 import { cookies } from 'next/headers'
 
@@ -9,16 +9,16 @@ function isAuthenticated() {
 }
 
 export async function GET() {
-  const services = await prisma.service.findMany({ orderBy: { orderIndex: 'asc' } })
-  return NextResponse.json(services)
+  // const services = await prisma.service.findMany({ orderBy: { orderIndex: 'asc' } })
+  return NextResponse.json([])
 }
 
 export async function POST(request: Request) {
   if (!isAuthenticated()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   try {
     const data = await request.json()
-    const service = await prisma.service.create({ data })
-    return NextResponse.json(service)
+    // const service = await prisma.service.create({ data })
+    return NextResponse.json({ ...data, id: 'mock-id' })
   } catch (error) {
     return NextResponse.json({ error: 'Failed to create service' }, { status: 500 })
   }
