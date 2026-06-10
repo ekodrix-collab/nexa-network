@@ -43,57 +43,96 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
   if (!mounted) return null
 
   return (
-    <div className="pt-20 bg-[#F4F6F8] dark:bg-[#050505] text-slate-800 dark:text-white transition-colors duration-300 min-h-screen">
-      
+    <div className="bg-[#F4F6F8] dark:bg-[#050505] text-slate-800 dark:text-white transition-colors duration-300 min-h-screen">
+
       {/* ── HERO SECTION ── */}
       <section className="relative py-20 lg:py-28 overflow-hidden bg-white dark:bg-[#080808] border-b border-black/5 dark:border-white/5 transition-colors duration-300">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[#F05B1B]/5 blur-[150px] opacity-50 pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 lg:gap-8 items-center">
-            {/* Left Content */}
-            <div>
-              <ScrollReveal>
-                <div className="flex items-center gap-2 mb-6">
-                  <div className="w-8 h-px bg-[#F05B1B]" />
-                  <span className="text-[#F05B1B] text-xs font-bold tracking-[0.2em] uppercase">Our Services</span>
-                </div>
-                
-                <h1 className="text-4xl sm:text-5xl lg:text-[54px] font-black leading-[1.1] mb-6 text-slate-900 dark:text-white">
-                  {service.hero.title} <br className="hidden sm:block" />
-                  <span className="text-[#F05B1B]">{service.hero.highlight}</span>
-                </h1>
-                
-                <p className="text-slate-600 dark:text-white/60 text-lg leading-relaxed mb-10 max-w-xl">
-                  {service.hero.description}
-                </p>
-                
-                <div className="flex flex-wrap items-center gap-4 mb-16">
-                  <Link href="/contact" className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#F05B1B] hover:bg-[#E04D12] text-white text-sm font-bold rounded-lg transition-all duration-300 hover:shadow-orange">
-                    Get a Consultation <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
 
-                {/* Stats Row */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-                  {service.hero.stats.map((stat, i) => {
-                    const StatIcon = getStatIcon(stat.label)
-                    return (
-                      <div key={i} className="flex flex-col gap-2">
-                        <StatIcon className="w-6 h-6 text-[#F05B1B]" />
-                        <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">{stat.value}</div>
-                        <div className="text-[11px] text-slate-500 dark:text-white/50 font-medium uppercase tracking-wider">{stat.label}</div>
-                      </div>
-                    )
-                  })}
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-8 items-start">
+            {/* Left Content */}
+            <div className="contents lg:block">
+              {/* Heading - First on Mobile */}
+              <div className="order-1 lg:order-none">
+                <ScrollReveal>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-[#F05B1B] text-xs font-bold tracking-[0.2em] uppercase">
+                      Our Services
+                    </span>
+                  </div>
+
+                  <h1 className="text-4xl sm:text-5xl font-bold lg:text-[54px] font-black leading-[1.1] mb-6 text-slate-900 dark:text-white">
+                    {service.hero.title}
+                    <br className="hidden sm:block" />
+                    <span className="text-[#F05B1B]">{service.hero.highlight}</span>
+                  </h1>
+                </ScrollReveal>
+              </div>
+
+              {/* Image - Second on Mobile */}
+              <div className="order-2 lg:hidden">
+                <div className="relative rounded-[5px] overflow-hidden aspect-[4/3]">
+                  <img
+                    src={service.hero.image}
+                    alt={service.slug}
+                    className="absolute inset-0 w-full h-full object-cover object-center"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 </div>
-              </ScrollReveal>
+              </div>
+
+              {/* Description + Button + Stats */}
+              <div className="order-3 lg:order-none">
+                <ScrollReveal>
+                  <p className="text-slate-600 dark:text-white/60 text-sm leading-relaxed mb-10 max-w-xl mt-6 lg:mt-0">
+                    {service.hero.description}
+                  </p>
+
+                  <div className="flex flex-wrap items-center gap-4 mb-16">
+                    <Link
+                      href="/contact"
+                      className="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-3.5 bg-[#F05B1B] hover:bg-[#E04D12] text-white text-sm font-bold rounded-lg transition-all duration-300 hover:shadow-orange"
+                    >
+                      Get a Consultation
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </div>
+
+                  {/* Stats Row */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+                    {service.hero.stats.map((stat, i) => {
+                      const StatIcon = getStatIcon(stat.label)
+
+                      return (
+                        <div key={i} className="flex flex-col gap-2">
+                          {/* <StatIcon className="w-6 h-6 text-[#F05B1B]" /> */}
+                          <div className="text-2xl sm:text-3xl font-black font-bold text-slate-900 dark:text-white">
+                            {stat.value}
+                          </div>
+                          <div className="text-[11px] text-slate-500 dark:text-white/50 font-medium uppercase tracking-wider">
+                            {stat.label}
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </ScrollReveal>
+              </div>
             </div>
 
-            {/* Right Image */}
-            <ScrollReveal direction="left" delay={0.2}>
-              <div className="relative rounded-3xl overflow-hidden aspect-[4/3] lg:aspect-square shadow-2xl border border-black/5 dark:border-white/10">
-                <img src={service.hero.image} alt={service.slug} className="absolute inset-0 w-full h-full object-cover object-center" />
+            {/* Desktop Image Only */}
+            <ScrollReveal
+              direction="left"
+              delay={0.2}
+              className="hidden lg:block"
+            >
+              <div className="relative rounded-[5px] overflow-hidden aspect-[4/3] lg:aspect-square">
+                <img
+                  src={service.hero.image}
+                  alt={service.slug}
+                  className="absolute inset-0 w-full h-full object-cover object-center"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               </div>
             </ScrollReveal>
@@ -107,7 +146,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left Image */}
             <ScrollReveal>
-              <div className="relative rounded-3xl overflow-hidden aspect-[4/3] shadow-lg border border-black/5 dark:border-white/10">
+              <div className="relative rounded-[5px] overflow-hidden aspect-[4/3] shadow-lg border border-black/5 dark:border-white/10">
                 <img src={service.overview.image} alt="Overview" className="absolute inset-0 w-full h-full object-cover" />
               </div>
             </ScrollReveal>
@@ -115,7 +154,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
             {/* Right Content */}
             <ScrollReveal direction="left" delay={0.2}>
               <div className="text-[#F05B1B] text-xs font-bold tracking-[0.2em] uppercase mb-4">Overview</div>
-              <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mb-6 leading-tight">
+              <h2 className="text-3xl sm:text-4xl font-black font-bold text-slate-900 dark:text-white mb-6 leading-tight">
                 {service.overview.title}
               </h2>
               <p className="text-slate-600 dark:text-white/60 text-[15px] leading-relaxed mb-10">
@@ -140,9 +179,9 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
       <section className="py-16 bg-white dark:bg-[#080808] border-y border-black/5 dark:border-white/5 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-center gap-4 mb-10">
-            <div className="h-px w-8 bg-[#F05B1B]/50" />
+
             <span className="text-[#F05B1B] text-xs font-bold tracking-[0.2em] uppercase">Technology Partners</span>
-            <div className="h-px w-8 bg-[#F05B1B]/50" />
+
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -163,20 +202,20 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="text-center mb-16">
               <div className="flex items-center justify-center gap-4 mb-4">
-                <div className="h-px w-8 bg-[#F05B1B]/50" />
+
                 <span className="text-[#F05B1B] text-xs font-bold tracking-[0.2em] uppercase">Featured Projects</span>
-                <div className="h-px w-8 bg-[#F05B1B]/50" />
+
               </div>
-              <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">Delivering Excellence Through Every Project</h2>
+              <h2 className="text-3xl font-bold sm:text-4xl font-black text-slate-900 dark:text-white">Delivering Excellence Through Every Project</h2>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
               {service.projects.map((project, i) => (
                 <ScrollReveal key={i} delay={i * 0.1}>
-                  <div className="group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-lg border border-black/5 dark:border-white/10">
+                  <div className="group relative rounded-[5px] overflow-hidden aspect-[4/5] shadow-lg border border-black/5 dark:border-white/10">
                     <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
-                    
+
                     <div className="absolute inset-0 p-8 flex flex-col justify-end">
                       <div className="inline-block px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[10px] font-bold text-white uppercase tracking-wider mb-4 border border-white/20 self-start">
                         {project.category}
@@ -201,17 +240,17 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="text-center mb-16">
               <div className="flex items-center justify-center gap-4 mb-4">
-                <div className="h-px w-8 bg-[#F05B1B]/50" />
+
                 <span className="text-[#F05B1B] text-xs font-bold tracking-[0.2em] uppercase">Our Process</span>
-                <div className="h-px w-8 bg-[#F05B1B]/50" />
+
               </div>
-              <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">How We Deliver Your Solutions</h2>
+              <h2 className="text-3xl font-bold sm:text-4xl font-black text-slate-900 dark:text-white">How We Deliver Your Solutions</h2>
             </div>
 
             <div className="relative">
               {/* Desktop Connecting Line */}
               <div className="hidden lg:block absolute top-[44px] left-[12%] right-[12%] h-px border-t border-dashed border-[#F05B1B]/30" />
-              
+
               <div className="grid lg:grid-cols-4 gap-8">
                 {service.process.map((step, i) => {
                   const Icon = step.icon
@@ -236,11 +275,11 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
       <section className="py-24 bg-[#F4F6F8] dark:bg-[#050505] transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-3 gap-12">
-            
+
             {/* Left CTA Card */}
             <div className="lg:col-span-1">
               <ScrollReveal>
-                <div className="bg-white dark:bg-[#080808] border border-black/10 dark:border-white/10 rounded-3xl p-8 sticky top-32">
+                <div className="bg-white dark:bg-[#080808] border border-black/10 dark:border-white/10 rounded-[5px] p-8 sticky top-32">
                   <div className="w-12 h-12 rounded-xl bg-[#F05B1B]/10 flex items-center justify-center mb-6">
                     <Headphones className="w-5 h-5 text-[#F05B1B]" />
                   </div>
@@ -248,7 +287,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
                   <p className="text-slate-600 dark:text-white/60 text-sm mb-8 leading-relaxed">
                     Our experts are ready to help you build a secure, reliable, and scalable infrastructure.
                   </p>
-                  <Link href="/contact" className="flex items-center justify-center gap-2 w-full py-4 bg-[#F05B1B] hover:bg-[#E04D12] text-white text-sm font-bold rounded-xl transition-colors">
+                  <Link href="/contact" className="flex items-center justify-center gap-2 w-full py-4 bg-[#F05B1B] hover:bg-[#E04D12] text-white text-sm font-bold rounded-[5px] transition-colors">
                     Talk to an Expert <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
@@ -259,13 +298,13 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
             <div className="lg:col-span-2">
               <ScrollReveal direction="left" delay={0.2}>
                 <div className="flex items-center gap-4 mb-8">
-                  <div className="h-px w-8 bg-[#F05B1B]/50" />
+
                   <span className="text-[#F05B1B] text-xs font-bold tracking-[0.2em] uppercase">Frequently Asked Questions</span>
                 </div>
-                
+
                 <div className="space-y-4">
                   {service.faqs.map((faq, i) => (
-                    <div key={i} className="bg-white dark:bg-[#080808] border border-black/5 dark:border-white/5 rounded-2xl overflow-hidden transition-colors duration-300">
+                    <div key={i} className="bg-white dark:bg-[#080808] border border-black/5 dark:border-white/5 rounded-[5px] overflow-hidden transition-colors duration-300">
                       <button
                         onClick={() => setOpenFaq(openFaq === i ? null : i)}
                         className="w-full flex items-center justify-between p-6 text-left"
