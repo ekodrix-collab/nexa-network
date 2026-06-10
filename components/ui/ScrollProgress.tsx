@@ -1,7 +1,11 @@
 'use client'
 import { useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 
 export default function ScrollProgress() {
+  const pathname = usePathname()
+  if (pathname?.startsWith('/admin')) return null
+
   useEffect(() => {
     const bar = document.getElementById('scroll-progress')
     if (!bar) return

@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+model AdminUser {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Setting {
+  key   String @id
+  value String @db.Text
+}
+
+model WelcomeCard {
+  id          String @id @default(uuid())
+  title       String
+  description String @db.Text
+  icon        String
+  orderIndex  Int    @default(0)
+}
+
+model StatsLogo {
+  id         String @id @default(uuid())
+  imageUrl   String
+  orderIndex Int    @default(0)
+}
+
+model Service {
+  id          String   @id @default(uuid())
+  title       String
+  subtitle    String
+  description String   @db.Text
+  icon        String
+  features    String[]
+  orderIndex  Int      @default(0)
+  active      Boolean  @default(true)
+  imageUrl    String?
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  title       String
+  client      String
+  category    String
+  description String   @db.Text
+  imageUrl    String?
+  tags        String[]
+  featured    Boolean  @default(false)
+  orderIndex  Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model AboutSection {
+  id          String  @id @default(uuid())
+  title       String
+  content     String  @db.Text
+  imageUrl    String?
+  orderIndex  Int     @default(0)
+}

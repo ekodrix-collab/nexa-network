@@ -1,10 +1,14 @@
 'use client'
 import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { X, Send, MessageCircle } from 'lucide-react'
 
 export default function WhatsAppWidget() {
   const [isOpen, setIsOpen] = useState(false)
   const [showBadge, setShowBadge] = useState(false)
+  const pathname = usePathname()
+
+  if (pathname?.startsWith('/admin')) return null
 
   // Show badge with a delay to attract attention
   useEffect(() => {

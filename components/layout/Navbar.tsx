@@ -47,6 +47,8 @@ export default function Navbar() {
     setMounted(true)
   }, [])
 
+  if (pathname?.startsWith('/admin')) return null
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
