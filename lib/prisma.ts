@@ -3,6 +3,9 @@ import { PrismaClient } from '@prisma/client'
 const createMockPrismaClient = () => {
   return new Proxy({}, {
     get(target, prop) {
+      if (typeof prop === 'symbol' || ['then', 'catch', 'finally', 'toJSON', 'toString', 'valueOf'].includes(prop as string)) {
+        return undefined;
+      }
       if (prop === '$connect' || prop === '$disconnect') {
         return () => Promise.resolve();
       }
@@ -12,6 +15,9 @@ const createMockPrismaClient = () => {
       // Mock models
       return new Proxy({}, {
         get(modelTarget, modelProp) {
+          if (typeof modelProp === 'symbol' || ['then', 'catch', 'finally', 'toJSON', 'toString', 'valueOf'].includes(modelProp as string)) {
+            return undefined;
+          }
           return () => {
             if (modelProp === 'findMany') return Promise.resolve([]);
             if (modelProp === 'findUnique' || modelProp === 'findFirst') return Promise.resolve(null);
