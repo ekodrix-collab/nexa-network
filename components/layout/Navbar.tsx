@@ -261,11 +261,11 @@ export default function Navbar() {
                             </div>
 
                             <Link
-                              href={link.label === 'Our Services' ? '/contact' : '/case-studies'}
+                              href="/contact"
                               onClick={() => setActiveDropdown(null)}
                               className="group inline-flex items-center gap-1.5 py-2.5 px-4 bg-[#F05B1B]/10 hover:bg-[#F05B1B] text-[#F05B1B] hover:text-white border border-[#F05B1B]/20 hover:border-transparent rounded-xl text-[10px] font-black tracking-wider uppercase transition-all duration-300 mt-4 text-center justify-center shadow-lg hover:shadow-[#F05B1B]/20"
                             >
-                              {link.label === 'Our Services' ? 'Consult An Expert' : 'View Success Stories'}
+                              Consult An Expert
                               <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
                             </Link>
                           </div>

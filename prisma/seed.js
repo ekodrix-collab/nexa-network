@@ -23,63 +23,69 @@ async function main() {
   console.log(`   Username: ${adminUsername}`)
   console.log(`   Password: ${adminPassword}`)
 
-  // 2. Seed Default Settings
-  const settingsToSeed = [
-    { key: 'contact_email1', value: 'info@nexa.com.qa' },
-    { key: 'contact_email2', value: 'support@nexa.com.qa' },
-    { key: 'contact_phone1', value: '+974 4145 9393' },
-    { key: 'contact_phone2', value: '+974 5555 1234' },
-    { key: 'contact_address', value: 'Zone 55, Street 850, Building 67\nAl Rayyan, Doha, Qatar' },
-    { key: 'contact_title', value: 'Get In Touch' },
-    { key: 'contact_description', value: "We're here to help you with any queries..." },
-    { key: 'contact_facebook', value: 'https://facebook.com/nexaqatar' },
-    { key: 'contact_twitter', value: 'https://twitter.com/nexaqatar' },
-    { key: 'contact_linkedin', value: 'https://linkedin.com/company/nexa' },
-    { key: 'contact_instagram', value: 'https://instagram.com/nexaqatar' }
-  ]
-
-  for (const s of settingsToSeed) {
-    await prisma.setting.upsert({
-      where: { key: s.key },
-      update: {},
-      create: s
-    })
-  }
-  console.log('✅ Settings seeded successfully.')
-
-  // 3. Seed Welcome Cards
-  const welcomeCards = [
-    {
-      title: 'Secure Networks',
-      description: 'Enterprise grade active and passive infrastructure setups.',
-      icon: 'Network',
-      orderIndex: 0
-    },
-    {
-      title: 'Cyber Security',
-      description: 'Advanced firewalls, penetration testing, and zero trust architectures.',
-      icon: 'Shield',
-      orderIndex: 1
-    },
-    {
-      title: 'Cloud Solutions',
-      description: 'Agile AWS/Azure migrations and custom software integration.',
-      icon: 'Cloud',
-      orderIndex: 2
+  // 2. Seed Default Home Page Content
+  await prisma.homePageContent.upsert({
+    where: { id: 'default_home' },
+    update: {},
+    create: {
+      id: 'default_home',
+      heroTitle: 'INFRASTRUCTURE FOR THE FUTURE',
+      heroSubtitle: 'Empowering Businesses',
+      heroDescription: 'Secure. Scalable. Intelligent. We deliver advanced networking, cybersecurity, cloud, and surveillance integration solutions for enterprises in Qatar.',
+      heroVideo: '',
+      heroImage: '/images/hero-fallback.jpg',
+      statsYearsExp: 10,
+      statsProjects: 150,
+      statsClients: 50,
+      statsExperts: 25,
+      welcomeTitle: "Powering Qatar's Digital Future",
+      welcomeDescription: 'We are a leading enterprise IT company delivering network infrastructure, cybersecurity, cloud computing, CCTV, smart entry management, and vehicle tracking solutions.',
+      welcomeImage: '/images/who-we-are.jpg',
+      welcomeIcon: 'Zap',
+      ctaTitle: "Let's build a smarter, safer future together.",
+      ctaDescription: 'Partner with Nexa Network Solutions to elevate your technology infrastructure with zero-trust security and high-speed network connectivity.',
+      ctaBgImage: '/images/cta-bg.jpg'
     }
-  ]
+  })
+  console.log('✅ Default Home Page Content seeded.')
 
-  for (const card of welcomeCards) {
-    const existing = await prisma.welcomeCard.findFirst({
-      where: { title: card.title }
-    })
-    if (!existing) {
-      await prisma.welcomeCard.create({ data: card })
+  // 3. Seed Default About Page Content
+  await prisma.aboutPageContent.upsert({
+    where: { id: 'default_about' },
+    update: {},
+    create: {
+      id: 'default_about',
+      title: 'About Nexa Network Solutions',
+      description: "We are Qatar's leading enterprise IT company delivering cutting-edge integration solutions.",
+      bgImage: '/images/about-bg.jpg'
     }
-  }
-  console.log('✅ Welcome cards seeded.')
+  })
+  console.log('✅ Default About Page Content seeded.')
 
-  // 4. Seed Services
+  // 4. Seed Default Contact Info
+  await prisma.contactInfo.upsert({
+    where: { id: 'default_contact' },
+    update: {},
+    create: {
+      id: 'default_contact',
+      title: 'Get In Touch',
+      description: "We're here to help you with any queries. Our team will get back to you within 24 hours.",
+      bgImage: '/images/contact-bg.jpg',
+      bannerImage: '/images/contact-banner.jpg',
+      email1: 'info@nexa.com.qa',
+      email2: 'support@nexa.com.qa',
+      phone1: '+974 4145 9393',
+      phone2: '+974 5555 1234',
+      address: 'Zone 55, Street 850, Building 67\nAl Rayyan, Doha, Qatar',
+      facebook: 'https://facebook.com/nexaqatar',
+      twitter: 'https://twitter.com/nexaqatar',
+      linkedin: 'https://linkedin.com/company/nexa',
+      instagram: 'https://instagram.com/nexaqatar'
+    }
+  })
+  console.log('✅ Default Contact Info seeded.')
+
+  // 5. Seed Services
   const services = [
     {
       title: 'Network & Passive Infrastructure',
@@ -220,7 +226,7 @@ async function main() {
   }
   console.log('✅ Services seeded successfully.')
 
-  // 5. Seed Projects
+  // 6. Seed Projects
   const projects = [
     {
       title: 'Enterprise Data Center Upgrade',

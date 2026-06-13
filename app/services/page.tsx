@@ -1,7 +1,8 @@
 'use client'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { Network, Shield, Cloud, DoorOpen, Camera, Truck, ArrowRight, CheckCircle2, Monitor, Globe, ShieldCheck, Brain, Server, Phone, Music, Scan, Lock, Megaphone } from 'lucide-react'
+import { Network, Shield, Cloud, DoorOpen, Camera, Truck, ArrowRight, CheckCircle2, Monitor, Globe, ShieldCheck, Brain, Server, Phone, Music, Scan, Lock, Megaphone, LayoutGrid, List } from 'lucide-react'
 import ScrollReveal from '@/components/ui/ScrollReveal'
 
 const services = [
@@ -144,6 +145,8 @@ const services = [
 ]
 
 export default function ServicesPage() {
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+
   return (
     <div className="bg-[#F4F6F8] dark:bg-[#070f12] text-slate-800 dark:text-white transition-colors duration-300">
       <section
@@ -184,38 +187,138 @@ export default function ServicesPage() {
       </section>
 
       <section className="py-24 bg-[#F4F6F8] dark:bg-[#070f12] transition-colors duration-300">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 space-y-12">
-          {services.map((service, i) => {
-            const Icon = service.icon
-            return (
-              <ScrollReveal key={service.title} delay={0.1}>
-                <div id={service.slug} className="bg-white dark:bg-[#0d1c22]/60 backdrop-blur-md rounded-[5px] p-8 lg:p-10 border border-black/5 dark:border-white/10 hover:border-black/10 dark:hover:border-white/15 shadow-sm dark:shadow-none hover:shadow-lg dark:hover:shadow-none transition-all duration-300 scroll-mt-24">
-                  <div className="grid lg:grid-cols-2 gap-8 items-center">
-                    <div>
-                      <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style={{ background: `${service.accent}18` }}>
-                        <Icon className="w-7 h-7" style={{ color: service.accent }} />
-                      </div>
-                      <div className="text-xs font-bold tracking-[0.2em] uppercase mb-2" style={{ color: service.accent }}>{service.subtitle}</div>
-                      <h2 className="text-[20px] font-black text-slate-800 font-bold dark:text-white mb-4">{service.title}</h2>
-                      <p className="text-slate-500 test-[10px] dark:text-white/45 mb-6">{service.description}</p>
-                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 relative z-20">
-                        <Link href={`/services/${service.slug}`} className="inline-flex justify-center items-center gap-2 px-6 py-3.5 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-800 dark:text-white font-bold text-sm rounded-[5px] transition-all duration-300 w-full sm:w-auto">View Details</Link>
-                        <Link href="/contact" className="inline-flex justify-center items-center gap-2 px-6 py-3.5 bg-[#F05B1B] hover:bg-[#FF6B2B] text-white font-bold text-sm rounded-[5px] transition-all duration-300 hover:shadow-orange w-full sm:w-auto">Get a Quote<ArrowRight className="w-4 h-4" /></Link>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {service.features.map((f) => (
-                        <div key={f} className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/10 transition-colors duration-300">
-                          <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: service.accent }} />
-                          <span className="text-slate-600 dark:text-white/60 text-sm">{f}</span>
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          {/* View Switcher Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-black/5 dark:border-white/10 mb-10">
+            <div>
+              <h2 className="text-2xl font-black text-slate-800 dark:text-white">Our Service Catalog</h2>
+              <p className="text-slate-500 dark:text-white/40 text-sm mt-1">Explore our range of solutions in grid or list view.</p>
+            </div>
+            <div className="flex items-center gap-2 self-start sm:self-auto bg-slate-200/50 dark:bg-white/5 p-1 rounded-lg border border-black/5 dark:border-white/10">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-md transition-all duration-300 ${
+                  viewMode === 'grid'
+                    ? 'bg-[#F05B1B] text-white shadow-md'
+                    : 'text-slate-600 dark:text-white/60 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <LayoutGrid className="w-4 h-4" />
+                Grid View
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-md transition-all duration-300 ${
+                  viewMode === 'list'
+                    ? 'bg-[#F05B1B] text-white shadow-md'
+                    : 'text-slate-600 dark:text-white/60 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <List className="w-4 h-4" />
+                List View
+              </button>
+            </div>
+          </div>
+
+          {viewMode === 'grid' ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {services.map((service, i) => {
+                const Icon = service.icon
+                return (
+                  <ScrollReveal key={service.title} delay={i * 0.03}>
+                    <div
+                      id={service.slug}
+                      className="bg-white dark:bg-[#0d1c22]/60 backdrop-blur-md rounded-[5px] p-6 border border-black/5 dark:border-white/10 hover:border-[#F05B1B]/30 hover:shadow-lg dark:hover:shadow-none transition-all duration-300 flex flex-col justify-between h-full hover:-translate-y-1 scroll-mt-24"
+                    >
+                      <div>
+                        <div className="flex items-start justify-between mb-4">
+                          <div
+                            className="w-12 h-12 rounded-xl flex items-center justify-center"
+                            style={{ background: `${service.accent}18` }}
+                          >
+                            <Icon className="w-6 h-6" style={{ color: service.accent }} />
+                          </div>
+                          <span
+                            className="text-[10px] font-bold tracking-[0.15em] uppercase px-2.5 py-1 rounded bg-slate-100 dark:bg-white/5"
+                            style={{ color: service.accent }}
+                          >
+                            {service.subtitle.split(' & ')[0] || service.subtitle}
+                          </span>
                         </div>
-                      ))}
+
+                        <h2 className="text-lg font-black text-slate-800 font-bold dark:text-white mb-3 leading-tight min-h-[56px] line-clamp-2">
+                          {service.title}
+                        </h2>
+                        
+                        <p className="text-slate-500 dark:text-white/45 text-xs leading-relaxed mb-6 line-clamp-3 min-h-[54px]">
+                          {service.description}
+                        </p>
+
+                        <div className="space-y-2.5 mb-6 border-t border-black/5 dark:border-white/5 pt-4">
+                          {service.features.slice(0, 4).map((f) => (
+                            <div key={f} className="flex items-center gap-2">
+                              <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" style={{ color: service.accent }} />
+                              <span className="text-slate-600 dark:text-white/60 text-xs line-clamp-1">{f}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3 mt-auto relative z-20">
+                        <Link
+                          href={`/services/${service.slug}`}
+                          className="flex-1 inline-flex justify-center items-center gap-1.5 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-800 dark:text-white font-bold text-xs rounded-[5px] transition-all duration-300"
+                        >
+                          Details
+                        </Link>
+                        <Link
+                          href="/contact"
+                          className="flex-1 inline-flex justify-center items-center gap-1.5 px-4 py-2.5 bg-[#F05B1B] hover:bg-[#FF6B2B] text-white font-bold text-xs rounded-[5px] transition-all duration-300 hover:shadow-orange"
+                        >
+                          Quote
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </ScrollReveal>
-            )
-          })}
+                  </ScrollReveal>
+                )
+              })}
+            </div>
+          ) : (
+            <div className="space-y-12">
+              {services.map((service, i) => {
+                const Icon = service.icon
+                return (
+                  <ScrollReveal key={service.title} delay={0.1}>
+                    <div id={service.slug} className="bg-white dark:bg-[#0d1c22]/60 backdrop-blur-md rounded-[5px] p-8 lg:p-10 border border-black/5 dark:border-white/10 hover:border-black/10 dark:hover:border-white/15 shadow-sm dark:shadow-none hover:shadow-lg dark:hover:shadow-none transition-all duration-300 scroll-mt-24">
+                      <div className="grid lg:grid-cols-2 gap-8 items-center">
+                        <div>
+                          <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style={{ background: `${service.accent}18` }}>
+                            <Icon className="w-7 h-7" style={{ color: service.accent }} />
+                          </div>
+                          <div className="text-xs font-bold tracking-[0.2em] uppercase mb-2" style={{ color: service.accent }}>{service.subtitle}</div>
+                          <h2 className="text-[20px] font-black text-slate-800 font-bold dark:text-white mb-4">{service.title}</h2>
+                          <p className="text-slate-500 test-[10px] dark:text-white/45 mb-6">{service.description}</p>
+                          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 relative z-20">
+                            <Link href={`/services/${service.slug}`} className="inline-flex justify-center items-center gap-2 px-6 py-3.5 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-800 dark:text-white font-bold text-sm rounded-[5px] transition-all duration-300 w-full sm:w-auto">View Details</Link>
+                            <Link href="/contact" className="inline-flex justify-center items-center gap-2 px-6 py-3.5 bg-[#F05B1B] hover:bg-[#FF6B2B] text-white font-bold text-sm rounded-[5px] transition-all duration-300 hover:shadow-orange w-full sm:w-auto">Get a Quote<ArrowRight className="w-4 h-4" /></Link>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {service.features.map((f) => (
+                            <div key={f} className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/10 transition-colors duration-300">
+                              <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: service.accent }} />
+                              <span className="text-slate-600 dark:text-white/60 text-sm">{f}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                )
+              })}
+            </div>
+          )}
         </div>
       </section>
     </div>
