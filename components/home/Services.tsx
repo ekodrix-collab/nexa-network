@@ -46,7 +46,7 @@ const services = [
     title: 'CCTV & Surveillance Systems',
     description: 'High-definition surveillance solutions that provide real-time monitoring, remote access, and enhanced security for business environments.',
     icon: Camera,
-    bgImage: '/images/service_cctv.jpg',
+    bgImage: '/images/service_cctv_hd.png',
     href: '/services/cctv-surveillance',
     tag: 'High-Definition Vision'
   },

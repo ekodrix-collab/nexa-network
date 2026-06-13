@@ -7,22 +7,27 @@ import { cookies } from 'next/headers'
 export async function POST(req: Request) {
   try {
     const { username, password } = await req.json()
+    const cleanUsername = username?.trim()
 
     // 1. Check if user exists
-    let user = await prisma.adminUser.findUnique({ where: { username } })
+    console.log('DEBUG: Login attempt for username:', cleanUsername)
+    let user = await prisma.adminUser.findUnique({ where: { username: cleanUsername } })
+    console.log('DEBUG: User found in DB:', user ? { id: user.id, username: user.username } : 'NOT_FOUND')
 
-    // If no admin user exists at all in the DB, create the first one with the provided credentials.
-    // This makes the initial setup easy, but is a bit of a security risk if left exposed in production.
-    // For a simple lightweight panel, we allow initial creation if count === 0
-    const count = await prisma.adminUser.count()
-    if (count === 0) {
-      const hashedPassword = await bcrypt.hash(password, 10)
-      user = await prisma.adminUser.create({
-        data: {
-          username,
-          password: hashedPassword,
-        }
-      })
+    if (!user) {
+      // If no admin user exists at all in the DB, create the first one with the provided credentials.
+      // This makes the initial setup easy, but is a bit of a security risk if left exposed in production.
+      // For a simple lightweight panel, we allow initial creation if count === 0
+      const count = await prisma.adminUser.count()
+      if (count === 0) {
+        const hashedPassword = await bcrypt.hash(password, 10)
+        user = await prisma.adminUser.create({
+          data: {
+            username: cleanUsername,
+            password: hashedPassword,
+          }
+        })
+      }
     }
 
     if (!user) {
@@ -31,6 +36,7 @@ export async function POST(req: Request) {
 
     // 2. Compare password
     const isPasswordValid = await bcrypt.compare(password, user.password)
+    console.log('DEBUG: Password comparison result:', isPasswordValid)
     if (!isPasswordValid) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
     }

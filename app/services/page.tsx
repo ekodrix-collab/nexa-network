@@ -1,7 +1,7 @@
 'use client'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { Network, Shield, Cloud, DoorOpen, Camera, Truck, ArrowRight, CheckCircle2, Monitor, Globe } from 'lucide-react'
+import { Network, Shield, Cloud, DoorOpen, Camera, Truck, ArrowRight, CheckCircle2, Monitor, Globe, ShieldCheck, Brain, Server, Phone, Music, Scan, Lock, Megaphone } from 'lucide-react'
 import ScrollReveal from '@/components/ui/ScrollReveal'
 
 const services = [
@@ -13,6 +13,134 @@ const services = [
   { slug: 'web-development', icon: Globe, title: 'Website Development & Digital Solutions', subtitle: 'Custom Software & Web Apps', description: 'Establish a powerful online presence with bespoke website design, enterprise web applications, e-commerce stores, and digital marketing optimizations tailored to your brand.', features: ['Custom Web Development', 'E-commerce Platforms', 'UI/UX Design Systems', 'SEO & Digital Marketing', 'Web Hosting & Support', 'Custom API Integrations'], accent: '#06B6D4' },
   { slug: 'vehicle-tracking', icon: Truck, title: 'Vehicle Tracking Solutions', subtitle: 'GPS Fleet Management', description: 'Real-time GPS tracking and fleet management solutions to optimize vehicle performance, reduce costs, and ensure fleet security.', features: ['Real-time GPS Tracking', 'Fleet Analytics & Reports', 'Route Optimization', 'Driver Behavior Scoring', 'Fuel Monitoring', 'Geo-fencing & Alerts'], accent: '#F97316' },
   { slug: 'cctv-surveillance', icon: Camera, title: 'CCTV & Surveillance Systems', subtitle: 'Smart Video Security', description: 'High-definition surveillance solutions that provide real-time monitoring, remote access, and AI-powered analytics for enhanced security.', features: ['HD/4K IP Camera Systems', 'NVR & Storage Solutions', 'Remote Monitoring Apps', 'AI Video Analytics', 'License Plate Recognition', 'Thermal Cameras'], accent: '#EAB308' },
+  {
+    slug: 'grc-consulting',
+    icon: ShieldCheck,
+    title: 'GRC Consulting Services',
+    subtitle: 'Governance, Risk & Compliance',
+    description: 'Streamline governance, risk, and compliance with expert-driven solutions for secure and efficient business operations.',
+    features: [
+      'Regulatory Compliance Audits',
+      'Risk Assessment & Mitigation Plans',
+      'Security Governance Frameworks',
+      'Policy & Procedure Development',
+      'ISO Compliance Advisory',
+      'Continuous Threat Monitoring'
+    ],
+    accent: '#10B981'
+  },
+  {
+    slug: 'ai-consultancy',
+    icon: Brain,
+    title: 'AI Consultancy Services',
+    subtitle: 'AI & Machine Learning',
+    description: 'Leverage AI and machine learning to automate processes, improve efficiency, and drive smarter business decisions.',
+    features: [
+      'Custom Machine Learning Models',
+      'Natural Language Processing (NLP)',
+      'Robotic Process Automation (RPA)',
+      'Predictive Business Analytics',
+      'Computer Vision Solutions',
+      'AI Strategy & Integration'
+    ],
+    accent: '#6366F1'
+  },
+  {
+    slug: 'backup-servers',
+    icon: Server,
+    title: 'Backup Servers',
+    subtitle: 'Data Continuity & Protection',
+    description: 'Protect your data with secure backup solutions ensuring business continuity and fast disaster recovery.',
+    features: [
+      'On-Premise & Cloud Backups',
+      'Ransomware-Proof Backups',
+      'Automated Scheduled Backups',
+      'Bare-Metal System Restore',
+      'Data Encryption at Rest & Flight',
+      'Continuous Replication'
+    ],
+    accent: '#3B82F6'
+  },
+  {
+    slug: 'telephonic-system',
+    icon: Phone,
+    title: 'Telephonic System',
+    subtitle: 'Advanced IP & Cloud Telephony',
+    description: 'Enhance communication with advanced IP and cloud-based telephony solutions for seamless connectivity.',
+    features: [
+      'Cloud PBX & VoIP Telephony',
+      'Interactive Voice Response (IVR)',
+      'Call Queuing & Intelligent Routing',
+      'Voicemail to Email Integration',
+      'Video Conferencing Bridges',
+      'SIP Trunk Integration'
+    ],
+    accent: '#F97316'
+  },
+  {
+    slug: 'music-system',
+    icon: Music,
+    title: 'Music System',
+    subtitle: 'Commercial Sound & Audio',
+    description: 'Deliver high-quality audio experiences with customizable sound systems for any business environment.',
+    features: [
+      'Multi-Zone Audio Control',
+      'Premium Background Speakers',
+      'Public Address (PA) Integration',
+      'Wireless Audio Streaming',
+      'Acoustic Space Tuning',
+      'Smart Wall Controllers'
+    ],
+    accent: '#D946EF'
+  },
+  {
+    slug: 'footfall-cam',
+    icon: Scan,
+    title: 'Footfall Cam System',
+    subtitle: 'Visitor Behavior & Analytics',
+    description: 'Track visitor behavior and gain insights to optimize operations and improve customer experience.',
+    features: [
+      '3D Stereoscopic Counters',
+      'Live Occupancy Tracking',
+      'Heatmap & Path Analysis',
+      'Queue Management Analytics',
+      'Staff Exclusion Filters',
+      'Cloud Analytics Dashboard'
+    ],
+    accent: '#EF4444'
+  },
+  {
+    slug: 'smart-protection',
+    icon: Lock,
+    title: 'Smart Protection. Secure Every Exit.',
+    subtitle: 'Exit Protection & Security',
+    description: 'Enhance communication with advanced IP and cloud-based telephony solutions for seamless connectivity.',
+    features: [
+      'Emergency Exit Monitoring',
+      'Smart Access Controls',
+      'IP Telephony Alerts Integration',
+      'Real-Time Breach Notifications',
+      'Fire Alarm System Integration',
+      'CCTV Visual Verification'
+    ],
+    accent: '#A855F7'
+  },
+  {
+    slug: 'digital-marketing',
+    icon: Megaphone,
+    title: 'Digital Marketing',
+    subtitle: 'SEO, Brand Growth & Conversions',
+    description: 'Grow your brand online with SEO, social media, and performance-driven strategies that boost visibility and conversions.',
+    features: [
+      'Search Engine Optimization (SEO)',
+      'Search Engine Marketing (PPC)',
+      'Social Media Management',
+      'Content & Email Marketing',
+      'Analytics & Performance Reports',
+      'Conversion Optimization'
+    ],
+    accent: '#06B6D4'
+  }
 ]
 
 export default function ServicesPage() {
