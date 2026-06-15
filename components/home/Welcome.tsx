@@ -33,7 +33,7 @@ export default function Welcome({ settings }: { settings?: any }) {
   const s = settings || {}
   const welcomeTitle = s.welcomeTitle || s.welcome_title || "Welcome to Nexa Network Solutions"
   const welcomeDescription = s.welcomeDescription || s.welcome_description || "Nexa Network Solutions provides end-to-end IT services and technology solutions that help businesses leverage advanced technologies for efficiency, security, and growth. With strong industry expertise, we deliver reliable and scalable solutions tailored to modern business needs."
-  const welcomeImage = s.welcomeImage || s.welcome_image || "/images/service_security.jpg"
+  const welcomeImage = s.welcomeImage || s.welcome_image || "/images/service_security.png"
 
   return (
     <section className="py-24 bg-[#F4F6F8] dark:bg-[#070f12] relative overflow-hidden transition-colors duration-300">
