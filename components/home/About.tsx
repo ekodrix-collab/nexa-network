@@ -3,14 +3,20 @@ import ScrollReveal from '@/components/ui/ScrollReveal'
 import AnimatedCounter from '@/components/ui/AnimatedCounter'
 import { Clock, BadgeCheck, Users, Code2 } from 'lucide-react'
 
-const stats = [
-  { val: 10,  suffix: '+', label: 'Years of excellence',   icon: Clock      },
-  { val: 150, suffix: '+', label: 'Projects delivered',    icon: BadgeCheck },
-  { val: 50,  suffix: '+', label: 'Business clients',      icon: Users      },
-  { val: 25,  suffix: '+', label: 'Technology experts',    icon: Code2      },
-]
+export default function About({ settings }: { settings?: any }) {
+  const s = settings || {}
+  const yearsExp = s.statsYearsExp !== undefined ? s.statsYearsExp : (parseInt(s.about_years_exp) || 10)
+  const projectsDelivered = s.statsProjects !== undefined ? s.statsProjects : (parseInt(s.about_projects_delivered) || 150)
+  const clients = s.statsClients !== undefined ? s.statsClients : (parseInt(s.about_clients) || 50)
+  const experts = s.statsExperts !== undefined ? s.statsExperts : (parseInt(s.about_experts) || 25)
 
-export default function About() {
+  const stats = [
+    { val: yearsExp,  suffix: '+', label: 'Years of excellence',   icon: Clock      },
+    { val: projectsDelivered, suffix: '+', label: 'Projects delivered',    icon: BadgeCheck },
+    { val: clients,  suffix: '+', label: 'Business clients',      icon: Users      },
+    { val: experts,  suffix: '+', label: 'Technology experts',    icon: Code2      },
+  ]
+
   return (
     <section className="md:pt-5 pb-10 bg-[#F4F6F8] dark:bg-[#070A11] transition-colors duration-300 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">

@@ -97,27 +97,6 @@ export default function AdminDashboard() {
           </Link>
         ))}
       </div>
-
-      {/* Quick Stats */}
-      <div className="mt-8 pt-6 border-t border-white/[0.05]">
-        <p className="text-white/25 text-[10px] font-bold tracking-[0.2em] uppercase mb-4">System Status</p>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {[
-            { label: 'Database', value: 'Connected', ok: true },
-            { label: 'Server', value: 'Running', ok: true },
-            { label: 'Auth', value: 'Active', ok: true },
-            { label: 'Mode', value: 'Development', ok: null },
-          ].map(({ label, value, ok }) => (
-            <div key={label} className="flex items-center gap-2.5 p-3 rounded-lg bg-white/[0.03] border border-white/[0.05]">
-              <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${ok === true ? 'bg-emerald-400' : ok === false ? 'bg-red-400' : 'bg-amber-400'}`} />
-              <div>
-                <p className="text-white/30 text-[9px] font-medium uppercase tracking-wide">{label}</p>
-                <p className="text-white/70 text-xs font-semibold">{value}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   )
 }

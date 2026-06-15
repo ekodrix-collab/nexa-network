@@ -12,17 +12,25 @@ export default function PageTransition({ children }: { children: React.ReactNode
   }, [pathname])
 
   useEffect(() => {
+    // If we are in the admin dashboard, bypass intro/animation and show content immediately
+    if (pathname?.startsWith('/admin')) {
+      setReady(true)
+      return
+    }
+
     // If intro was already seen, show content immediately
     const hasSeen = sessionStorage.getItem('nexa_seen_intro')
     if (hasSeen) {
       setReady(true)
       return
+    } else {
+      setReady(false)
     }
 
     const handler = () => setReady(true)
     window.addEventListener('nexa-intro-done', handler)
     return () => window.removeEventListener('nexa-intro-done', handler)
-  }, [])
+  }, [pathname])
 
   return (
     <motion.div

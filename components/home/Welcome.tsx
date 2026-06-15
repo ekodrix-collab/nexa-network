@@ -29,7 +29,12 @@ const checklist = [
   'CCTV & Surveillance Solutions'
 ]
 
-export default function Welcome() {
+export default function Welcome({ settings }: { settings?: any }) {
+  const s = settings || {}
+  const welcomeTitle = s.welcomeTitle || s.welcome_title || "Welcome to Nexa Network Solutions"
+  const welcomeDescription = s.welcomeDescription || s.welcome_description || "Nexa Network Solutions provides end-to-end IT services and technology solutions that help businesses leverage advanced technologies for efficiency, security, and growth. With strong industry expertise, we deliver reliable and scalable solutions tailored to modern business needs."
+  const welcomeImage = s.welcomeImage || s.welcome_image || "/images/service_security.jpg"
+
   return (
     <section className="py-24 bg-[#F4F6F8] dark:bg-[#070f12] relative overflow-hidden transition-colors duration-300">
       {/* Background ambient glows */}
@@ -37,7 +42,7 @@ export default function Welcome() {
       <div className="absolute bottom-1/3 left-1/4 w-[500px] h-[500px] bg-[#F05B1B]/[0.02] rounded-[5px] blur-[150px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        
+
         {/* 1. TOP CARDS ROW */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
           {cards.map((card, idx) => {
@@ -51,16 +56,16 @@ export default function Welcome() {
               >
                 {/* Glowing bottom border effect */}
                 <div className="absolute bottom-0 left-0 h-[2.5px] bg-[#F05B1B] w-0 group-hover:w-full transition-all duration-500 rounded-b-[24px]" />
-                
+
                 {/* Framed Icon */}
                 <div className="w-12 h-12 rounded-xl bg-[#F05B1B]/10 border border-[#F05B1B]/20 flex items-center justify-center text-[#F05B1B] mb-6 group-hover:bg-[#F05B1B] group-hover:text-white transition-all duration-300">
                   <Icon className="w-5 h-5 stroke-[1.8]" />
                 </div>
-                
+
                 <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-3 group-hover:text-[#F05B1B] transition-colors duration-300">
                   {card.title}
                 </h3>
-                
+
                 <p className="text-slate-500 dark:text-white/60 text-sm leading-relaxed">
                   {card.description}
                 </p>
@@ -71,7 +76,7 @@ export default function Welcome() {
 
         {/* 2. BOTTOM DETAILS ROW (2 columns with smooth split left/right reveals) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          
+
           {/* Left Column: Premium visual frame (Slides in from Left) */}
           <ScrollReveal
             direction="right"
@@ -79,10 +84,10 @@ export default function Welcome() {
           >
             <div className="absolute inset-0 bg-[#F05B1B] rounded-[28px] blur-xl opacity-[0.08] group-hover:opacity-12 transition-opacity duration-500" />
             <div className="relative rounded-[5px] overflow-hidden border border-black/5 dark:border-white/5 bg-[#F4F6F8] dark:bg-[#0a1113] aspect-[4/3] sm:aspect-square">
-              <img 
-                src="/images/service_security.jpg" 
-                alt="Security Operation Command Center" 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-103" 
+              <img
+                src={welcomeImage}
+                alt="Security Operation Command Center"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-103"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#070f12]/60 via-[#070f12]/20 to-transparent pointer-events-none" />
             </div>
@@ -97,10 +102,10 @@ export default function Welcome() {
               Pioneering IT Excellence
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-800 dark:text-white mb-6 leading-tight">
-              Welcome to <span className="text-[#F05B1B]">Nexa Network Solutions</span>
+              {welcomeTitle}
             </h2>
             <p className="text-slate-600 dark:text-white/70 text-base leading-relaxed mb-8">
-              Nexa Network Solutions provides end-to-end IT services and technology solutions that help businesses leverage advanced technologies for efficiency, security, and growth. With strong industry expertise, we deliver reliable and scalable solutions tailored to modern business needs.
+              {welcomeDescription}
             </p>
 
             {/* Glowing outlined checklist container */}
