@@ -50,14 +50,82 @@ async function main() {
   console.log('✅ Default Home Page Content seeded.')
 
   // 3. Seed Default About Page Content
+  const aboutData = {
+    title: 'Securing Your Digital Future',
+    subtitle: 'About Us',
+    description: "Nexa Network Solutions is Qatar's leading systems integrator, delivering state-of-the-art network infrastructure, threat defense, and smart cloud architectures.",
+    bgImage: '/images/cyber-future.png',
+    whoWeAreTitle: 'Providing Enterprise-Grade Connectivity & Defense',
+    whoWeAreDescription1: 'Nexa Network Solutions delivers end-to-end IT and cybersecurity services that help businesses stay secure, connected, and future-ready. With over a decade of industry experience, we leverage advanced technologies, intelligent automation, and proven strategies to protect critical data, strengthen infrastructure, and enhance overall performance.',
+    whoWeAreDescription2: 'Our solutions are designed to adapt to evolving digital challenges while ensuring reliability, scalability, and long-term growth. We focus on delivering customized solutions tailored to each client\'s unique business needs.',
+    whoWeAreDescription3: 'Our expert team ensures seamless integration, proactive support, and continuous innovation across all services. By combining technology expertise with industry best practices, we help organizations improve efficiency, reduce risks, and achieve sustainable success. We are committed to building long-term partnerships through trust, quality, and consistent service excellence.',
+    whoWeAreImage: '/images/about_who_we_are.png',
+    values: [
+      {
+        title: 'Our Mission',
+        desc: 'To deliver innovative, secure, and scalable technology solutions that empower businesses to operate efficiently, protect their digital assets, and achieve sustainable growth.',
+        icon: 'Target'
+      },
+      {
+        title: 'Our Vision',
+        desc: 'To be a trusted global technology partner recognized for excellence in cybersecurity, IT infrastructure, and digital transformation, driving the future of smart and connected businesses.',
+        icon: 'Eye'
+      },
+      {
+        title: 'Our Values',
+        desc: 'We are driven by integrity, innovation, and customer commitment, delivering quality solutions through teamwork, transparency, and a passion for continuous improvement.',
+        icon: 'Gem'
+      }
+    ],
+    whyChooseUsTitle: 'Your Trusted Partner for Technology-Driven Transformation',
+    whyChooseUsImage: '/images/about_why_choose_us.png',
+    benefits: [
+      {
+        title: 'Proven Industry Experience',
+        desc: 'With over 10 years of strong presence in the Qatar market, Nexa Network Solutions has built a reputation as a trusted partner delivering reliable IT services and technology solutions.',
+        icon: 'Award'
+      },
+      {
+        title: 'Advanced Technology Expertise',
+        desc: 'We combine cutting-edge technologies with deep technical expertise to deliver innovative solutions that help businesses improve efficiency, security, and digital transformation.',
+        icon: 'Cpu'
+      },
+      {
+        title: 'End-to-End IT Solutions',
+        desc: 'From network infrastructure and cybersecurity to cloud services and smart business solutions, we provide complete IT services tailored to meet modern business needs.',
+        icon: 'Users'
+      }
+    ],
+    testimonials: [
+      {
+        name: 'Ahmed',
+        role: 'Operations Director',
+        stars: 5,
+        quote: 'Nexa Network Solutions transformed our IT infrastructure with exceptional professionalism. Their team delivered secure and scalable solutions that significantly improved our operations.'
+      },
+      {
+        name: 'Sarah',
+        role: 'IT Security Lead',
+        stars: 5,
+        quote: 'From cybersecurity to cloud services, Nexa provided reliable and efficient support. Their proactive approach and quick response time make them a trusted technology partner.'
+      },
+      {
+        name: 'Khalid',
+        role: 'Infrastructure Manager',
+        stars: 5,
+        quote: 'We experienced outstanding service with Nexa. Their expertise, attention to detail, and commitment to quality helped us enhance security and streamline our business processes.'
+      }
+    ],
+    ctaTitle: 'Ready to Get Started?',
+    ctaDescription: 'Let us help you transform your business with smart IT infrastructure and cybersecurity solutions.'
+  }
+
   await prisma.aboutPageContent.upsert({
     where: { id: 'default_about' },
-    update: {},
+    update: aboutData,
     create: {
       id: 'default_about',
-      title: 'About Nexa Network Solutions',
-      description: "We are Qatar's leading enterprise IT company delivering cutting-edge integration solutions.",
-      bgImage: '/images/about-bg.jpg'
+      ...aboutData
     }
   })
   console.log('✅ Default About Page Content seeded.')

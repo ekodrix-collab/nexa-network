@@ -41,12 +41,31 @@ model HomePageContent {
 }
 
 model AboutPageContent {
-  id              String   @id @default("default_about")
-  title           String
-  description     String   @db.Text
-  bgImage         String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id                    String   @id @default("default_about")
+  // Hero Section
+  title                 String
+  subtitle              String?  @default("About Us")
+  description           String   @db.Text
+  bgImage               String?
+  // Who We Are Section
+  whoWeAreTitle         String?  @default("Providing Enterprise-Grade Connectivity & Defense")
+  whoWeAreDescription1  String?  @db.Text
+  whoWeAreDescription2  String?  @db.Text
+  whoWeAreDescription3  String?  @db.Text
+  whoWeAreImage         String?
+  // Mission, Vision, Values
+  values                Json?     // Array of { title, desc, icon }
+  // Why Choose Us
+  whyChooseUsTitle      String?  @default("Your Trusted Partner for Technology-Driven Transformation")
+  whyChooseUsImage      String?
+  benefits              Json?     // Array of { title, desc, icon }
+  // Testimonials
+  testimonials          Json?     // Array of { name, role, stars, quote }
+  // CTA Section
+  ctaTitle              String?  @default("Ready to Get Started?")
+  ctaDescription        String?  @db.Text
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
 }
 
 model ContactInfo {
