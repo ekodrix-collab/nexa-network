@@ -26,7 +26,9 @@ async function main() {
   // 2. Seed Default Home Page Content
   await prisma.homePageContent.upsert({
     where: { id: 'default_home' },
-    update: {},
+    update: {
+      welcomeImage: '/images/service_security.png'
+    },
     create: {
       id: 'default_home',
       heroTitle: 'INFRASTRUCTURE FOR THE FUTURE',
@@ -40,7 +42,7 @@ async function main() {
       statsExperts: 25,
       welcomeTitle: "Powering Qatar's Digital Future",
       welcomeDescription: 'We are a leading enterprise IT company delivering network infrastructure, cybersecurity, cloud computing, CCTV, smart entry management, and vehicle tracking solutions.',
-      welcomeImage: '/images/who-we-are.jpg',
+      welcomeImage: '/images/service_security.png',
       welcomeIcon: 'Zap',
       ctaTitle: "Let's build a smarter, safer future together.",
       ctaDescription: 'Partner with Nexa Network Solutions to elevate your technology infrastructure with zero-trust security and high-speed network connectivity.',
