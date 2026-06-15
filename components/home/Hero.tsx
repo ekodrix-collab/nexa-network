@@ -6,8 +6,14 @@ import ParticleCanvas from '@/components/ui/ParticleCanvas'
 
 // ... in the component body ...
 // We will target the replace range to cover lines 1 to 154, so let's write the complete replacement block here.
-export default function Hero({ settings }: { settings?: Record<string, string> }) {
+export default function Hero({ settings }: { settings?: any }) {
   const s = settings || {}
+  const heroTitle = s.heroTitle || s.hero_title
+  const heroSubtitle = s.heroSubtitle || s.hero_subtitle
+  const heroDescription = s.heroDescription || s.hero_description
+  const heroVideo = s.heroVideo || s.hero_video
+  const heroImage = s.heroImage || s.hero_image
+
   const { scrollYProgress } = useScroll()
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
@@ -29,13 +35,13 @@ export default function Hero({ settings }: { settings?: Record<string, string> }
           playsInline
           className="absolute inset-0 w-full h-full object-cover opacity-40 filter blur-[2px] scale-[1.01] pointer-events-none"
         >
-          <source src={s.hero_video || "/videos/hero-bg-compressed.mp4"} type="video/mp4" />
+          <source src={heroVideo || "/videos/hero-bg-compressed.mp4"} type="video/mp4" />
         </video>
 
         {/* Fallback Static background image if video doesn't load */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-15 pointer-events-none"
-          style={{ backgroundImage: `url('${s.hero_image || "/images/hero-bg.jpg"}')`, zIndex: -1 }}
+          style={{ backgroundImage: `url('${heroImage || "/images/hero-bg.jpg"}')`, zIndex: -1 }}
         />
 
         {/* Gradient overlays matching layout */}
@@ -79,7 +85,7 @@ export default function Hero({ settings }: { settings?: Record<string, string> }
                          shadow-[0_0_20px_rgba(240,91,27,0.12)]"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-[#F05B1B] animate-pulse" />
-              {s.hero_subtitle || 'Empowering Businesses'}
+              {heroSubtitle || 'Empowering Businesses'}
             </motion.div>
  
             {/* Main Headline */}
@@ -91,7 +97,7 @@ export default function Hero({ settings }: { settings?: Record<string, string> }
               <h1 className="text-4xl sm:text-5xl md:text-6.5xl lg:text-7xl font-black text-white
                              leading-[1.1] tracking-tight mb-8 font-bold select-none">
                 <span className="block text-white filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
-                  {s.hero_title ? s.hero_title.split(' ')[0] : 'INFRASTRUCTURE'}
+                  {heroTitle ? heroTitle.split(' ')[0] : 'INFRASTRUCTURE'}
                 </span>
                 <span 
                   className="block bg-gradient-to-r from-[#F05B1B] via-[#FF7D44] to-[#F05B1B] bg-clip-text text-transparent
@@ -100,7 +106,7 @@ export default function Hero({ settings }: { settings?: Record<string, string> }
                     textShadow: '0 0 40px rgba(240, 91, 27, 0.4), 0 0 10px rgba(240, 91, 27, 0.2)'
                   }}
                 >
-                  {s.hero_title ? s.hero_title.substring(s.hero_title.indexOf(' ') + 1) : 'FOR THE FUTURE'}
+                  {heroTitle ? heroTitle.substring(heroTitle.indexOf(' ') + 1) : 'FOR THE FUTURE'}
                 </span>
               </h1>
             </motion.div>
@@ -112,7 +118,7 @@ export default function Hero({ settings }: { settings?: Record<string, string> }
               transition={{ duration: 0.7, delay: 0.2 }}
             >
               <p className="text-white/70 text-sm md:text-base leading-relaxed max-w-md mb-8 whitespace-pre-wrap">
-                {s.hero_description || 'Secure. Scalable. Intelligent.\nBuilt for enterprises that demand excellence.'}
+                {heroDescription || 'Secure. Scalable. Intelligent.\nBuilt for enterprises that demand excellence.'}
               </p>
             </motion.div>
 

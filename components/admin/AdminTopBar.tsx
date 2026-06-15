@@ -9,7 +9,7 @@ const pageTitles: Record<string, { title: string; desc: string }> = {
   '/admin/home': { title: 'Home Page', desc: 'Hero, Welcome & CTA sections' },
   '/admin/about': { title: 'About Page', desc: 'Company stats & description' },
   '/admin/services': { title: 'Services', desc: 'Manage service offerings' },
-  '/admin/projects': { title: 'Projects', desc: 'Portfolio & case studies' },
+  '/admin/projects': { title: 'Projects', desc: 'Portfolio & client projects' },
   '/admin/contact': { title: 'Contact', desc: 'Contact details & social links' },
 }
 

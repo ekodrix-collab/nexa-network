@@ -29,8 +29,6 @@ const services = [
 
 const resources = [
   { label: 'Blog', href: '/blog', icon: FileText },
-  { label: 'Case Studies', href: '/case-studies', icon: BookMarked },
-  { label: 'Whitepapers', href: '/resources', icon: BookOpen },
   { label: 'Careers', href: '/careers', icon: Briefcase },
   { label: 'Support', href: '/support', icon: LifeBuoy },
 ]
@@ -71,6 +69,9 @@ export default function Footer() {
 
   if (pathname?.startsWith('/admin')) return null
 
+  const currentTheme = mounted ? theme : 'dark'
+  const logoSrc = currentTheme === 'light' ? '/images/logo-light.png' : '/images/logo.png'
+
   return (
     <footer className="bg-white dark:bg-[#070f12] border-t border-black/5 dark:border-white/5 font-sans transition-colors duration-300 relative overflow-hidden">
 
@@ -87,13 +88,11 @@ export default function Footer() {
 
             {/* Logomark */}
             <Link href="/" className="inline-flex items-center gap-3 mb-5 group">
-              <div className="w-9 h-9 rounded-[10px] bg-[#F05B1B] flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-105">
-                <Network className="w-[18px] h-[18px] text-white" strokeWidth={2} />
-              </div>
-              <div>
-                <p className="text-[15px] font-medium text-slate-900 dark:text-white leading-none">Nexa</p>
-                <p className="text-[10px] text-slate-400 dark:text-white/30 mt-0.5 leading-none">Network Solutions</p>
-              </div>
+              <img
+                src={logoSrc}
+                alt="Nexa Network Solutions Logo"
+                className="h-8 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+              />
             </Link>
 
             <p className="text-[12px] text-slate-500 dark:text-white/40 leading-relaxed mb-5 max-w-[200px]">

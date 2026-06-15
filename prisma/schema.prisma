@@ -14,24 +14,80 @@ model AdminUser {
   createdAt DateTime @default(now())
 }
 
-model Setting {
-  key   String @id
-  value String @db.Text
+model HomePageContent {
+  id                 String   @id @default("default_home")
+  // Hero Section
+  heroTitle          String
+  heroSubtitle       String
+  heroDescription    String   @db.Text
+  heroVideo          String?
+  heroImage          String?
+  // Statistics Bar
+  statsYearsExp      Int      @default(0)
+  statsProjects      Int      @default(0)
+  statsClients       Int      @default(0)
+  statsExperts       Int      @default(0)
+  // Welcome Section
+  welcomeTitle       String
+  welcomeDescription String   @db.Text
+  welcomeImage       String?
+  welcomeIcon        String?
+  // CTA Section
+  ctaTitle           String
+  ctaDescription     String   @db.Text
+  ctaBgImage         String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }
 
-model WelcomeCard {
-  id          String @id @default(uuid())
-  title       String
-  description String @db.Text
-  icon        String
-  orderIndex  Int    @default(0)
+model AboutPageContent {
+  id                    String   @id @default("default_about")
+  // Hero Section
+  title                 String
+  subtitle              String?  @default("About Us")
+  description           String   @db.Text
+  bgImage               String?
+  // Who We Are Section
+  whoWeAreTitle         String?  @default("Providing Enterprise-Grade Connectivity & Defense")
+  whoWeAreDescription1  String?  @db.Text
+  whoWeAreDescription2  String?  @db.Text
+  whoWeAreDescription3  String?  @db.Text
+  whoWeAreImage         String?
+  // Mission, Vision, Values
+  values                Json?     // Array of { title, desc, icon }
+  // Why Choose Us
+  whyChooseUsTitle      String?  @default("Your Trusted Partner for Technology-Driven Transformation")
+  whyChooseUsImage      String?
+  benefits              Json?     // Array of { title, desc, icon }
+  // Testimonials
+  testimonials          Json?     // Array of { name, role, stars, quote }
+  // CTA Section
+  ctaTitle              String?  @default("Ready to Get Started?")
+  ctaDescription        String?  @db.Text
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
 }
 
-model StatsLogo {
-  id         String @id @default(uuid())
-  imageUrl   String
-  orderIndex Int    @default(0)
+model ContactInfo {
+  id                 String   @id @default("default_contact")
+  title              String
+  description        String   @db.Text
+  bgImage            String?
+  bannerImage        String?
+  email1             String
+  email2             String?
+  phone1             String
+  phone2             String?
+  address            String   @db.Text
+  facebook           String?
+  twitter            String?
+  linkedin           String?
+  instagram          String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }
+
+
 
 model Service {
   id          String   @id @default(uuid())
@@ -58,13 +114,6 @@ model Project {
   createdAt   DateTime @default(now())
 }
 
-model AboutSection {
-  id          String  @id @default(uuid())
-  title       String
-  content     String  @db.Text
-  imageUrl    String?
-  orderIndex  Int     @default(0)
-}
 
 model Contact {
   id        String   @id @default(uuid())

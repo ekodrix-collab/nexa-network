@@ -6,13 +6,6 @@ import ScrollReveal from '@/components/ui/ScrollReveal'
 
 const resourceCards = [
   {
-    icon: FileText,
-    title: 'Enterprise IT Whitepapers',
-    description: 'Deep dives into state-of-the-art cybersecurity compliance and high-performance network designs in the GCC area.',
-    linkText: 'Read Whitepapers',
-    href: '/resources'
-  },
-  {
     icon: BookOpen,
     title: 'Infrastructure Deployment Guides',
     description: 'Technical documents detailing active networks setup, CCTV analytics integration, and cloud migrations.',
@@ -54,7 +47,7 @@ export default function ResourcesPage() {
                 Knowledge & <span className="text-[#F05B1B]">SLA Support</span>
               </h1>
               <p className="text-slate-600 dark:text-white/50 text-lg leading-relaxed">
-                Access technical documentation, download whitepapers, or enter our support portal for priority system assistance.
+                Access technical documentation, browse deployment guides, or enter our support portal for priority system assistance.
               </p>
             </div>
           </ScrollReveal>

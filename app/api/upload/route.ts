@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     const filename = uniqueSuffix + '-' + file.name.replace(/[^a-zA-Z0-9.-]/g, '_')
 
     // Ensure upload directory exists
-    const uploadDir = join(process.cwd(), 'public/uploads')
+    const uploadDir = join(process.cwd(), 'public/images/uploads')
     if (!existsSync(uploadDir)) {
       await mkdir(uploadDir, { recursive: true })
     }
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     const path = join(uploadDir, filename)
     await writeFile(path, buffer)
 
-    return NextResponse.json({ success: true, url: `/uploads/${filename}` })
+    return NextResponse.json({ success: true, url: `/images/uploads/${filename}` })
   } catch (error) {
     console.error('Upload error:', error)
     return NextResponse.json({ error: 'Upload failed' }, { status: 500 })

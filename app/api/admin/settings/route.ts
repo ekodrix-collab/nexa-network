@@ -1,13 +1,30 @@
 import { NextResponse } from 'next/server'
-import { setSetting, getSettings } from '@/lib/settings'
+import { 
+  getHomePageContent, saveHomePageContent,
+  getAboutPageContent, saveAboutPageContent,
+  getContactInfo, saveContactInfo
+} from '@/lib/settings'
 import { verifyToken } from '@/lib/auth'
 import { cookies } from 'next/headers'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
-  const keys = searchParams.get('keys')?.split(',') || []
-  const data = await getSettings(keys)
-  return NextResponse.json(data)
+  const page = searchParams.get('page')
+
+  if (page === 'home') {
+    const data = await getHomePageContent()
+    return NextResponse.json(data)
+  }
+  if (page === 'about') {
+    const data = await getAboutPageContent()
+    return NextResponse.json(data)
+  }
+  if (page === 'contact') {
+    const data = await getContactInfo()
+    return NextResponse.json(data)
+  }
+
+  return NextResponse.json({ error: 'Page not found' }, { status: 404 })
 }
 
 export async function POST(request: Request) {
@@ -17,14 +34,24 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    const { searchParams } = new URL(request.url)
+    const page = searchParams.get('page')
     const data = await request.json()
-    // data is an object: { "hero_title": "...", "hero_description": "..." }
-    for (const [key, value] of Object.entries(data)) {
-      if (typeof value === 'string') {
-        await setSetting(key, value)
-      }
+
+    if (page === 'home') {
+      await saveHomePageContent(data)
+      return NextResponse.json({ success: true })
     }
-    return NextResponse.json({ success: true })
+    if (page === 'about') {
+      await saveAboutPageContent(data)
+      return NextResponse.json({ success: true })
+    }
+    if (page === 'contact') {
+      await saveContactInfo(data)
+      return NextResponse.json({ success: true })
+    }
+
+    return NextResponse.json({ error: 'Invalid page parameter' }, { status: 400 })
   } catch (error) {
     console.error('Settings save error:', error)
     return NextResponse.json({ error: 'Failed to save settings' }, { status: 500 })
