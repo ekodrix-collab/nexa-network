@@ -316,7 +316,7 @@ export default function BlogAdminPage() {
               <BookOpen className="w-5 h-5 text-white/20" />
             </div>
             <p className="text-white/40 text-sm font-medium">No blog posts yet</p>
-            <p className="text-white/20 text-xs mt-1">Click "Add Blog Post" to publish your first post</p>
+            <p className="text-white/20 text-xs mt-1">Click &quot;Add Blog Post&quot; to publish your first post</p>
           </div>
         )}
       </div>

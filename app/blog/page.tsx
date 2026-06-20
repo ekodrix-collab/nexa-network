@@ -69,7 +69,7 @@ export default function BlogPage() {
             <div className="flex flex-col items-center justify-center py-16 text-center">
               <BookOpen className="w-12 h-12 text-[#F05B1B] mb-4 opacity-55" />
               <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2">No Posts Available</h3>
-              <p className="text-slate-500 dark:text-white/40 text-sm">We haven't published any blog posts yet. Please check back later!</p>
+              <p className="text-slate-500 dark:text-white/40 text-sm">We haven&apos;t published any blog posts yet. Please check back later!</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

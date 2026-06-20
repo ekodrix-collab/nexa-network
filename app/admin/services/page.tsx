@@ -816,7 +816,7 @@ export default function ServicesAdminPage() {
               <Briefcase className="w-5 h-5 text-white/20" />
             </div>
             <p className="text-white/40 text-sm font-medium">No services yet</p>
-            <p className="text-white/20 text-xs mt-1">Click "Add Service" to create your first service</p>
+            <p className="text-white/20 text-xs mt-1">Click &quot;Add Service&quot; to create your first service</p>
           </div>
         )}
       </div>

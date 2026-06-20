@@ -332,7 +332,7 @@ export default function CareersAdminPage() {
               <Briefcase className="w-5 h-5 text-white/20" />
             </div>
             <p className="text-white/40 text-sm font-medium">No job openings yet</p>
-            <p className="text-white/20 text-xs mt-1">Click "Add Job Opening" to list your first vacancy</p>
+            <p className="text-white/20 text-xs mt-1">Click &quot;Add Job Opening&quot; to list your first vacancy</p>
           </div>
         )}
       </div>

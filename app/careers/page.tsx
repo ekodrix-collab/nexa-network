@@ -57,7 +57,7 @@ export default function CareersPage() {
                 Build the Future of <span className="text-[#F05B1B]">IT Infrastructure</span>
               </h1>
               <p className="text-slate-600 dark:text-white/50 text-lg leading-relaxed">
-                Join Qatar's leading systems integrator. Work with state-of-the-art enterprise networks, access controls, and security systems.
+                Join Qatar&apos;s leading systems integrator. Work with state-of-the-art enterprise networks, access controls, and security systems.
               </p>
             </div>
           </ScrollReveal>
