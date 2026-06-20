@@ -2,66 +2,64 @@
 
 import { useState, useEffect } from 'react'
 import ImageUploader from '@/components/admin/ImageUploader'
-import { Input, Textarea, FieldGrid } from '@/components/admin/AdminFields'
-import { Plus, Pencil, Trash2, X, Save, Loader2, FolderKanban, Star } from 'lucide-react'
+import { Input, Textarea } from '@/components/admin/AdminFields'
+import { Plus, Pencil, Trash2, X, Save, Loader2, BookOpen, Clock } from 'lucide-react'
 import DeleteModal from '@/components/admin/DeleteModal'
 
-type Project = {
+type BlogPost = {
   id: string
+  slug: string
   title: string
-  client: string
-  category: string
   description: string
+  content: string
+  readTime: string
   imageUrl: string
-  tags: string[]
-  featured: boolean
-  orderIndex: number
+  createdAt: string
 }
 
-const emptyProject: Omit<Project, 'id'> = {
-  title: '', client: '', category: '', description: '',
-  imageUrl: '', tags: [], featured: true, orderIndex: 0
+const emptyBlog: Omit<BlogPost, 'id' | 'slug' | 'createdAt'> = {
+  title: '', description: '', content: '', readTime: '5 mins read', imageUrl: ''
 }
 
-export default function ProjectsAdminPage() {
-  const [projects, setProjects] = useState<Project[]>([])
-  const [originalProject, setOriginalProject] = useState<Project | null>(null)
+export default function BlogAdminPage() {
+  const [posts, setPosts] = useState<BlogPost[]>([])
+  const [originalPost, setOriginalPost] = useState<BlogPost | null>(null)
   const [loading, setLoading] = useState(true)
-  const [editing, setEditing] = useState<Project | null>(null)
+  const [editing, setEditing] = useState<BlogPost | null>(null)
   const [saving, setSaving] = useState(false)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
-  const [projectToDelete, setProjectToDelete] = useState<Project | null>(null)
+  const [postToDelete, setPostToDelete] = useState<BlogPost | null>(null)
   const [deleting, setDeleting] = useState(false)
 
-  useEffect(() => { fetchProjects() }, [])
+  useEffect(() => { fetchPosts() }, [])
 
-  const fetchProjects = async () => {
+  const fetchPosts = async () => {
     setLoading(true)
-    const res = await fetch('/api/admin/projects', { cache: 'no-store' })
+    const res = await fetch('/api/admin/blog', { cache: 'no-store' })
     const data = await res.json()
-    setProjects(data)
+    setPosts(data)
     setLoading(false)
   }
 
-  const openEdit = (project: Project) => {
-    setEditing(project)
-    setOriginalProject(JSON.parse(JSON.stringify(project)))
+  const openEdit = (post: BlogPost) => {
+    setEditing(post)
+    setOriginalPost(JSON.parse(JSON.stringify(post)))
   }
 
   const openNew = () => {
-    const newProject = { id: '', ...emptyProject }
-    setEditing(newProject)
-    setOriginalProject(JSON.parse(JSON.stringify(newProject)))
+    const newBlog = { id: '', slug: '', createdAt: '', ...emptyBlog }
+    setEditing(newBlog as any)
+    setOriginalPost(JSON.parse(JSON.stringify(newBlog)))
   }
 
   const hasChanges = () => {
-    if (!editing || !originalProject) return false
-    return JSON.stringify(editing) !== JSON.stringify(originalProject)
+    if (!editing || !originalPost) return false
+    return JSON.stringify(editing) !== JSON.stringify(originalPost)
   }
 
   const handleDiscard = () => {
-    if (originalProject) {
-      setEditing(JSON.parse(JSON.stringify(originalProject)))
+    if (originalPost) {
+      setEditing(JSON.parse(JSON.stringify(originalPost)))
     }
   }
 
@@ -70,28 +68,21 @@ export default function ProjectsAdminPage() {
     if (!editing) return
     setSaving(true)
 
-    const payload = {
-      ...editing,
-      client: editing.client || '',
-      description: editing.description || '',
-      tags: editing.tags || [],
-      featured: true
-    }
     const isNew = !editing.id
-    const url = isNew ? '/api/admin/projects' : `/api/admin/projects/${editing.id}`
+    const url = isNew ? '/api/admin/blog' : `/api/admin/blog/${editing.id}`
     const res = await fetch(url, {
       method: isNew ? 'POST' : 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(editing)
     })
 
     setSaving(false)
     if (res.ok) {
       setEditing(null)
-      setOriginalProject(null)
-      fetchProjects()
+      setOriginalPost(null)
+      fetchPosts()
     } else {
-      alert('Failed to save project')
+      alert('Failed to save blog post')
     }
   }
 
@@ -106,22 +97,22 @@ export default function ProjectsAdminPage() {
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [editing, saving, originalProject])
+  }, [editing, saving, originalPost])
 
-  const openDeleteModal = (project: Project) => {
-    setProjectToDelete(project)
+  const openDeleteModal = (post: BlogPost) => {
+    setPostToDelete(post)
     setDeleteModalOpen(true)
   }
 
   const handleDelete = async () => {
-    if (!projectToDelete) return
+    if (!postToDelete) return
     setDeleting(true)
-    const res = await fetch(`/api/admin/projects/${projectToDelete.id}`, { method: 'DELETE' })
+    const res = await fetch(`/api/admin/blog/${postToDelete.id}`, { method: 'DELETE' })
     setDeleting(false)
     if (res.ok) {
       setDeleteModalOpen(false)
-      setProjectToDelete(null)
-      fetchProjects()
+      setPostToDelete(null)
+      fetchPosts()
     } else {
       alert('Failed to delete')
     }
@@ -130,7 +121,7 @@ export default function ProjectsAdminPage() {
   if (loading) {
     return (
       <div className="space-y-3">
-        {[1,2,3].map(i => (
+        {[1, 2, 3].map(i => (
           <div key={i} className="h-20 rounded-xl bg-white/[0.03] border border-white/[0.06] animate-pulse" />
         ))}
       </div>
@@ -177,6 +168,7 @@ export default function ProjectsAdminPage() {
 
         <div className="flex items-center gap-3 mb-6">
           <button
+            type="button"
             onClick={() => setEditing(null)}
             className="flex items-center gap-1.5 text-white/40 hover:text-white/70 text-sm transition-colors"
           >
@@ -184,7 +176,7 @@ export default function ProjectsAdminPage() {
           </button>
           <span className="text-white/15">/</span>
           <span className="text-white/60 text-sm font-medium">
-            {editing.id ? `Editing: ${editing.title}` : 'New Project'}
+            {editing.id ? `Editing: ${editing.title}` : 'New Blog Post'}
           </span>
         </div>
 
@@ -193,23 +185,31 @@ export default function ProjectsAdminPage() {
             {/* Main Fields */}
             <div className="lg:col-span-2 space-y-4">
               <div className="bg-[#0B1419] border border-white/[0.07] rounded-xl p-5">
-                <h3 className="text-white font-semibold text-sm mb-4 pb-3 border-b border-white/[0.06]">Project Details</h3>
+                <h3 className="text-white font-semibold text-sm mb-4 pb-3 border-b border-white/[0.06]">Blog Details</h3>
                 <div className="space-y-4">
                   <Input
-                    label="Project Title" required
+                    label="Blog Title" required
                     value={editing.title}
                     onChange={e => setEditing({...editing, title: e.target.value})}
-                    placeholder="FedEx Qatar Infrastructure Upgrade"
+                    placeholder="E.g., Rising Cybersecurity Threats in Qatar"
                   />
                   <div>
-                    <p className="text-xs font-medium text-white/60 mb-1.5">Project Image</p>
+                    <p className="text-xs font-medium text-white/60 mb-1.5">Cover Image</p>
                     <ImageUploader label="" value={editing.imageUrl} onChange={val => setEditing({...editing, imageUrl: val})} />
                   </div>
-                  <Input
-                    label="Category" required
-                    value={editing.category}
-                    onChange={e => setEditing({...editing, category: e.target.value})}
-                    placeholder="Network & Infrastructure"
+                  <Textarea
+                    label="Short Description" required
+                    value={editing.description}
+                    onChange={e => setEditing({...editing, description: e.target.value})}
+                    placeholder="Short summary displayed on lists..."
+                    rows={3}
+                  />
+                  <Textarea
+                    label="Full Content" required
+                    value={editing.content}
+                    onChange={e => setEditing({...editing, content: e.target.value})}
+                    placeholder="Write the full post contents here..."
+                    rows={12}
                   />
                 </div>
               </div>
@@ -221,13 +221,17 @@ export default function ProjectsAdminPage() {
                 <h3 className="text-white font-semibold text-sm mb-4 pb-3 border-b border-white/[0.06]">Settings</h3>
                 <div className="space-y-4">
                   <Input
-                    label="Order / Position"
-                    type="number"
-                    value={editing.orderIndex.toString()}
-                    onChange={e => setEditing({...editing, orderIndex: parseInt(e.target.value) || 0})}
-                    placeholder="0"
+                    label="Read Time" required
+                    value={editing.readTime}
+                    onChange={e => setEditing({...editing, readTime: e.target.value})}
+                    placeholder="E.g., 5 mins read"
                   />
-                  {/* Featured project is enabled by default */}
+                  {editing.createdAt && (
+                    <div>
+                      <label className="block text-xs font-medium text-white/40 mb-1">Date Created</label>
+                      <p className="text-white/60 text-xs font-semibold">{new Date(editing.createdAt).toLocaleDateString()}</p>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -236,7 +240,7 @@ export default function ProjectsAdminPage() {
                 disabled={saving}
                 className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#F05B1B] hover:bg-[#FF6B2B] text-white font-semibold text-sm transition-all duration-200 shadow-lg shadow-[#F05B1B]/20 disabled:opacity-50 cursor-pointer"
               >
-                {saving ? <><Loader2 className="w-4 h-4 animate-spin" />Saving...</> : <><Save className="w-4 h-4" />Save Project</>}
+                {saving ? <><Loader2 className="w-4 h-4 animate-spin" />Saving...</> : <><Save className="w-4 h-4" />Save Post</>}
               </button>
             </div>
           </div>
@@ -245,61 +249,58 @@ export default function ProjectsAdminPage() {
     )
   }
 
-  // ── List View ──────────────────────────────────
   return (
     <div>
       <div className="flex items-center justify-between mb-5">
         <p className="text-white/30 text-[10px] font-bold tracking-widest uppercase">
-          {projects.length} project{projects.length !== 1 ? 's' : ''} total
+          {posts.length} blog post{posts.length !== 1 ? 's' : ''} total
         </p>
         <button
           onClick={openNew}
           className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#F05B1B] hover:bg-[#FF6B2B] text-white text-sm font-semibold transition-all shadow-lg shadow-[#F05B1B]/20"
         >
           <Plus className="w-4 h-4" />
-          Add Project
+          Add Blog Post
         </button>
       </div>
 
       <div className="space-y-3">
-        {projects.map(project => (
+        {posts.map(post => (
           <div
-            key={project.id}
+            key={post.id}
             className="flex items-center gap-4 p-4 bg-[#0B1419] border border-white/[0.07] rounded-xl hover:border-white/[0.12] transition-all duration-200 group"
           >
             {/* Image */}
             <div className="w-14 h-14 rounded-lg bg-white/[0.05] border border-white/[0.07] flex items-center justify-center flex-shrink-0 overflow-hidden">
-              {project.imageUrl ? (
-                <img src={project.imageUrl} alt={project.title} className="w-full h-full object-cover" />
+              {post.imageUrl ? (
+                <img src={post.imageUrl} alt={post.title} className="w-full h-full object-cover" />
               ) : (
-                <FolderKanban className="w-5 h-5 text-white/20" />
+                <BookOpen className="w-5 h-5 text-white/20" />
               )}
             </div>
 
             {/* Info */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-0.5">
-                <h3 className="text-white text-sm font-semibold truncate">{project.title}</h3>
-                {project.featured && (
-                  <Star className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
-                )}
+                <h3 className="text-white text-sm font-semibold truncate">{post.title}</h3>
               </div>
-              <p className="text-white/35 text-xs">
-                {project.category}
+              <p className="text-white/35 text-xs flex items-center gap-1.5">
+                <Clock className="w-3 h-3 text-[#F05B1B]" />
+                {post.readTime} &bull; {new Date(post.createdAt).toLocaleDateString()}
               </p>
             </div>
 
             {/* Actions */}
             <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
               <button
-                onClick={() => openEdit(project)}
+                onClick={() => openEdit(post)}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.09] text-white/60 hover:text-white text-xs font-medium border border-white/[0.07] transition-all"
               >
                 <Pencil className="w-3.5 h-3.5" />
                 Edit
               </button>
               <button
-                onClick={() => openDeleteModal(project)}
+                onClick={() => openDeleteModal(post)}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/5 hover:bg-red-500/10 text-red-400/60 hover:text-red-400 text-xs font-medium border border-red-500/10 hover:border-red-500/20 transition-all"
               >
                 <Trash2 className="w-3.5 h-3.5" />
@@ -309,13 +310,13 @@ export default function ProjectsAdminPage() {
           </div>
         ))}
 
-        {projects.length === 0 && (
+        {posts.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <div className="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/[0.07] flex items-center justify-center mb-4">
-              <FolderKanban className="w-5 h-5 text-white/20" />
+              <BookOpen className="w-5 h-5 text-white/20" />
             </div>
-            <p className="text-white/40 text-sm font-medium">No projects yet</p>
-            <p className="text-white/20 text-xs mt-1">Click "Add Project" to create your first project</p>
+            <p className="text-white/40 text-sm font-medium">No blog posts yet</p>
+            <p className="text-white/20 text-xs mt-1">Click "Add Blog Post" to publish your first post</p>
           </div>
         )}
       </div>
@@ -324,9 +325,9 @@ export default function ProjectsAdminPage() {
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         onConfirm={handleDelete}
-        title="Delete Project"
-        message="Are you sure you want to delete this project? This action cannot be undone and will immediately remove the project from the website showcase."
-        itemName={projectToDelete?.title}
+        title="Delete Blog Post"
+        message="Are you sure you want to delete this blog post? This action cannot be undone and will immediately remove the post from the blog page."
+        itemName={postToDelete?.title}
         isDeleting={deleting}
       />
     </div>

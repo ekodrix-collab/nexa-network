@@ -31,7 +31,7 @@ const createMockPrismaClient = () => {
   }) as unknown as PrismaClient;
 };
 
-const prismaClientSingleton = () => {
+const prismaClientSingleton = (): PrismaClient => {
   if (!process.env.DATABASE_URL) {
     console.warn("DATABASE_URL is not set. Using mock Prisma client.");
     return createMockPrismaClient();
@@ -40,7 +40,7 @@ const prismaClientSingleton = () => {
 }
 
 declare global {
-  var prisma: undefined | ReturnType<typeof prismaClientSingleton>
+  var prisma: PrismaClient | undefined
 }
 
 const prisma = globalThis.prisma ?? prismaClientSingleton()

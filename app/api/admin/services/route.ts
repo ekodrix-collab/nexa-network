@@ -3,6 +3,8 @@ import prisma from '@/lib/prisma'
 import { verifyToken } from '@/lib/auth'
 import { cookies } from 'next/headers'
 
+export const dynamic = 'force-dynamic'
+
 function isAuthenticated() {
   const token = cookies().get('admin_token')?.value
   return token && verifyToken(token)
@@ -17,7 +19,8 @@ export async function POST(request: Request) {
   if (!isAuthenticated()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   try {
     const data = await request.json()
-    const service = await prisma.service.create({ data })
+    const { id, ...createData } = data
+    const service = await prisma.service.create({ data: createData })
     return NextResponse.json(service)
   } catch (error) {
     return NextResponse.json({ error: 'Failed to create service' }, { status: 500 })

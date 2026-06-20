@@ -12,8 +12,6 @@ export default function CinemaIntro() {
   // phase 2: light sweep across logo
   // phase 3: fade out entire overlay
 
-  if (pathname?.startsWith('/admin')) return null
-
   useEffect(() => {
     const hasSeen = sessionStorage.getItem('nexa_seen_intro')
     if (hasSeen) {
@@ -32,6 +30,8 @@ export default function CinemaIntro() {
 
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4) }
   }, [])
+
+  if (pathname?.startsWith('/admin')) return null
 
   return (
     <AnimatePresence>

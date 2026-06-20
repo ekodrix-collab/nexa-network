@@ -7,7 +7,7 @@ interface SectionCardProps {
   title: string
   description?: string
   children: ReactNode
-  onSave: () => Promise<void>
+  onSave?: () => Promise<void>
   badge?: string
 }
 
@@ -19,7 +19,9 @@ export default function SectionCard({ title, description, children, onSave, badg
     setSaving(true)
     setSaved(false)
     try {
-      await onSave()
+      if (onSave) {
+        await onSave()
+      }
       setSaved(true)
       setTimeout(() => setSaved(false), 3000)
     } catch (e) {
@@ -45,25 +47,27 @@ export default function SectionCard({ title, description, children, onSave, badg
             {description && <p className="text-white/35 text-xs mt-0.5">{description}</p>}
           </div>
         </div>
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 ${
-            saved
-              ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-              : saving
-              ? 'bg-[#F05B1B]/10 text-[#F05B1B]/60 border border-[#F05B1B]/15 cursor-not-allowed'
-              : 'bg-[#F05B1B] hover:bg-[#FF6B2B] text-white shadow-lg shadow-[#F05B1B]/20 hover:shadow-[#F05B1B]/30'
-          }`}
-        >
-          {saving ? (
-            <><Loader2 className="w-3.5 h-3.5 animate-spin" />Saving...</>
-          ) : saved ? (
-            <><CheckCircle className="w-3.5 h-3.5" />Saved!</>
-          ) : (
-            <><Save className="w-3.5 h-3.5" />Save Section</>
-          )}
-        </button>
+        {onSave && (
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className={`flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 ${
+              saved
+                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                : saving
+                ? 'bg-[#F05B1B]/10 text-[#F05B1B]/60 border border-[#F05B1B]/15 cursor-not-allowed'
+                : 'bg-[#F05B1B] hover:bg-[#FF6B2B] text-white shadow-lg shadow-[#F05B1B]/20 hover:shadow-[#F05B1B]/30'
+            }`}
+          >
+            {saving ? (
+              <><Loader2 className="w-3.5 h-3.5 animate-spin" />Saving...</>
+            ) : saved ? (
+              <><CheckCircle className="w-3.5 h-3.5" />Saved!</>
+            ) : (
+              <><Save className="w-3.5 h-3.5" />Save Section</>
+            )}
+          </button>
+        )}
       </div>
 
       {/* Card Body */}

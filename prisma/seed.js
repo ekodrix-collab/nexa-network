@@ -1,3 +1,4 @@
+require('dotenv').config({ path: '.env.local' })
 const { PrismaClient } = require('@prisma/client')
 const bcrypt = require('bcryptjs')
 
@@ -156,142 +157,19 @@ async function main() {
   console.log('✅ Default Contact Info seeded.')
 
   // 5. Seed Services
-  const services = [
-    {
-      title: 'Network & Passive Infrastructure',
-      subtitle: 'Secure & Scalable Solutions',
-      description: 'We design, implement, and maintain secure and scalable network infrastructure that keeps your business connected and future-ready.',
-      icon: 'Network',
-      features: [
-        'Structured Cabling (Copper & Fiber)',
-        'Network Security & Firewall Setup',
-        'Data Center Setup & Rack Installation',
-        'Wireless Networking Solutions',
-        'LAN/WAN Network Design',
-        'Ongoing Network Monitoring'
-      ],
-      orderIndex: 0,
-      active: true
-    },
-    {
-      title: 'IT Solutions & Integration Services',
-      subtitle: 'Zero-Trust Security & Enterprise Integration',
-      description: 'Advanced cybersecurity solutions designed to protect your systems, data, and digital assets from evolving cyber threats and sophisticated attacks.',
-      icon: 'Shield',
-      features: [
-        'Next-Gen Firewall & UTM',
-        'Endpoint Detection & Response',
-        'Security Operations Center (SOC)',
-        'Penetration Testing & Audits',
-        'Email Security & Anti-Phishing',
-        'Security Awareness Training'
-      ],
-      orderIndex: 1,
-      active: true
-    },
-    {
-      title: 'Cloud Computing & IT Software Services',
-      subtitle: 'Secure & Scalable Cloud Solutions',
-      description: 'Scalable cloud solutions to securely store, manage, and access your data and applications from anywhere in the world.',
-      icon: 'Cloud',
-      features: [
-        'Cloud Migration Strategy',
-        'Microsoft Azure & AWS Setup',
-        'Backup & Disaster Recovery',
-        'SaaS Application Setup',
-        'Hybrid Cloud Architecture',
-        'Cloud Cost Optimization'
-      ],
-      orderIndex: 2,
-      active: true
-    },
-    {
-      title: 'Conference Room & Office IT Services',
-      subtitle: 'Smart Office Collaboration',
-      description: 'Deploy next-generation conference room audio-visual setups, smart projectors, interactive displays, and robust office IT integration.',
-      icon: 'Monitor',
-      features: [
-        'AV Conference Systems',
-        'Smart Interactive Displays',
-        'Workspace Scheduling',
-        'PA & Sound Systems',
-        'Wireless Presentation Tools',
-        'IT Hardware Procurement'
-      ],
-      orderIndex: 3,
-      active: true
-    },
-    {
-      title: 'Smart Entry Management',
-      subtitle: 'Advanced Access Control Solutions',
-      description: 'Intelligent access control systems for modern workplaces ensuring secure and efficient entry management for your facilities.',
-      icon: 'Lock',
-      features: [
-        'Biometric Access Control',
-        'RFID Card Systems',
-        'Time & Attendance Tracking',
-        'Visitor Management Systems',
-        'Turnstile & Barrier Gates',
-        'Mobile Credentialing'
-      ],
-      orderIndex: 4,
-      active: true
-    },
-    {
-      title: 'Website Development & Digital Solutions',
-      subtitle: 'Custom Web & Mobile Applications',
-      description: 'Establish a powerful online presence with bespoke website design, enterprise web applications, and digital marketing optimizations.',
-      icon: 'Globe',
-      features: [
-        'Custom Web Development',
-        'E-commerce Platforms',
-        'UI/UX Design Systems',
-        'SEO & Digital Marketing',
-        'Web Hosting & Support',
-        'Custom API Integrations'
-      ],
-      orderIndex: 5,
-      active: true
-    },
-    {
-      title: 'Vehicle Tracking Solutions',
-      subtitle: 'Real-Time Tracking & Fleet Management',
-      description: 'Real-time GPS tracking and fleet management solutions to optimize vehicle performance, reduce costs, and ensure fleet security.',
-      icon: 'Truck',
-      features: [
-        'GPS Tracking Systems',
-        'Real-Time Monitoring',
-        'Route Optimization',
-        'Fuel Monitoring',
-        'Fleet Analytics'
-      ],
-      orderIndex: 6,
-      active: true
-    },
-    {
-      title: 'CCTV & Surveillance Systems',
-      subtitle: 'Smart Video Security & SSD Compliance',
-      description: 'High-definition surveillance solutions that provide real-time monitoring, remote access, and AI-powered analytics for enhanced security.',
-      icon: 'Camera',
-      features: [
-        'HD/4K IP Camera Systems',
-        'NVR & Large Storage Solutions',
-        'Remote Monitoring Apps',
-        'AI Video Analytics',
-        'License Plate Recognition (ANPR)',
-        'Thermal Cameras'
-      ],
-      orderIndex: 7,
-      active: true
-    }
-  ]
+  const services = require('./services-seed.json')
 
   for (const s of services) {
-    const existing = await prisma.service.findFirst({
-      where: { title: s.title }
+    const existing = await prisma.service.findUnique({
+      where: { slug: s.slug }
     })
     if (!existing) {
       await prisma.service.create({ data: s })
+    } else {
+      await prisma.service.update({
+        where: { id: existing.id },
+        data: s
+      })
     }
   }
   console.log('✅ Services seeded successfully.')
@@ -299,43 +177,143 @@ async function main() {
   // 6. Seed Projects
   const projects = [
     {
-      title: 'Enterprise Data Center Upgrade',
-      client: 'Qatar Commercial Bank',
-      category: 'Data Center Infrastructure',
-      description: 'Complete data center cabling, rack setup and network infrastructure for high availability.',
-      tags: ['Cabling', 'Data Center', 'Fiber Optic'],
+      title: 'FedEx Qatar Infrastructure Upgrade',
+      client: 'FedEx Qatar',
+      category: 'Network & Infrastructure',
+      description: 'Complete network overhaul with structured cabling and WiFi.',
+      tags: [],
       featured: true,
-      orderIndex: 0
+      orderIndex: 0,
+      imageUrl: '/images/projects/fedex.jpg'
     },
     {
-      title: 'Banking Network Security Overhaul',
-      client: 'Doha Trust Bank',
+      title: 'Katara Cultural Village Smart Surveillance System',
+      client: 'Katara Cultural Village',
+      category: 'CCTV & Security',
+      description: 'End-to-end CCTV with HD cameras and remote monitoring.',
+      tags: [],
+      featured: true,
+      orderIndex: 1,
+      imageUrl: '/images/projects/katara.jpg'
+    },
+    {
+      title: 'Aida Clinic Cloud Migration',
+      client: 'Aida Clinic',
+      category: 'Cloud Solutions',
+      description: 'Cloud migration to secure HIPAA-compliant infrastructure.',
+      tags: [],
+      featured: true,
+      orderIndex: 2,
+      imageUrl: '/images/projects/aida-clinic.jpg'
+    },
+    {
+      title: 'Government Sector Cybersecurity Enhancement',
+      client: 'Government Entity',
       category: 'Cyber Security',
-      description: 'Implemented zero-trust architecture and SOC for a major financial institution.',
-      tags: ['Zero-Trust', 'SOC', 'Firewall'],
+      description: 'SOC implementation and firewall deployment.',
+      tags: [],
       featured: true,
-      orderIndex: 1
-    },
-    {
-      title: 'Enterprise Azure Migration',
-      client: 'Nexa Logistics Group',
-      category: 'Cloud Computing',
-      description: 'Successfully migrated legacy on-premise servers to Azure.',
-      tags: ['Azure', 'Cloud Migration', 'DevOps'],
-      featured: true,
-      orderIndex: 2
+      orderIndex: 3,
+      imageUrl: '/images/projects/government.jpg'
     }
   ]
 
+  // Clear existing projects to align with the frontend seeding
+  await prisma.project.deleteMany({})
+
   for (const p of projects) {
-    const existing = await prisma.project.findFirst({
-      where: { title: p.title }
-    })
-    if (!existing) {
-      await prisma.project.create({ data: p })
-    }
+    await prisma.project.create({ data: p })
   }
   console.log('✅ Projects seeded successfully.')
+
+  // 7. Seed Blog Posts
+  const blogPosts = [
+    {
+      title: 'Future-proofing Qatar Enterprise Networks for 2026 and Beyond',
+      slug: 'future-proofing-qatar-enterprise-networks',
+      description: 'As business bandwidth demands surge, high-density structured cabling and active switches deployment are paramount. Discover how to plan your network backbone.',
+      content: `Qatar enterprises are entering a phase of rapid digital transition where traditional gigabit network infrastructures are no longer sufficient. High-definition media streaming, zero-trust security inspection pipelines, and distributed cloud microservices demand higher throughput, lower latency, and highly resilient layouts.
+
+Here is what enterprise networks should prepare for:
+1. Cat6A or Fiber Optic Backbones: Traditional Cat6 is reaching its physical limits at 10 Gbps over longer distances. Upgrading main risers to Single-Mode or Multi-Mode OM4/OM5 fiber ensures future-proof link speeds of 40/100 Gbps.
+2. Layer 3 Edge Switch Deployment: Routing at the edge of the network reduces core workload and prevents local segment traffic from bottlenecking primary routers.
+3. High Density WiFi 7 Access Points: With Qatar's smart building push, modern office complexes require robust WiFi 7 deployment to support ultra-dense device environments.
+
+Planning your transition now mitigates migration risks and ensures seamless operational continuity.`,
+      readTime: '6 mins read',
+      imageUrl: '/images/cta-bg.jpg'
+    },
+    {
+      title: 'Zero-Trust Frameworks: Combating Modern Threats in the GCC Area',
+      slug: 'zero-trust-frameworks-gcc',
+      description: 'Implementing next-generation firewalls and Endpoint Detection Response (EDR) is no longer optional. Discover modern enterprise cyber security approaches.',
+      content: `In the GCC region, cybersecurity threats have transitioned from simple malicious scripts to sophisticated, nation-state sponsored ransomware and identity hijacking campaigns. Modern organizations can no longer trust any traffic inside their perimeter by default.
+
+Key pillars of a robust Zero-Trust model:
+1. Micro-Segmentation: Restricting traffic flow between server subnets so that even if one server is compromised, lateral threat movement is prevented.
+2. Multi-Factor Authentication (MFA): Enforcing hardware keys or push-based mobile MFA for all internal system controls.
+3. Real-Time End-Point Telemetry: Continuously monitoring laptops, mobiles, and cloud containers for signs of anomalous behavior using AI-powered EDR agents.
+
+Embracing zero-trust represents a paradigm shift from traditional firewall perimeters, ensuring threat mitigation before damage occurs.`,
+      readTime: '8 mins read',
+      imageUrl: '/images/cyber-future.png'
+    },
+    {
+      title: 'The SSD Compliance Checklist: Passing CCTV Audits Easily',
+      slug: 'ssd-compliance-checklist-cctv',
+      description: 'A comprehensive roadmap to designing CCTV storage, frame rates, and camera layouts that meet Qatar SSD and Civil Defense directives perfectly.',
+      content: `Operating a business or government site in Qatar requires strict alignment with the Security Systems Department (SSD) of the Ministry of Interior. CCTV systems must adhere to exact specifications for retention, image resolution, and camera placement.
+
+SSD Compliance Essentials Checklist:
+1. 120 Days Retention Period: CCTV recordings must be archived for a minimum of 120 days. Ensure storage calculations account for H.265 compression and specific frame rates.
+2. Minimum 1080p Resolution: Cameras monitoring main entry/exit points, reception counters, and cashier counters must capture at a minimum of Full HD resolution with high-dynamic range (HDR) for face recognition under bright lighting.
+3. Failover Power Supply (UPS): Active storage arrays and switches must be powered by enterprise UPS systems configured to keep systems online during utility outages.
+
+Consulting certified integrators during the planning phase avoids costly redesigns and ensures audit approval on the first attempt.`,
+      readTime: '5 mins read',
+      imageUrl: '/images/about_who_we_are.png'
+    }
+  ]
+
+  await prisma.blogPost.deleteMany({})
+  for (const post of blogPosts) {
+    await prisma.blogPost.create({ data: post })
+  }
+  console.log('✅ Blog posts seeded successfully.')
+
+  // 8. Seed Careers
+  const careers = [
+    {
+      title: 'Senior Network Infrastructure Engineer',
+      department: 'Engineering',
+      location: 'Doha, Qatar',
+      type: 'Full-time',
+      description: 'We are looking for a Senior Network Engineer with extensive experience in enterprise switching, fiber routing, and structured cabling design to lead complex client deployments in Qatar.',
+      requirements: '• 5+ years of experience in network integration\n• Cisco CCNP or equivalent certification\n• Strong experience with Cat6A/Fiber optic design and testing\n• Knowledge of SSD regulations is a plus'
+    },
+    {
+      title: 'Cybersecurity Threat Analyst',
+      department: 'Security Operations',
+      location: 'Doha, Qatar',
+      type: 'Full-time',
+      description: 'Join our SOC team to monitor, analyze, and mitigate security threats for enterprise clients in the finance, hospitality, and government sectors.',
+      requirements: '• 3+ years working in a SOC or security monitoring role\n• Experience with EDR, SIEM systems (Splunk/ELK), and Next-Gen Firewalls\n• Certification like CEH, CISSP, or CompTIA Security+'
+    },
+    {
+      title: 'CCTV & Systems Integration Technician',
+      department: 'Field Installations',
+      location: 'Doha, Qatar',
+      type: 'Full-time',
+      description: 'We need skilled field technicians to install and integrate CCTV cameras, biometrics access control, turnstiles, and tracking systems on client sites across Doha.',
+      requirements: '• 2+ years field experience with CCTV and physical access control installations\n• Basic understanding of IP networks and switch configurations\n• SSD installation training certification preferred'
+    }
+  ]
+
+  await prisma.career.deleteMany({})
+  for (const c of careers) {
+    await prisma.career.create({ data: c })
+  }
+  console.log('✅ Career openings seeded successfully.')
 
   console.log('🌱 Seeding process complete!')
 }

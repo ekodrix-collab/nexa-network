@@ -11,6 +11,8 @@ import {
   FolderKanban,
   Phone,
   ChevronRight,
+  BookOpen,
+  UserPlus,
 } from 'lucide-react'
 
 const navItems = [
@@ -19,6 +21,8 @@ const navItems = [
   { href: '/admin/about', label: 'About Page', icon: Info },
   { href: '/admin/services', label: 'Services', icon: Briefcase },
   { href: '/admin/projects', label: 'Projects', icon: FolderKanban },
+  { href: '/admin/blog', label: 'Blog', icon: BookOpen },
+  { href: '/admin/careers', label: 'Careers', icon: UserPlus },
   { href: '/admin/contact', label: 'Contact', icon: Phone },
 ]
 
@@ -30,12 +34,12 @@ export default function AdminSidebar() {
   }
 
   return (
-    <aside className="w-64 min-h-screen bg-[#060D10] border-r border-white/[0.06] flex flex-col hidden md:flex flex-shrink-0">
+    <aside className="w-64 h-screen sticky top-0 bg-[#060D10] border-r border-white/[0.06] flex flex-col hidden md:flex flex-shrink-0">
       {/* Logo / Branding */}
       <div className="px-6 py-5 border-b border-white/[0.06]">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#F05B1B] to-[#FF8C42] flex items-center justify-center shadow-lg shadow-[#F05B1B]/25">
-            <span className="text-white font-black text-sm">N</span>
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center">
+            <img src="/icon.png" alt="Nexa" className="w-8 h-8 object-contain" />
           </div>
           <div>
             <p className="text-white font-bold text-sm leading-none">Nexa Admin</p>
@@ -50,7 +54,7 @@ export default function AdminSidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 space-y-0.5">
+      <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto">
         {navItems.map(({ href, label, icon: Icon, exact }) => {
           const isActive = exact
             ? pathname === href

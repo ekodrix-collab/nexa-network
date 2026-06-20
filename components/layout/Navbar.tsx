@@ -9,6 +9,26 @@ import {
   Network, Shield, Cloud, DoorOpen, Camera, Truck, Monitor, Globe,
   Building2, Factory, Heart, GraduationCap
 } from 'lucide-react'
+import * as Icons from 'lucide-react'
+
+const serviceAccents: Record<string, string> = {
+  'network-infrastructure': '#3B82F6',
+  'cyber-security': '#EF4444',
+  'cloud-computing': '#A855F7',
+  'conference-room': '#D946EF',
+  'smart-entry': '#22C55E',
+  'web-development': '#06B6D4',
+  'vehicle-tracking': '#F97316',
+  'cctv-surveillance': '#EAB308',
+  'grc-consulting': '#10B981',
+  'ai-consultancy': '#6366F1',
+  'backup-servers': '#3B82F6',
+  'telephonic-system': '#F97316',
+  'music-system': '#D946EF',
+  'footfall-cam': '#EF4444',
+  'smart-protection': '#A855F7',
+  'digital-marketing': '#06B6D4',
+}
 
 const serviceItems = [
   { icon: Network, label: 'Network Infrastructure & Passive Infrastructure', desc: 'Active & passive enterprise backbones', href: '/services/network-infrastructure', color: '#3B82F6' },
@@ -21,13 +41,6 @@ const serviceItems = [
   { icon: Camera, label: 'CCTV & Surveillance Systems', desc: 'SSD-compliant HD video feeds', href: '/services/cctv-surveillance', color: '#EAB308' },
 ]
 
-const navLinks = [
-  { label: 'Home', href: '/' },
-  { label: 'About Us', href: '/about' },
-  { label: 'Our Services', href: '/services', hasDropdown: true, items: serviceItems },
-  { label: 'Contact Us', href: '/contact' },
-]
-
 export default function Navbar() {
   const { theme, setTheme } = useTheme()
   const pathname = usePathname()
@@ -37,6 +50,7 @@ export default function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const [dropdownTimer, setDropdownTimer] = useState<NodeJS.Timeout | null>(null)
   const [hidden, setHidden] = useState(false)
+  const [services, setServices] = useState<any[]>(serviceItems)
 
   const { scrollY } = useScroll()
   const navOpacity = useTransform(scrollY, [0, 100], [0, 1])
@@ -45,9 +59,43 @@ export default function Navbar() {
 
   useEffect(() => {
     setMounted(true)
+
+    // Fetch dynamic services for dropdown
+    const fetchServices = async () => {
+      try {
+        const res = await fetch('/api/services')
+        if (res.ok) {
+          const data = await res.json()
+          if (Array.isArray(data) && data.length > 0) {
+            const mapped = data.slice(0, 8).map((s: any) => {
+              const Resolved = (Icons as any)[s.icon]
+              const IconComponent = Resolved || Icons.Briefcase
+              const color = serviceAccents[s.slug] || '#F05B1B'
+              return {
+                icon: IconComponent,
+                label: s.title,
+                desc: s.subtitle || s.description,
+                href: `/services/${s.slug}`,
+                color
+              }
+            })
+            setServices(mapped)
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch navbar services:', err)
+      }
+    }
+    fetchServices()
   }, [])
 
-  if (pathname?.startsWith('/admin')) return null
+  const navLinks = [
+    { label: 'Home', href: '/' },
+    { label: 'About Us', href: '/about' },
+    { label: 'Our Services', href: '/services', hasDropdown: true, items: services },
+    { label: 'Contact Us', href: '/contact' },
+  ]
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -111,6 +159,8 @@ export default function Navbar() {
   const useDarkStyle = isTransparentPage && !scrolled
   const logoSrc = (currentTheme === 'light' && !useDarkStyle) ? '/images/logo-light.png' : '/images/logo.png'
   const themeLogoSrc = currentTheme === 'light' ? '/images/logo-light.png' : '/images/logo.png'
+
+  if (pathname?.startsWith('/admin')) return null
 
   return (
     <>
@@ -200,7 +250,7 @@ export default function Navbar() {
                                     key={itemAny.label}
                                     href={itemAny.href}
                                     onClick={() => setActiveDropdown(null)}
-                                    className={`flex gap-4 p-4 rounded-2xl transition-all duration-300 group/item text-left ${isDropdownItemActive
+                                    className={`flex items-center gap-4 p-3 rounded-2xl transition-all duration-300 group/item text-left ${isDropdownItemActive
                                       ? (useDarkStyle ? 'bg-white/10' : 'bg-black/5 dark:bg-white/10')
                                       : (useDarkStyle ? 'hover:bg-white/5' : 'hover:bg-black/5 dark:hover:bg-white/5')
                                       }`}
@@ -218,15 +268,11 @@ export default function Navbar() {
                                       />
                                     </div>
 
-                                    <div className="flex flex-col">
+                                    <div className="flex-1">
                                       <span className={`text-xs font-bold group-hover/item:text-[#F05B1B] transition-colors flex items-center gap-1.5 ${useDarkStyle ? 'text-white' : 'text-slate-800 dark:text-white'
                                         }`}>
                                         {itemAny.label}
                                         <ArrowRight className="w-3.5 h-3.5 text-[#F05B1B] opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-300" />
-                                      </span>
-                                      <span className={`text-[10px] mt-1 leading-relaxed ${useDarkStyle ? 'text-white/45' : 'text-slate-500 dark:text-white/45'
-                                        }`}>
-                                        {itemAny.desc}
                                       </span>
                                     </div>
                                   </Link>

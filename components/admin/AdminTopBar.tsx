@@ -10,6 +10,8 @@ const pageTitles: Record<string, { title: string; desc: string }> = {
   '/admin/about': { title: 'About Page', desc: 'Company stats & description' },
   '/admin/services': { title: 'Services', desc: 'Manage service offerings' },
   '/admin/projects': { title: 'Projects', desc: 'Portfolio & client projects' },
+  '/admin/blog': { title: 'Blog', desc: 'Manage blog posts & news articles' },
+  '/admin/careers': { title: 'Careers', desc: 'Manage job vacancies & openings' },
   '/admin/contact': { title: 'Contact', desc: 'Contact details & social links' },
 }
 
