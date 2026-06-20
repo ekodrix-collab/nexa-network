@@ -92,7 +92,7 @@ export default function ResourcesPage() {
             <h3 className="text-3xl font-black text-slate-800 dark:text-white mb-8">Frequently Asked Questions</h3>
             <div className="grid md:grid-cols-2 gap-8">
               <div>
-                <h4 className="text-slate-800 dark:text-white font-bold text-base mb-2">What is Nexa's standard SLA response window?</h4>
+                <h4 className="text-slate-800 dark:text-white font-bold text-base mb-2">What is Nexa&apos;s standard SLA response window?</h4>
                 <p className="text-slate-500 dark:text-white/45 text-sm leading-relaxed">
                   For priority contract clients, we support 24/7/365 assistance with guaranteed on-site arrival within 2 to 4 hours depending on incident severity.
                 </p>
