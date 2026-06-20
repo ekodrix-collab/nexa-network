@@ -1,40 +1,30 @@
 'use client'
 import { useRef, useState, useEffect } from 'react'
-import Link from 'next/link'
-import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import ScrollReveal from '@/components/ui/ScrollReveal'
-
-const projects = [
-  {
-    id: 1,
-    title: 'FedEx Qatar Infrastructure Upgrade',
-    category: 'Network & Infrastructure',
-    image: '/images/projects/fedex.jpg'
-  },
-  {
-    id: 2,
-    title: 'Katara Cultural Village Smart Surveillance System',
-    category: 'CCTV & Security',
-    image: '/images/projects/katara.jpg'
-  },
-  {
-    id: 3,
-    title: 'Aida Clinic Cloud Migration',
-    category: 'Cloud Solutions',
-    image: '/images/projects/aida-clinic.jpg'
-  },
-  {
-    id: 4,
-    title: 'Government Sector Cybersecurity Enhancement',
-    category: 'Cyber Security',
-    image: '/images/projects/government.jpg'
-  }
-]
 
 export default function Projects() {
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [projects, setProjects] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/admin/projects', { cache: 'no-store' })
+      .then(res => res.json())
+      .then(data => {
+        const featured = data
+          .filter((p: any) => p.featured)
+          .map((p: any) => ({
+            ...p,
+            image: p.imageUrl || ''
+          }))
+        setProjects(featured)
+        setLoading(false)
+      })
+      .catch(() => setLoading(false))
+  }, [])
 
   const scroll = (direction: 'left' | 'right') => {
     if (!scrollRef.current) return
@@ -56,6 +46,22 @@ export default function Projects() {
     handleScroll()
   }, [])
 
+  if (loading) {
+    return (
+      <section className="py-24 bg-white dark:bg-[#070f12] relative overflow-hidden border-b border-black/5 dark:border-white/5 transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex gap-6 overflow-x-auto pb-6">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="flex-shrink-0 w-80 h-72 rounded-[5px] bg-[#0d1c22]/10 dark:bg-white/[0.03] border border-black/5 dark:border-white/[0.06] animate-pulse" />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (projects.length === 0) return null
+
   return (
     <section className="py-24 bg-white dark:bg-[#070f12] relative overflow-hidden border-b border-black/5 dark:border-white/5 transition-colors duration-300">
       <div className="relative flex flex-col z-10 max-w-7xl mx-auto px-6 lg:px-8">
@@ -63,7 +69,7 @@ export default function Projects() {
         {/* Header Block */}
         <div className="flex items-start justify-between mb-16">
 
-          {/* LEFT: Label + Heading + Link */}
+          {/* LEFT: Label + Heading */}
           <div>
             <span className="text-[#F05B1B] text-xs font-extrabold tracking-[0.25em] uppercase mb-3 block">
               Featured Projects
@@ -71,13 +77,6 @@ export default function Projects() {
             <h2 className="text-3xl md:text-4xl font-extrabold text-slate-800 dark:text-white leading-tight">
               Real solutions Real results.
             </h2>
-            <Link
-              href="/projects"
-              className="inline-flex items-center gap-2 text-[#F05B1B] hover:text-[#FF6B2B] text-xs font-bold tracking-wider uppercase mt-4 transition-colors"
-            >
-              View All Projects
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
           </div>
 
           {/* RIGHT: Nav Buttons — hidden on mobile, visible md+ */}

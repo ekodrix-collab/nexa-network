@@ -7,6 +7,7 @@ import {
   Plus, Pencil, Trash2, X, Save, Loader2, Briefcase, Eye, EyeOff,
   Sliders, Layout, Users, HelpCircle
 } from 'lucide-react'
+import DeleteModal from '@/components/admin/DeleteModal'
 
 type Service = {
   id: string
@@ -95,6 +96,9 @@ export default function ServicesAdminPage() {
   const [featuresText, setFeaturesText] = useState('')
   const [originalFeaturesText, setOriginalFeaturesText] = useState('')
   const [activeTab, setActiveTab] = useState<'general' | 'hero-overview' | 'partners' | 'projects' | 'faqs'>('general')
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [serviceToDelete, setServiceToDelete] = useState<Service | null>(null)
+  const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
     fetchServices()
@@ -202,11 +206,23 @@ export default function ServicesAdminPage() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [editing, featuresText, originalFeaturesText, originalService, saving])
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Delete this service? This cannot be undone.')) return
-    const res = await fetch(`/api/admin/services/${id}`, { method: 'DELETE' })
-    if (res.ok) fetchServices()
-    else alert('Failed to delete')
+  const openDeleteModal = (service: Service) => {
+    setServiceToDelete(service)
+    setDeleteModalOpen(true)
+  }
+
+  const handleDelete = async () => {
+    if (!serviceToDelete) return
+    setDeleting(true)
+    const res = await fetch(`/api/admin/services/${serviceToDelete.id}`, { method: 'DELETE' })
+    setDeleting(false)
+    if (res.ok) {
+      setDeleteModalOpen(false)
+      setServiceToDelete(null)
+      fetchServices()
+    } else {
+      alert('Failed to delete')
+    }
   }
 
   if (loading) {
@@ -785,7 +801,7 @@ export default function ServicesAdminPage() {
                 <Pencil className="w-3.5 h-3.5" /> Edit
               </button>
               <button
-                onClick={() => handleDelete(service.id)}
+                onClick={() => openDeleteModal(service)}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/5 hover:bg-red-500/10 text-red-400/60 hover:text-red-400 text-xs font-medium border border-red-500/10 hover:border-red-500/20 transition-all cursor-pointer"
               >
                 <Trash2 className="w-3.5 h-3.5" /> Delete
@@ -804,6 +820,16 @@ export default function ServicesAdminPage() {
           </div>
         )}
       </div>
+
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={handleDelete}
+        title="Delete Service"
+        message="Are you sure you want to delete this service? This action cannot be undone and will immediately remove the service and all its detail content from the website."
+        itemName={serviceToDelete?.title}
+        isDeleting={deleting}
+      />
     </div>
   )
 }

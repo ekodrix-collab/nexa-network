@@ -96,7 +96,6 @@ export default function Navbar() {
     { label: 'Contact Us', href: '/contact' },
   ]
 
-  if (pathname?.startsWith('/admin')) return null
 
   useEffect(() => {
     const handleScroll = () => {
@@ -160,6 +159,8 @@ export default function Navbar() {
   const useDarkStyle = isTransparentPage && !scrolled
   const logoSrc = (currentTheme === 'light' && !useDarkStyle) ? '/images/logo-light.png' : '/images/logo.png'
   const themeLogoSrc = currentTheme === 'light' ? '/images/logo-light.png' : '/images/logo.png'
+
+  if (pathname?.startsWith('/admin')) return null
 
   return (
     <>

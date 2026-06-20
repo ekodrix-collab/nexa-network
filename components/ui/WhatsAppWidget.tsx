@@ -8,8 +8,6 @@ export default function WhatsAppWidget() {
   const [showBadge, setShowBadge] = useState(false)
   const pathname = usePathname()
 
-  if (pathname?.startsWith('/admin')) return null
-
   // Show badge with a delay to attract attention
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -34,6 +32,8 @@ export default function WhatsAppWidget() {
     const url = `https://wa.me/${phone}${prefillText ? `?text=${encodedText}` : ''}`
     window.open(url, '_blank', 'noopener,noreferrer')
   }
+
+  if (pathname?.startsWith('/admin')) return null
 
   return (
     <div className="fixed bottom-6 right-6 flex flex-col items-end pointer-events-none z-50">
