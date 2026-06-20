@@ -28,17 +28,59 @@ const getStatIcon = (label: string) => {
 export default function ServicePage({ params }: { params: { slug: string } }) {
   const [mounted, setMounted] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(0)
+  const [dbService, setDbService] = useState<any | null>(null)
 
   useEffect(() => {
     setMounted(true)
     window.scrollTo(0, 0)
-  }, [])
 
-  const service = serviceData.find((s) => s.slug === params.slug)
+    const fetchService = async () => {
+      try {
+        const res = await fetch(`/api/services/${params.slug}`, { cache: 'no-store' })
+        if (res.ok) {
+          const data = await res.json()
+          setDbService(data)
+        }
+      } catch (err) {
+        console.error('Failed to fetch service detail:', err)
+      }
+    }
+    fetchService()
+  }, [params.slug])
 
-  if (!service) {
+  const staticService = serviceData.find((s) => s.slug === params.slug)
+
+  if (!staticService) {
     notFound()
   }
+
+  // Merge static fallback and dynamic database service details (guaranteeing unified type)
+  const service = {
+    ...staticService,
+    hero: {
+      title: dbService?.heroTitle || staticService.hero?.title || dbService?.title || '',
+      highlight: dbService?.heroHighlight || staticService.hero?.highlight || '',
+      description: dbService?.heroDescription || staticService.hero?.description || dbService?.description || '',
+      image: dbService?.heroImage || staticService.hero?.image || dbService?.imageUrl || '',
+      stats: dbService?.stats && dbService.stats.length > 0 ? dbService.stats : (staticService.hero?.stats || [])
+    },
+    overview: {
+      title: dbService?.overviewTitle || staticService.overview?.title || "Overview",
+      description: dbService?.overviewDescription || staticService.overview?.description || dbService?.description || '',
+      image: dbService?.overviewImage || dbService?.heroImage || dbService?.imageUrl || staticService.overview?.image || '',
+      features: dbService?.features && dbService.features.length > 0 ? dbService.features : (staticService.overview?.features || [])
+    },
+    partners: dbService?.partners && dbService.partners.length > 0 ? dbService.partners : [
+      { name: 'NORDEN', imageUrl: '' },
+      { name: 'RAMCRO', imageUrl: '' },
+      { name: 'COMMSCOPE', imageUrl: '' },
+      { name: 'PANDUIT', imageUrl: '' },
+      { name: 'HUBNETIX', imageUrl: '' },
+      { name: 'CISCO', imageUrl: '' }
+    ],
+    projects: dbService?.projects && dbService.projects.length > 0 ? dbService.projects : (staticService.projects || []),
+    faqs: dbService?.faqs && dbService.faqs.length > 0 ? dbService.faqs : (staticService.faqs || [])
+  };
 
   if (!mounted) return null
 
@@ -101,7 +143,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
 
                   {/* Stats Row */}
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-                    {service.hero.stats.map((stat, i) => {
+                    {service.hero.stats.map((stat: any, i: number) => {
                       const StatIcon = getStatIcon(stat.label)
 
                       return (
@@ -163,7 +205,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
 
               {/* Features Grid */}
               <div className="grid sm:grid-cols-2 gap-y-4 gap-x-6">
-                {service.overview.features.map((feature, i) => (
+                {service.overview.features.map((feature: any, i: number) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-[#F05B1B] flex-shrink-0 mt-0.5" />
                     <span className="text-sm font-medium text-slate-700 dark:text-white/80">{feature}</span>
@@ -185,10 +227,14 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {['NORDEN', 'RAMCRO', 'COMMSCOPE', 'PANDUIT', 'HUBNETIX', 'CISCO'].map((partner, i) => (
-              <ScrollReveal key={partner} delay={i * 0.05}>
-                <div className="h-20 flex items-center justify-center border border-black/10 dark:border-white/10 rounded-xl hover:border-[#F05B1B]/50 transition-colors duration-300">
-                  <span className="text-slate-700 dark:text-white/70 font-black tracking-wider text-sm uppercase">{partner}</span>
+            {service.partners.map((partner: any, i: number) => (
+              <ScrollReveal key={partner.name || i} delay={i * 0.05}>
+                <div className="h-20 flex items-center justify-center border border-black/10 dark:border-white/10 rounded-xl hover:border-[#F05B1B]/50 transition-colors duration-300 p-2 bg-white/5">
+                  {partner.imageUrl ? (
+                    <img src={partner.imageUrl} alt={partner.name} className="h-10 w-auto object-contain max-w-[85%] filter dark:brightness-200" />
+                  ) : (
+                    <span className="text-slate-700 dark:text-white/70 font-black tracking-wider text-sm uppercase">{partner.name}</span>
+                  )}
                 </div>
               </ScrollReveal>
             ))}
@@ -210,7 +256,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
-              {service.projects.map((project, i) => (
+              {service.projects.map((project: any, i: number) => (
                 <ScrollReveal key={i} delay={i * 0.1}>
                   <div className="group relative rounded-[5px] overflow-hidden aspect-[4/5] shadow-lg border border-black/5 dark:border-white/10">
                     <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
@@ -221,7 +267,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
                         {project.category}
                       </div>
                       <h3 className="text-xl font-bold text-white mb-3 leading-snug">{project.title}</h3>
-                      <p className="text-white/60 text-sm mb-6 line-clamp-3">{project.description}</p>
+                      <p className="text-white/60 text-sm mb-6 line-clamp-2">{project.description}</p>
                       <Link href={project.link} className="inline-flex items-center gap-2 text-[#F05B1B] font-bold text-sm hover:text-[#FF6B2B] transition-colors">
                         View Case Study <ArrowRight className="w-4 h-4" />
                       </Link>
@@ -303,7 +349,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
                 </div>
 
                 <div className="space-y-4">
-                  {service.faqs.map((faq, i) => (
+                  {service.faqs.map((faq: any, i: number) => (
                     <div key={i} className="bg-white dark:bg-[#080808] border border-black/5 dark:border-white/5 rounded-[5px] overflow-hidden transition-colors duration-300">
                       <button
                         onClick={() => setOpenFaq(openFaq === i ? null : i)}

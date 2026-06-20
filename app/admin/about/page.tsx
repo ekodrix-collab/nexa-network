@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import SectionCard from '@/components/admin/SectionCard'
 import { Input, Textarea, FieldGrid } from '@/components/admin/AdminFields'
 import ImageUploader from '@/components/admin/ImageUploader'
-import { Eye, Shield, Target, Award, Star } from 'lucide-react'
+import { Eye, Shield, Target, Award, Star, Save, Loader2 } from 'lucide-react'
 
 async function savePageContent(data: any) {
   const res = await fetch('/api/admin/settings?page=about', {
@@ -17,10 +17,12 @@ async function savePageContent(data: any) {
 
 export default function AboutAdminPage() {
   const [settings, setSettings] = useState<any>({})
+  const [originalSettings, setOriginalSettings] = useState<any>({})
   const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
-    fetch('/api/admin/settings?page=about')
+    fetch('/api/admin/settings?page=about', { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         // Hydrate arrays with default item structures to prevent null reference errors during editing
@@ -39,18 +41,55 @@ export default function AboutAdminPage() {
           tests.push({ name: '', role: '', stars: 5, quote: '' })
         }
 
-        setSettings({
+        const hydrated = {
           ...data,
           values: vals,
           benefits: bens,
           testimonials: tests
-        })
+        }
+        setSettings(hydrated)
+        setOriginalSettings(JSON.parse(JSON.stringify(hydrated)))
         setLoading(false)
       })
   }, [])
 
   const set = (key: string) => (value: any) =>
     setSettings((prev: any) => ({ ...prev, [key]: value }))
+
+  const hasChanges = () => {
+    if (loading || !settings || !originalSettings) return false
+    return JSON.stringify(settings) !== JSON.stringify(originalSettings)
+  }
+
+  const handleDiscard = () => {
+    if (originalSettings) {
+      setSettings(JSON.parse(JSON.stringify(originalSettings)))
+    }
+  }
+
+  const handleSave = async () => {
+    setSaving(true)
+    try {
+      await savePageContent(settings)
+      setOriginalSettings(JSON.parse(JSON.stringify(settings)))
+    } catch (e) {
+      alert('Failed to save changes')
+    }
+    setSaving(false)
+  }
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault()
+        if (hasChanges() && !saving) {
+          handleSave()
+        }
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [settings, originalSettings, saving])
 
   const setValueItem = (index: number, field: string) => (val: any) => {
     setSettings((prev: any) => {
@@ -88,11 +127,46 @@ export default function AboutAdminPage() {
 
   return (
     <div className="space-y-5">
+      {/* Shopify-style Floating Save Bar */}
+      {hasChanges() && (
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center justify-between gap-6 px-6 py-3 bg-[#0B1419]/95 backdrop-blur-md border border-[#F05B1B]/30 rounded-full shadow-2xl shadow-black/85 animate-in fade-in slide-in-from-top-4 duration-300 w-[90%] max-w-lg">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#F05B1B] animate-pulse" />
+            <span className="text-white/80 text-xs font-semibold uppercase tracking-wider whitespace-nowrap">Unsaved Changes</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={handleDiscard}
+              className="text-white/60 hover:text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-all hover:bg-white/5 cursor-pointer"
+            >
+              Discard
+            </button>
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={saving}
+              className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-[#F05B1B] hover:bg-[#FF6B2B] text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-[#F05B1B]/20 disabled:opacity-50 cursor-pointer"
+            >
+              {saving ? (
+                <>
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" /> Saving...
+                </>
+              ) : (
+                <>
+                  <Save className="w-3.5 h-3.5" /> Save
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Live Preview Info Banner */}
       <div className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blue-500/5 border border-blue-500/10">
         <Eye className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />
         <p className="text-blue-300/70 text-xs">
-          Changes saved here appear on the <strong className="text-blue-300">live website about page</strong>. Each section saves independently.
+          Changes saved here appear on the <strong className="text-blue-300">live website about page</strong>.
         </p>
       </div>
 
@@ -101,7 +175,6 @@ export default function AboutAdminPage() {
         title="Hero Section"
         description="The large top banner and headline for your About page"
         badge="Hero Banner"
-        onSave={() => savePageContent(settings)}
       >
         <div className="space-y-4">
           <FieldGrid cols={2}>
@@ -140,7 +213,6 @@ export default function AboutAdminPage() {
         title="Who We Are Section"
         description="Second section content area explaining the company scope"
         badge="Who We Are"
-        onSave={() => savePageContent(settings)}
       >
         <div className="space-y-4">
           <Input
@@ -182,7 +254,6 @@ export default function AboutAdminPage() {
         title="Mission, Vision & Values"
         description="Three pillars grid of the about page"
         badge="Pillars Grid"
-        onSave={() => savePageContent(settings)}
       >
         <div className="space-y-8 divide-y divide-white/[0.05]">
           {/* Mission */}
@@ -285,7 +356,6 @@ export default function AboutAdminPage() {
         title="Why Choose Us & Benefits"
         description="Section mapping benefits grid and details"
         badge="Why Choose Us"
-        onSave={() => savePageContent(settings)}
       >
         <div className="space-y-6">
           <FieldGrid cols={2}>
@@ -401,7 +471,6 @@ export default function AboutAdminPage() {
         title="Testimonials Section"
         description="Three customer feedback cards on the about page"
         badge="Testimonials"
-        onSave={() => savePageContent(settings)}
       >
         <div className="space-y-6 divide-y divide-white/[0.05]">
           {[0, 1, 2].map((idx) => (
@@ -451,7 +520,6 @@ export default function AboutAdminPage() {
         title="CTA Section"
         description="The call to action container at the bottom of the page"
         badge="CTA banner"
-        onSave={() => savePageContent(settings)}
       >
         <div className="space-y-4">
           <Input

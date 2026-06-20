@@ -90,15 +90,28 @@ model ContactInfo {
 
 
 model Service {
-  id          String   @id @default(uuid())
-  title       String
-  subtitle    String
-  description String   @db.Text
-  icon        String
-  features    Json
-  orderIndex  Int      @default(0)
-  active      Boolean  @default(true)
-  imageUrl    String?
+  id                  String   @id @default(uuid())
+  slug                String   @unique
+  title               String
+  subtitle            String
+  description         String   @db.Text
+  icon                String
+  features            Json
+  orderIndex          Int      @default(0)
+  active              Boolean  @default(true)
+  imageUrl            String?
+  // Service Detail Page custom fields
+  heroTitle           String?
+  heroHighlight       String?
+  heroDescription     String?  @db.Text
+  heroImage           String?
+  stats               Json?    // Array of { value, label }
+  overviewTitle       String?
+  overviewDescription String?  @db.Text
+  overviewImage       String?
+  partners            Json?    // Array of { name, imageUrl }
+  projects            Json?    // Array of { category, title, description, image, link }
+  faqs                Json?    // Array of { question, answer }
 }
 
 model Project {

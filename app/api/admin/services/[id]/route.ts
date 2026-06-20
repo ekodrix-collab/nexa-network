@@ -13,6 +13,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   if (!isAuthenticated()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   try {
     const data = await request.json()
+    const { id, ...updateData } = data
     
     const existing = await prisma.service.findUnique({
       where: { id: params.id },
@@ -21,7 +22,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 
     const service = await prisma.service.update({
       where: { id: params.id },
-      data
+      data: updateData
     })
 
     if (existing && existing.imageUrl && existing.imageUrl !== data.imageUrl) {
