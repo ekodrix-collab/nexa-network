@@ -4,7 +4,7 @@ import AdminTopBar from '@/components/admin/AdminTopBar'
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-screen bg-[#080F13] text-white flex">
+    <div className="h-screen bg-[#080F13] text-white flex overflow-hidden">
       <AdminSidebar />
 
       {/* Main Content Area */}

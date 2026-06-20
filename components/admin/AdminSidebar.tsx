@@ -30,7 +30,7 @@ export default function AdminSidebar() {
   }
 
   return (
-    <aside className="w-64 min-h-screen bg-[#060D10] border-r border-white/[0.06] flex flex-col hidden md:flex flex-shrink-0">
+    <aside className="w-64 h-screen sticky top-0 bg-[#060D10] border-r border-white/[0.06] flex flex-col hidden md:flex flex-shrink-0">
       {/* Logo / Branding */}
       <div className="px-6 py-5 border-b border-white/[0.06]">
         <div className="flex items-center gap-3">
@@ -50,7 +50,7 @@ export default function AdminSidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 space-y-0.5">
+      <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto">
         {navItems.map(({ href, label, icon: Icon, exact }) => {
           const isActive = exact
             ? pathname === href
