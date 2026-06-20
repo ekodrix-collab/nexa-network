@@ -323,7 +323,7 @@ export default function AboutClient({ content }: AboutClientProps) {
 
                     {/* Client quote */}
                     <p className="text-slate-600 dark:text-white/70 text-sm italic leading-relaxed mb-6">
-                      "{test.quote}"
+                      &quot;{test.quote}&quot;
                     </p>
                   </div>
 

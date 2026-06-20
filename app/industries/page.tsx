@@ -103,10 +103,10 @@ export default function IndustriesPage() {
                 <span className="text-[#F05B1B] text-xs font-bold tracking-[0.25em] uppercase">Industries We Serve</span>
               </div>
               <h1 className="text-5xl lg:text-6xl font-black text-slate-800 dark:text-white leading-tight mb-6">
-                Tailored IT for Qatar's <span className="text-[#F05B1B]">Key Verticals</span>
+                Tailored IT for Qatar&apos;s <span className="text-[#F05B1B]">Key Verticals</span>
               </h1>
               <p className="text-slate-600 dark:text-white/50 text-lg leading-relaxed">
-                Enterprise technology infrastructure designed, integrated, and supported to meet the unique challenges of Qatar's public, enterprise, and educational institutions.
+                Enterprise technology infrastructure designed, integrated, and supported to meet the unique challenges of Qatar&apos;s public, enterprise, and educational institutions.
               </p>
             </div>
           </ScrollReveal>

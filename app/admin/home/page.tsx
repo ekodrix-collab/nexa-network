@@ -307,7 +307,7 @@ export default function HomeAdminPage() {
           <div className="p-4 rounded-lg bg-[#0D1C22] border border-white/[0.06] mb-2">
             <p className="text-[10px] text-white/30 font-bold uppercase tracking-wider mb-2">Live Preview</p>
             <div className="text-white font-bold text-base">
-              {settings.ctaTitle || <span className="text-white/20 italic font-normal text-sm">Using default: "Let's build a smarter, safer future together."</span>}
+              {settings.ctaTitle || <span className="text-white/20 italic font-normal text-sm">Using default: &quot;Let&apos;s build a smarter, safer future together.&quot;</span>}
             </div>
             <div className="text-white/50 text-xs mt-1 line-clamp-2">
               {settings.ctaDescription || <span className="text-white/20 italic">Using default description</span>}

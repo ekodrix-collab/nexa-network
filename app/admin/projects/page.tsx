@@ -315,7 +315,7 @@ export default function ProjectsAdminPage() {
               <FolderKanban className="w-5 h-5 text-white/20" />
             </div>
             <p className="text-white/40 text-sm font-medium">No projects yet</p>
-            <p className="text-white/20 text-xs mt-1">Click "Add Project" to create your first project</p>
+            <p className="text-white/20 text-xs mt-1">Click &quot;Add Project&quot; to create your first project</p>
           </div>
         )}
       </div>
