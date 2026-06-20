@@ -142,7 +142,7 @@ export default function Footer() {
                   {/* dot + label together as a group, underline only under the text */}
                   <Link
                     href={href}
-className="group flex items-center gap-2 text-[13px] text-slate-500 dark:text-white/40 hover:text-[#F05B1B] dark:hover:text-[#F05B1B] transition-colors duration-200"                  >
+                    className="group flex items-center gap-2 text-[13px] text-slate-500 dark:text-white/40 hover:text-[#F05B1B] dark:hover:text-[#F05B1B] transition-colors duration-200"                  >
                     <span className="w-1 h-1 rounded-full bg-[#F05B1B]/40 group-hover:bg-[#F05B1B] shrink-0 transition-colors" />
                     <span className="relative after:absolute after:left-0 after:bottom-0 after:h-px after:w-0 after:bg-[#F05B1B] after:transition-[width] after:duration-300 group-hover:after:w-full">
                       {label}
@@ -238,7 +238,7 @@ className="group flex items-center gap-2 text-[13px] text-slate-500 dark:text-wh
                 <div>
                   <p className="text-[10px] uppercase tracking-[0.1em] text-slate-400 dark:text-white/25 mb-0.5">Office</p>
                   <p className="text-[11px] text-slate-500 dark:text-white/50 leading-relaxed">
-                    Hilalyton Tower, Floor 7 – Office 33<br />
+                    Hilalyton Tower, Floor 2 – Office 33<br />
                     Al Saflya St · Doha, Qatar
                   </p>
                 </div>

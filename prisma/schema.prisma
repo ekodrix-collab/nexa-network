@@ -90,15 +90,28 @@ model ContactInfo {
 
 
 model Service {
-  id          String   @id @default(uuid())
-  title       String
-  subtitle    String
-  description String   @db.Text
-  icon        String
-  features    Json
-  orderIndex  Int      @default(0)
-  active      Boolean  @default(true)
-  imageUrl    String?
+  id                  String   @id @default(uuid())
+  slug                String   @unique
+  title               String
+  subtitle            String
+  description         String   @db.Text
+  icon                String
+  features            Json
+  orderIndex          Int      @default(0)
+  active              Boolean  @default(true)
+  imageUrl            String?
+  // Service Detail Page custom fields
+  heroTitle           String?
+  heroHighlight       String?
+  heroDescription     String?  @db.Text
+  heroImage           String?
+  stats               Json?    // Array of { value, label }
+  overviewTitle       String?
+  overviewDescription String?  @db.Text
+  overviewImage       String?
+  partners            Json?    // Array of { name, imageUrl }
+  projects            Json?    // Array of { category, title, description, image, link }
+  faqs                Json?    // Array of { question, answer }
 }
 
 model Project {
@@ -126,4 +139,29 @@ model Contact {
   status    String   @default("new")
   ipAddress String?
   createdAt DateTime @default(now())
+}
+
+model BlogPost {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  title       String
+  description String   @db.Text
+  content     String   @db.LongText
+  readTime    String   // e.g. "5 mins read"
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Career {
+  id           String   @id @default(uuid())
+  title        String
+  department   String
+  location     String
+  type         String   // e.g. "Full-time"
+  description  String   @db.Text
+  requirements String   @db.Text
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }

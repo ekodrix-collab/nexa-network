@@ -1,9 +1,29 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { Network, Shield, Cloud, DoorOpen, Camera, Truck, ArrowRight, CheckCircle2, Monitor, Globe, ShieldCheck, Brain, Server, Phone, Music, Scan, Lock, Megaphone, LayoutGrid, List } from 'lucide-react'
+import * as Icons from 'lucide-react'
 import ScrollReveal from '@/components/ui/ScrollReveal'
+
+const serviceAccents: Record<string, string> = {
+  'network-infrastructure': '#3B82F6',
+  'cyber-security': '#EF4444',
+  'cloud-computing': '#A855F7',
+  'conference-room': '#D946EF',
+  'smart-entry': '#22C55E',
+  'web-development': '#06B6D4',
+  'vehicle-tracking': '#F97316',
+  'cctv-surveillance': '#EAB308',
+  'grc-consulting': '#10B981',
+  'ai-consultancy': '#6366F1',
+  'backup-servers': '#3B82F6',
+  'telephonic-system': '#F97316',
+  'music-system': '#D946EF',
+  'footfall-cam': '#EF4444',
+  'smart-protection': '#A855F7',
+  'digital-marketing': '#06B6D4',
+}
 
 const services = [
   { slug: 'network-infrastructure', icon: Network, title: 'Network Infrastructure & Passive Infrastructure', subtitle: 'Passive & Active Networks', description: 'Design and implement reliable, scalable, and secure network infrastructure that ensures seamless connectivity and efficient business operations across your organization.', features: ['Structured Cabling (Cat6/Cat6a/Fiber)', 'LAN/WAN Design & Implementation', 'Enterprise WiFi Solutions', 'Network Monitoring & Management', 'Switch & Router Configuration', 'Network Security Appliances'], accent: '#3B82F6' },
@@ -146,6 +166,38 @@ const services = [
 
 export default function ServicesPage() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+  const [displayServices, setDisplayServices] = useState<any[]>(services)
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const res = await fetch('/api/services', { cache: 'no-store' })
+        if (res.ok) {
+          const data = await res.json()
+          if (Array.isArray(data) && data.length > 0) {
+            const mapped = data.map((s: any) => {
+              const Resolved = (Icons as any)[s.icon]
+              const IconComponent = Resolved || Icons.Briefcase
+              const accent = serviceAccents[s.slug] || '#F05B1B'
+              return {
+                slug: s.slug,
+                icon: IconComponent,
+                title: s.title,
+                subtitle: s.subtitle || '',
+                description: s.description,
+                features: Array.isArray(s.features) ? s.features : [],
+                accent
+              }
+            })
+            setDisplayServices(mapped)
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch catalog services:', err)
+      }
+    }
+    fetchServices()
+  }, [])
 
   return (
     <div className="bg-[#F4F6F8] dark:bg-[#070f12] text-slate-800 dark:text-white transition-colors duration-300">
@@ -168,7 +220,7 @@ export default function ServicesPage() {
           <ScrollReveal>
             <div className="max-w-3xl">
               <div className="flex items-center gap-2">
-                <span className="text-[#F05B1B] text-xs font-extrabold tracking-[0.25em] uppercase mb-4 block">
+                <span className="text-[#F05B1B] text-xs font-extrabold tracking-[0.2em] uppercase mb-4 block">
                   Our Services
                 </span>
               </div>
@@ -222,7 +274,7 @@ export default function ServicesPage() {
 
           {viewMode === 'grid' ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {services.map((service, i) => {
+              {displayServices.map((service, i) => {
                 const Icon = service.icon
                 return (
                   <ScrollReveal key={service.title} delay={i * 0.03}>
@@ -242,7 +294,7 @@ export default function ServicesPage() {
                             className="text-[10px] font-bold tracking-[0.15em] uppercase px-2.5 py-1 rounded bg-slate-100 dark:bg-white/5"
                             style={{ color: service.accent }}
                           >
-                            {service.subtitle.split(' & ')[0] || service.subtitle}
+                            {(service.subtitle || '').split(' & ')[0] || service.subtitle || ''}
                           </span>
                         </div>
 
@@ -255,7 +307,7 @@ export default function ServicesPage() {
                         </p>
 
                         <div className="space-y-2.5 mb-6 border-t border-black/5 dark:border-white/5 pt-4">
-                          {service.features.slice(0, 4).map((f) => (
+                          {service.features.slice(0, 4).map((f: string) => (
                             <div key={f} className="flex items-center gap-2">
                               <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" style={{ color: service.accent }} />
                               <span className="text-slate-600 dark:text-white/60 text-xs line-clamp-1">{f}</span>
@@ -286,7 +338,7 @@ export default function ServicesPage() {
             </div>
           ) : (
             <div className="space-y-12">
-              {services.map((service, i) => {
+              {displayServices.map((service, i) => {
                 const Icon = service.icon
                 return (
                   <ScrollReveal key={service.title} delay={0.1}>
@@ -305,7 +357,7 @@ export default function ServicesPage() {
                           </div>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                          {service.features.map((f) => (
+                          {service.features.map((f: string) => (
                             <div key={f} className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/10 transition-colors duration-300">
                               <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: service.accent }} />
                               <span className="text-slate-600 dark:text-white/60 text-sm">{f}</span>

@@ -91,7 +91,7 @@ function ContactContent() {
                 {[
                   { icon: Phone, label: 'Phone', value: '+974 4145 9393', href: 'tel:+97441459393' },
                   { icon: Mail, label: 'Email', value: 'support@nexa.com.qa', href: 'mailto:support@nexa.com.qa' },
-                  { icon: MapPin, label: 'Office', value: 'Hilalyton Tower, Floor 7\nAl Saflya St, Doha – Qatar' },
+                  { icon: MapPin, label: 'Office', value: 'Hilalyton Tower, Floor 2\nAl Saflya St, Doha – Qatar' },
                   { icon: Clock, label: 'Working Hours', value: 'Sun – Thu: 8AM – 6PM' },
                 ].map(({ icon: Icon, label, value, href }) => (
                   <div key={label} className="flex items-center gap-4 p-4 bg-white mb-2 dark:bg-brand-navy/60 rounded-[5px] border border-black/5 dark:border-white/10 shadow-sm dark:shadow-none hover:shadow-lg dark:hover:shadow-none transition-all duration-300">
