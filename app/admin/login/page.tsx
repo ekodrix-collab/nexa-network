@@ -48,8 +48,8 @@ export default function AdminLogin() {
       <div className="relative z-10 w-full max-w-sm px-4">
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#F05B1B] to-[#FF8C42] flex items-center justify-center shadow-2xl shadow-[#F05B1B]/30 mb-4">
-            <span className="text-white font-black text-xl">N</span>
+          <div className="w-14 h-14 rounded-2xl overflow-hidden shadow-2xl shadow-[#F05B1B]/30 mb-4">
+            <img src="/nexa-icon.png" alt="Nexa" className="w-full h-full object-cover" />
           </div>
           <h1 className="text-white font-bold text-xl">Nexa Admin</h1>
           <p className="text-white/30 text-sm mt-1">Sign in to manage your website</p>

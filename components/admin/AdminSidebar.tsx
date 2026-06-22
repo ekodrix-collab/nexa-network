@@ -38,8 +38,8 @@ export default function AdminSidebar() {
       {/* Logo / Branding */}
       <div className="px-6 py-5 border-b border-white/[0.06]">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center">
-            <img src="/icon.png" alt="Nexa" className="w-8 h-8 object-contain" />
+          <div className="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0">
+            <img src="/nexa-icon.png" alt="Nexa" className="w-full h-full object-cover" />
           </div>
           <div>
             <p className="text-white font-bold text-sm leading-none">Nexa Admin</p>
