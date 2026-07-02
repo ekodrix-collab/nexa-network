@@ -15,7 +15,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     const data = await request.json()
     const { id, createdAt, updatedAt, ...updateData } = data
     
-    const existing = await queryOne('SELECT imageUrl FROM BlogPost WHERE id = ?', [params.id])
+    const existing = await queryOne('SELECT imageUrl FROM blogpost WHERE id = ?', [params.id])
 
     if (!updateData.slug && updateData.title) {
       updateData.slug = updateData.title
@@ -24,7 +24,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
         .replace(/(^-|-$)+/g, '')
     }
 
-    const updateQuery = buildUpdateQuery('BlogPost', params.id, updateData)
+    const updateQuery = buildUpdateQuery('blogpost', params.id, updateData)
     if (updateQuery) {
       await execute(updateQuery.sql, updateQuery.values)
     }
@@ -43,9 +43,9 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
   if (!isAuthenticated()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   try {
-    const post = await queryOne('SELECT imageUrl FROM BlogPost WHERE id = ?', [params.id])
+    const post = await queryOne('SELECT imageUrl FROM blogpost WHERE id = ?', [params.id])
 
-    await execute('DELETE FROM BlogPost WHERE id = ?', [params.id])
+    await execute('DELETE FROM blogpost WHERE id = ?', [params.id])
 
     if (post && post.imageUrl) {
       await deleteUploadedFile(post.imageUrl)

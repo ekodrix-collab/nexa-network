@@ -5,7 +5,7 @@ import { queryOne } from '@/lib/db'
 
 export async function GET(request: Request, { params }: { params: { slug: string } }) {
   try {
-    const post = await queryOne('SELECT * FROM BlogPost WHERE slug = ?', [params.slug])
+    const post = await queryOne('SELECT * FROM blogpost WHERE slug = ?', [params.slug])
     if (!post) {
       return NextResponse.json({ error: 'Blog post not found' }, { status: 404 })
     }

@@ -14,7 +14,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     const data = await request.json()
     const { id, createdAt, updatedAt, ...updateData } = data
     
-    const updateQuery = buildUpdateQuery('Career', params.id, updateData)
+    const updateQuery = buildUpdateQuery('career', params.id, updateData)
     if (updateQuery) {
       await execute(updateQuery.sql, updateQuery.values)
     }
@@ -29,7 +29,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
   if (!isAuthenticated()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   try {
-    await execute('DELETE FROM Career WHERE id = ?', [params.id])
+    await execute('DELETE FROM career WHERE id = ?', [params.id])
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Admin DELETE career error:', error)

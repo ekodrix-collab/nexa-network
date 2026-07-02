@@ -8,7 +8,7 @@ export async function GET(
   { params }: { params: { slug: string } }
 ) {
   try {
-    const service = await queryOne('SELECT * FROM Service WHERE slug = ?', [params.slug])
+    const service = await queryOne('SELECT * FROM service WHERE slug = ?', [params.slug])
 
     if (!service || !service.active) {
       return NextResponse.json({ error: 'Service not found' }, { status: 404 })

@@ -13,7 +13,7 @@ function isAuthenticated() {
 
 export async function GET() {
   try {
-    const services = await query('SELECT * FROM Service ORDER BY orderIndex ASC')
+    const services = await query('SELECT * FROM service ORDER BY orderIndex ASC')
     const parsedServices = parseRowsJson(services, ['features', 'stats', 'partners', 'projects', 'faqs'])
     return NextResponse.json(parsedServices)
   } catch (error) {
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     const { id: inputId, ...createData } = data
     const id = inputId || randomUUID()
     
-    const insertQuery = buildInsertQuery('Service', { id, ...createData })
+    const insertQuery = buildInsertQuery('service', { id, ...createData })
     if (insertQuery) {
       await execute(insertQuery.sql, insertQuery.values)
     }

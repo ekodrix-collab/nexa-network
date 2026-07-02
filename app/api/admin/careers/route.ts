@@ -13,7 +13,7 @@ function isAuthenticated() {
 
 export async function GET() {
   try {
-    const careers = await query('SELECT * FROM Career ORDER BY createdAt DESC')
+    const careers = await query('SELECT * FROM career ORDER BY createdAt DESC')
     return NextResponse.json(careers)
   } catch (error) {
     console.error('Admin GET careers error:', error)
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     const { id: inputId, createdAt, updatedAt, ...createData } = data
     const id = inputId || randomUUID()
     
-    const insertQuery = buildInsertQuery('Career', { id, ...createData })
+    const insertQuery = buildInsertQuery('career', { id, ...createData })
     if (insertQuery) {
       await execute(insertQuery.sql, insertQuery.values)
     }
