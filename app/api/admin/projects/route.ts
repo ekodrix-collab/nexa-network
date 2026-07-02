@@ -13,7 +13,7 @@ function isAuthenticated() {
 
 export async function GET() {
   try {
-    const projects = await query('SELECT * FROM Project ORDER BY orderIndex ASC')
+    const projects = await query('SELECT * FROM project ORDER BY orderIndex ASC')
     const parsedProjects = parseRowsJson(projects, ['tags'])
     return NextResponse.json(parsedProjects)
   } catch (error) {
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     const { id: inputId, ...createData } = data
     const id = inputId || randomUUID()
     
-    const insertQuery = buildInsertQuery('Project', { id, ...createData })
+    const insertQuery = buildInsertQuery('project', { id, ...createData })
     if (insertQuery) {
       await execute(insertQuery.sql, insertQuery.values)
     }

@@ -5,7 +5,7 @@ import { queryOne } from '@/lib/db'
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
-    const career = await queryOne('SELECT * FROM Career WHERE id = ?', [params.id])
+    const career = await queryOne('SELECT * FROM career WHERE id = ?', [params.id])
     if (!career) {
       return NextResponse.json({ error: 'Career opening not found' }, { status: 404 })
     }

@@ -13,7 +13,7 @@ function isAuthenticated() {
 
 export async function GET() {
   try {
-    const posts = await query('SELECT * FROM BlogPost ORDER BY createdAt DESC')
+    const posts = await query('SELECT * FROM blogpost ORDER BY createdAt DESC')
     return NextResponse.json(posts)
   } catch (error) {
     console.error('Admin GET blog posts error:', error)
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
         .replace(/(^-|-$)+/g, '')
     }
     
-    const insertQuery = buildInsertQuery('BlogPost', { id, ...createData })
+    const insertQuery = buildInsertQuery('blogpost', { id, ...createData })
     if (insertQuery) {
       await execute(insertQuery.sql, insertQuery.values)
     }

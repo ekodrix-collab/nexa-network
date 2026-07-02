@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic'
 
 export async function GET() {
   try {
-    const services = await query('SELECT * FROM Service WHERE active = 1 ORDER BY orderIndex ASC')
+    const services = await query('SELECT * FROM service WHERE active = 1 ORDER BY orderIndex ASC')
     const parsedServices = parseRowsJson(services, ['features', 'stats', 'partners', 'projects', 'faqs'])
     return NextResponse.json(parsedServices)
   } catch (error) {

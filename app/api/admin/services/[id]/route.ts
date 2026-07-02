@@ -15,9 +15,9 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     const data = await request.json()
     const { id, ...updateData } = data
     
-    const existing = await queryOne('SELECT imageUrl FROM Service WHERE id = ?', [params.id])
+    const existing = await queryOne('SELECT imageUrl FROM service WHERE id = ?', [params.id])
 
-    const updateQuery = buildUpdateQuery('Service', params.id, updateData)
+    const updateQuery = buildUpdateQuery('service', params.id, updateData)
     if (updateQuery) {
       await execute(updateQuery.sql, updateQuery.values)
     }
@@ -36,9 +36,9 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
   if (!isAuthenticated()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   try {
-    const service = await queryOne('SELECT imageUrl FROM Service WHERE id = ?', [params.id])
+    const service = await queryOne('SELECT imageUrl FROM service WHERE id = ?', [params.id])
 
-    await execute('DELETE FROM Service WHERE id = ?', [params.id])
+    await execute('DELETE FROM service WHERE id = ?', [params.id])
 
     if (service && service.imageUrl) {
       await deleteUploadedFile(service.imageUrl)

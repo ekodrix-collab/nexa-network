@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || req.headers.get('x-real-ip') || 'unknown'
 
     const id = randomUUID()
-    const insertQuery = buildInsertQuery('Contact', {
+    const insertQuery = buildInsertQuery('contact', {
       id,
       name: sanitize(name),
       email: sanitize(email),

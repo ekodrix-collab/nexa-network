@@ -118,7 +118,7 @@ export const defaultContactInfo = {
 // ── Home Page Content ──────────────────────────────────
 export async function getHomePageContent() {
   try {
-    const content = await queryOne('SELECT * FROM HomePageContent WHERE id = "default_home"');
+    const content = await queryOne('SELECT * FROM homepagecontent WHERE id = "default_home"');
     return content || defaultHomePageContent
   } catch (error) {
     console.error('Database connection failed, using fallback homepage content:', error)
@@ -136,7 +136,7 @@ export async function saveHomePageContent(data: any) {
 
   let existing: any = null
   try {
-    existing = await queryOne('SELECT heroImage, welcomeImage, ctaBgImage FROM HomePageContent WHERE id = "default_home"');
+    existing = await queryOne('SELECT heroImage, welcomeImage, ctaBgImage FROM homepagecontent WHERE id = "default_home"');
   } catch (err) {
     console.error('Failed to fetch existing home page settings during save:', err)
   }
@@ -161,12 +161,12 @@ export async function saveHomePageContent(data: any) {
   }
 
   if (existing) {
-    const updateQuery = buildUpdateQuery('HomePageContent', 'default_home', updateData);
+    const updateQuery = buildUpdateQuery('homepagecontent', 'default_home', updateData);
     if (updateQuery) {
       await execute(updateQuery.sql, updateQuery.values);
     }
   } else {
-    const insertQuery = buildInsertQuery('HomePageContent', { id: 'default_home', ...updateData });
+    const insertQuery = buildInsertQuery('homepagecontent', { id: 'default_home', ...updateData });
     if (insertQuery) {
       await execute(insertQuery.sql, insertQuery.values);
     }
@@ -190,7 +190,7 @@ export async function saveHomePageContent(data: any) {
 // ── About Page Content ──────────────────────────────────
 export async function getAboutPageContent() {
   try {
-    const content = await queryOne('SELECT * FROM AboutPageContent WHERE id = "default_about"');
+    const content = await queryOne('SELECT * FROM aboutpagecontent WHERE id = "default_about"');
     if (!content) return defaultAboutPageContent;
     return parseRowJson(content, ['values', 'benefits', 'testimonials']);
   } catch (error) {
@@ -208,7 +208,7 @@ export async function saveAboutPageContent(data: any) {
 
   let existing: any = null
   try {
-    existing = await queryOne('SELECT bgImage, whoWeAreImage, whyChooseUsImage FROM AboutPageContent WHERE id = "default_about"');
+    existing = await queryOne('SELECT bgImage, whoWeAreImage, whyChooseUsImage FROM aboutpagecontent WHERE id = "default_about"');
   } catch (err) {
     console.error('Failed to fetch existing about page settings during save:', err)
   }
@@ -233,12 +233,12 @@ export async function saveAboutPageContent(data: any) {
   }
 
   if (existing) {
-    const updateQuery = buildUpdateQuery('AboutPageContent', 'default_about', updateData);
+    const updateQuery = buildUpdateQuery('aboutpagecontent', 'default_about', updateData);
     if (updateQuery) {
       await execute(updateQuery.sql, updateQuery.values);
     }
   } else {
-    const insertQuery = buildInsertQuery('AboutPageContent', { id: 'default_about', ...updateData });
+    const insertQuery = buildInsertQuery('aboutpagecontent', { id: 'default_about', ...updateData });
     if (insertQuery) {
       await execute(insertQuery.sql, insertQuery.values);
     }
@@ -262,7 +262,7 @@ export async function saveAboutPageContent(data: any) {
 // ── Contact Info ───────────────────────────────────────
 export async function getContactInfo() {
   try {
-    const info = await queryOne('SELECT * FROM ContactInfo WHERE id = "default_contact"');
+    const info = await queryOne('SELECT * FROM contactinfo WHERE id = "default_contact"');
     return info || defaultContactInfo
   } catch (error) {
     console.error('Database connection failed, using fallback contact info:', error)
@@ -279,7 +279,7 @@ export async function saveContactInfo(data: any) {
 
   let existing: any = null
   try {
-    existing = await queryOne('SELECT bgImage, bannerImage FROM ContactInfo WHERE id = "default_contact"');
+    existing = await queryOne('SELECT bgImage, bannerImage FROM contactinfo WHERE id = "default_contact"');
   } catch (err) {
     console.error('Failed to fetch existing contact settings during save:', err)
   }
@@ -301,12 +301,12 @@ export async function saveContactInfo(data: any) {
   }
 
   if (existing) {
-    const updateQuery = buildUpdateQuery('ContactInfo', 'default_contact', updateData);
+    const updateQuery = buildUpdateQuery('contactinfo', 'default_contact', updateData);
     if (updateQuery) {
       await execute(updateQuery.sql, updateQuery.values);
     }
   } else {
-    const insertQuery = buildInsertQuery('ContactInfo', { id: 'default_contact', ...updateData });
+    const insertQuery = buildInsertQuery('contactinfo', { id: 'default_contact', ...updateData });;
     if (insertQuery) {
       await execute(insertQuery.sql, insertQuery.values);
     }

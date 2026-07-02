@@ -12,18 +12,18 @@ export async function POST(req: Request) {
 
     // 1. Check if user exists
     console.log('DEBUG: Login attempt for username:', cleanUsername)
-    let user = await queryOne('SELECT * FROM AdminUser WHERE username = ?', [cleanUsername])
+    let user = await queryOne('SELECT * FROM adminuser WHERE username = ?', [cleanUsername])
     console.log('DEBUG: User found in DB:', user ? { id: user.id, username: user.username } : 'NOT_FOUND')
 
     if (!user) {
       // If no admin user exists at all in the DB, create the first one with the provided credentials.
-      const countRes = await query('SELECT COUNT(*) AS count FROM AdminUser')
+      const countRes = await query('SELECT COUNT(*) AS count FROM adminuser')
       const count = countRes && countRes[0] ? countRes[0].count : 0
       
       if (count === 0) {
         const hashedPassword = await bcrypt.hash(password, 10)
         const id = randomUUID()
-        await execute('INSERT INTO AdminUser (id, username, password) VALUES (?, ?, ?)', [
+        await execute('INSERT INTO adminuser (id, username, password) VALUES (?, ?, ?)', [
           id,
           cleanUsername,
           hashedPassword
