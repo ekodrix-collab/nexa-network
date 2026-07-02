@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server'
-import prisma from '@/lib/prisma'
+import { query, queryOne, execute } from '@/lib/db'
 import bcrypt from 'bcryptjs'
 import { signToken } from '@/lib/auth'
 import { cookies } from 'next/headers'
+import { randomUUID } from 'crypto'
 
 export async function POST(req: Request) {
   try {
@@ -11,22 +12,23 @@ export async function POST(req: Request) {
 
     // 1. Check if user exists
     console.log('DEBUG: Login attempt for username:', cleanUsername)
-    let user = await prisma.adminUser.findUnique({ where: { username: cleanUsername } })
+    let user = await queryOne('SELECT * FROM AdminUser WHERE username = ?', [cleanUsername])
     console.log('DEBUG: User found in DB:', user ? { id: user.id, username: user.username } : 'NOT_FOUND')
 
     if (!user) {
       // If no admin user exists at all in the DB, create the first one with the provided credentials.
-      // This makes the initial setup easy, but is a bit of a security risk if left exposed in production.
-      // For a simple lightweight panel, we allow initial creation if count === 0
-      const count = await prisma.adminUser.count()
+      const countRes = await query('SELECT COUNT(*) AS count FROM AdminUser')
+      const count = countRes && countRes[0] ? countRes[0].count : 0
+      
       if (count === 0) {
         const hashedPassword = await bcrypt.hash(password, 10)
-        user = await prisma.adminUser.create({
-          data: {
-            username: cleanUsername,
-            password: hashedPassword,
-          }
-        })
+        const id = randomUUID()
+        await execute('INSERT INTO AdminUser (id, username, password) VALUES (?, ?, ?)', [
+          id,
+          cleanUsername,
+          hashedPassword
+        ])
+        user = { id, username: cleanUsername, password: hashedPassword }
       }
     }
 

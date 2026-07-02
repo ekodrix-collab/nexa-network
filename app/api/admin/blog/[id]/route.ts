@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
-// Trigger IDE type definition refresh after Prisma schema updates (refreshed)
-import prisma from '@/lib/prisma'
+import { queryOne, execute, buildUpdateQuery } from '@/lib/db'
 import { verifyToken } from '@/lib/auth'
 import { cookies } from 'next/headers'
 import { deleteUploadedFile } from '@/lib/uploads'
@@ -16,10 +15,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     const data = await request.json()
     const { id, createdAt, updatedAt, ...updateData } = data
     
-    const existing = await prisma.blogPost.findUnique({
-      where: { id: params.id },
-      select: { imageUrl: true }
-    })
+    const existing = await queryOne('SELECT imageUrl FROM BlogPost WHERE id = ?', [params.id])
 
     if (!updateData.slug && updateData.title) {
       updateData.slug = updateData.title
@@ -28,17 +24,18 @@ export async function PUT(request: Request, { params }: { params: { id: string }
         .replace(/(^-|-$)+/g, '')
     }
 
-    const post = await prisma.blogPost.update({
-      where: { id: params.id },
-      data: updateData
-    })
+    const updateQuery = buildUpdateQuery('BlogPost', params.id, updateData)
+    if (updateQuery) {
+      await execute(updateQuery.sql, updateQuery.values)
+    }
 
     if (existing && existing.imageUrl && existing.imageUrl !== updateData.imageUrl) {
       await deleteUploadedFile(existing.imageUrl)
     }
 
-    return NextResponse.json(post)
+    return NextResponse.json({ id: params.id, ...updateData })
   } catch (error) {
+    console.error('Admin PUT blog post error:', error)
     return NextResponse.json({ error: 'Failed to update blog post' }, { status: 500 })
   }
 }
@@ -46,14 +43,9 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
   if (!isAuthenticated()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   try {
-    const post = await prisma.blogPost.findUnique({
-      where: { id: params.id },
-      select: { imageUrl: true }
-    })
+    const post = await queryOne('SELECT imageUrl FROM BlogPost WHERE id = ?', [params.id])
 
-    await prisma.blogPost.delete({
-      where: { id: params.id }
-    })
+    await execute('DELETE FROM BlogPost WHERE id = ?', [params.id])
 
     if (post && post.imageUrl) {
       await deleteUploadedFile(post.imageUrl)
@@ -61,6 +53,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
 
     return NextResponse.json({ success: true })
   } catch (error) {
+    console.error('Admin DELETE blog post error:', error)
     return NextResponse.json({ error: 'Failed to delete blog post' }, { status: 500 })
   }
 }
