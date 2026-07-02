@@ -1,14 +1,40 @@
 import mysql from 'mysql2/promise';
+import { URL } from 'url';
 
 let pool: mysql.Pool | null = null;
 
 export function getPool(): mysql.Pool {
   if (!pool) {
     const connectionString = process.env.DATABASE_URL || 'mysql://root@localhost:3306/nexadb';
-    
+
+    // Parse the connection string to extract individual params.
+    // This forces host to be '127.0.0.1' (IPv4) rather than 'localhost',
+    // which prevents mysql2 from trying IPv6 (::1) first — a common issue
+    // on Hostinger and other shared hosting environments.
+    let host = '127.0.0.1';
+    let port = 3306;
+    let user = 'root';
+    let password = '';
+    let database = 'nexadb';
+
+    try {
+      const parsed = new URL(connectionString);
+      host = parsed.hostname === 'localhost' ? '127.0.0.1' : parsed.hostname;
+      port = parsed.port ? parseInt(parsed.port) : 3306;
+      user = parsed.username ? decodeURIComponent(parsed.username) : 'root';
+      password = parsed.password ? decodeURIComponent(parsed.password) : '';
+      database = parsed.pathname ? parsed.pathname.replace(/^\//, '') : 'nexadb';
+    } catch (e) {
+      console.error('Failed to parse DATABASE_URL, using defaults:', e);
+    }
+
     // Configure pooling limits suitable for both development and shared hosting
     pool = mysql.createPool({
-      uri: connectionString,
+      host,
+      port,
+      user,
+      password,
+      database,
       waitForConnections: true,
       connectionLimit: 5,
       maxIdle: 5,
