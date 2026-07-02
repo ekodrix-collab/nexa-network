@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import prisma from '@/lib/prisma'
+import { execute, buildInsertQuery } from '@/lib/db'
+import { randomUUID } from 'crypto'
 
 export const runtime = 'nodejs'
 
@@ -26,18 +27,22 @@ export async function POST(req: NextRequest) {
 
     const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || req.headers.get('x-real-ip') || 'unknown'
 
-    await prisma.contact.create({
-      data: {
-        name: sanitize(name),
-        email: sanitize(email),
-        phone: phone ? sanitize(phone) : null,
-        company: company ? sanitize(company) : null,
-        service: service ? sanitize(service) : null,
-        message: sanitize(message),
-        status: 'new',
-        ipAddress: ip,
-      }
+    const id = randomUUID()
+    const insertQuery = buildInsertQuery('Contact', {
+      id,
+      name: sanitize(name),
+      email: sanitize(email),
+      phone: phone ? sanitize(phone) : null,
+      company: company ? sanitize(company) : null,
+      service: service ? sanitize(service) : null,
+      message: sanitize(message),
+      status: 'new',
+      ipAddress: ip,
     })
+
+    if (insertQuery) {
+      await execute(insertQuery.sql, insertQuery.values)
+    }
 
     return NextResponse.json({ success: true, message: 'Thank you! We will contact you within 24 hours.' }, { status: 200 })
   } catch (error) {

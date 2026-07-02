@@ -4,13 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "prisma generate"
+    "lint": "next lint"
   },
   "dependencies": {
-    "@prisma/client": "^6.19.3",
     "@types/three": "^0.167.0",
     "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
@@ -19,9 +17,9 @@
     "jsonwebtoken": "^9.0.3",
     "lottie-react": "^2.4.0",
     "lucide-react": "^0.408.0",
+    "mysql2": "^3.12.0",
     "next": "^14.2.35",
     "next-themes": "^0.3.0",
-    "prisma": "^6.19.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
@@ -47,8 +45,5 @@
   "overrides": {
     "postcss": "^8.5.10",
     "glob": "^10.4.6"
-  },
-  "prisma": {
-    "seed": "node prisma/seed.js"
   }
 }

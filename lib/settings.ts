@@ -1,8 +1,5 @@
-import prismaInstance from './prisma'
+import { queryOne, execute, buildInsertQuery, buildUpdateQuery, parseRowJson } from './db'
 import { deleteUploadedFile } from './uploads'
-
-// Cast to any to bypass IDE type-caching bugs for dynamically generated Prisma models
-const prisma = prismaInstance as any
 
 export const defaultHomePageContent = {
   id: 'default_home',
@@ -121,9 +118,7 @@ export const defaultContactInfo = {
 // ── Home Page Content ──────────────────────────────────
 export async function getHomePageContent() {
   try {
-    const content = await prisma.homePageContent.findUnique({
-      where: { id: 'default_home' }
-    })
+    const content = await queryOne('SELECT * FROM HomePageContent WHERE id = "default_home"');
     return content || defaultHomePageContent
   } catch (error) {
     console.error('Database connection failed, using fallback homepage content:', error)
@@ -141,54 +136,41 @@ export async function saveHomePageContent(data: any) {
 
   let existing: any = null
   try {
-    existing = await prisma.homePageContent.findUnique({
-      where: { id: 'default_home' },
-      select: { heroImage: true, welcomeImage: true, ctaBgImage: true }
-    })
+    existing = await queryOne('SELECT heroImage, welcomeImage, ctaBgImage FROM HomePageContent WHERE id = "default_home"');
   } catch (err) {
     console.error('Failed to fetch existing home page settings during save:', err)
   }
 
-  const result = await prisma.homePageContent.upsert({
-    where: { id: 'default_home' },
-    update: {
-      heroTitle: heroTitle || '',
-      heroSubtitle: heroSubtitle || '',
-      heroDescription: heroDescription || '',
-      heroVideo: heroVideo || '',
-      heroImage: heroImage || '',
-      statsYearsExp: parseInt(statsYearsExp) || 0,
-      statsProjects: parseInt(statsProjects) || 0,
-      statsClients: parseInt(statsClients) || 0,
-      statsExperts: parseInt(statsExperts) || 0,
-      welcomeTitle: welcomeTitle || '',
-      welcomeDescription: welcomeDescription || '',
-      welcomeImage: welcomeImage || '',
-      welcomeIcon: welcomeIcon || '',
-      ctaTitle: ctaTitle || '',
-      ctaDescription: ctaDescription || '',
-      ctaBgImage: ctaBgImage || ''
-    },
-    create: {
-      id: 'default_home',
-      heroTitle: heroTitle || '',
-      heroSubtitle: heroSubtitle || '',
-      heroDescription: heroDescription || '',
-      heroVideo: heroVideo || '',
-      heroImage: heroImage || '',
-      statsYearsExp: parseInt(statsYearsExp) || 0,
-      statsProjects: parseInt(statsProjects) || 0,
-      statsClients: parseInt(statsClients) || 0,
-      statsExperts: parseInt(statsExperts) || 0,
-      welcomeTitle: welcomeTitle || '',
-      welcomeDescription: welcomeDescription || '',
-      welcomeImage: welcomeImage || '',
-      welcomeIcon: welcomeIcon || '',
-      ctaTitle: ctaTitle || '',
-      ctaDescription: ctaDescription || '',
-      ctaBgImage: ctaBgImage || ''
+  const updateData = {
+    heroTitle: heroTitle || '',
+    heroSubtitle: heroSubtitle || '',
+    heroDescription: heroDescription || '',
+    heroVideo: heroVideo || '',
+    heroImage: heroImage || '',
+    statsYearsExp: parseInt(statsYearsExp) || 0,
+    statsProjects: parseInt(statsProjects) || 0,
+    statsClients: parseInt(statsClients) || 0,
+    statsExperts: parseInt(statsExperts) || 0,
+    welcomeTitle: welcomeTitle || '',
+    welcomeDescription: welcomeDescription || '',
+    welcomeImage: welcomeImage || '',
+    welcomeIcon: welcomeIcon || '',
+    ctaTitle: ctaTitle || '',
+    ctaDescription: ctaDescription || '',
+    ctaBgImage: ctaBgImage || ''
+  }
+
+  if (existing) {
+    const updateQuery = buildUpdateQuery('HomePageContent', 'default_home', updateData);
+    if (updateQuery) {
+      await execute(updateQuery.sql, updateQuery.values);
     }
-  })
+  } else {
+    const insertQuery = buildInsertQuery('HomePageContent', { id: 'default_home', ...updateData });
+    if (insertQuery) {
+      await execute(insertQuery.sql, insertQuery.values);
+    }
+  }
 
   if (existing) {
     if (existing.heroImage && existing.heroImage !== heroImage) {
@@ -202,16 +184,15 @@ export async function saveHomePageContent(data: any) {
     }
   }
 
-  return result
+  return { id: 'default_home', ...updateData }
 }
 
 // ── About Page Content ──────────────────────────────────
 export async function getAboutPageContent() {
   try {
-    const content = await prisma.aboutPageContent.findUnique({
-      where: { id: 'default_about' }
-    })
-    return content || defaultAboutPageContent
+    const content = await queryOne('SELECT * FROM AboutPageContent WHERE id = "default_about"');
+    if (!content) return defaultAboutPageContent;
+    return parseRowJson(content, ['values', 'benefits', 'testimonials']);
   } catch (error) {
     console.error('Database connection failed, using fallback about page content:', error)
     return defaultAboutPageContent
@@ -227,54 +208,41 @@ export async function saveAboutPageContent(data: any) {
 
   let existing: any = null
   try {
-    existing = await prisma.aboutPageContent.findUnique({
-      where: { id: 'default_about' },
-      select: { bgImage: true, whoWeAreImage: true, whyChooseUsImage: true }
-    })
+    existing = await queryOne('SELECT bgImage, whoWeAreImage, whyChooseUsImage FROM AboutPageContent WHERE id = "default_about"');
   } catch (err) {
     console.error('Failed to fetch existing about page settings during save:', err)
   }
 
-  const result = await prisma.aboutPageContent.upsert({
-    where: { id: 'default_about' },
-    update: {
-      title: title || '',
-      subtitle: subtitle || '',
-      description: description || '',
-      bgImage: bgImage || '',
-      whoWeAreTitle: whoWeAreTitle || '',
-      whoWeAreDescription1: whoWeAreDescription1 || '',
-      whoWeAreDescription2: whoWeAreDescription2 || '',
-      whoWeAreDescription3: whoWeAreDescription3 || '',
-      whoWeAreImage: whoWeAreImage || '',
-      values: values || [],
-      whyChooseUsTitle: whyChooseUsTitle || '',
-      whyChooseUsImage: whyChooseUsImage || '',
-      benefits: benefits || [],
-      testimonials: testimonials || [],
-      ctaTitle: ctaTitle || '',
-      ctaDescription: ctaDescription || ''
-    },
-    create: {
-      id: 'default_about',
-      title: title || '',
-      subtitle: subtitle || '',
-      description: description || '',
-      bgImage: bgImage || '',
-      whoWeAreTitle: whoWeAreTitle || '',
-      whoWeAreDescription1: whoWeAreDescription1 || '',
-      whoWeAreDescription2: whoWeAreDescription2 || '',
-      whoWeAreDescription3: whoWeAreDescription3 || '',
-      whoWeAreImage: whoWeAreImage || '',
-      values: values || [],
-      whyChooseUsTitle: whyChooseUsTitle || '',
-      whyChooseUsImage: whyChooseUsImage || '',
-      benefits: benefits || [],
-      testimonials: testimonials || [],
-      ctaTitle: ctaTitle || '',
-      ctaDescription: ctaDescription || ''
+  const updateData = {
+    title: title || '',
+    subtitle: subtitle || '',
+    description: description || '',
+    bgImage: bgImage || '',
+    whoWeAreTitle: whoWeAreTitle || '',
+    whoWeAreDescription1: whoWeAreDescription1 || '',
+    whoWeAreDescription2: whoWeAreDescription2 || '',
+    whoWeAreDescription3: whoWeAreDescription3 || '',
+    whoWeAreImage: whoWeAreImage || '',
+    values: values || [],
+    whyChooseUsTitle: whyChooseUsTitle || '',
+    whyChooseUsImage: whyChooseUsImage || '',
+    benefits: benefits || [],
+    testimonials: testimonials || [],
+    ctaTitle: ctaTitle || '',
+    ctaDescription: ctaDescription || ''
+  }
+
+  if (existing) {
+    const updateQuery = buildUpdateQuery('AboutPageContent', 'default_about', updateData);
+    if (updateQuery) {
+      await execute(updateQuery.sql, updateQuery.values);
     }
-  })
+  } else {
+    const insertQuery = buildInsertQuery('AboutPageContent', { id: 'default_about', ...updateData });
+    if (insertQuery) {
+      await execute(insertQuery.sql, insertQuery.values);
+    }
+  }
 
   if (existing) {
     if (existing.bgImage && existing.bgImage !== bgImage) {
@@ -288,15 +256,13 @@ export async function saveAboutPageContent(data: any) {
     }
   }
 
-  return result
+  return { id: 'default_about', ...updateData }
 }
 
 // ── Contact Info ───────────────────────────────────────
 export async function getContactInfo() {
   try {
-    const info = await prisma.contactInfo.findUnique({
-      where: { id: 'default_contact' }
-    })
+    const info = await queryOne('SELECT * FROM ContactInfo WHERE id = "default_contact"');
     return info || defaultContactInfo
   } catch (error) {
     console.error('Database connection failed, using fallback contact info:', error)
@@ -313,48 +279,38 @@ export async function saveContactInfo(data: any) {
 
   let existing: any = null
   try {
-    existing = await prisma.contactInfo.findUnique({
-      where: { id: 'default_contact' },
-      select: { bgImage: true, bannerImage: true }
-    })
+    existing = await queryOne('SELECT bgImage, bannerImage FROM ContactInfo WHERE id = "default_contact"');
   } catch (err) {
     console.error('Failed to fetch existing contact settings during save:', err)
   }
 
-  const result = await prisma.contactInfo.upsert({
-    where: { id: 'default_contact' },
-    update: {
-      title: title || '',
-      description: description || '',
-      bgImage: bgImage || '',
-      bannerImage: bannerImage || '',
-      email1: email1 || '',
-      email2: email2 || '',
-      phone1: phone1 || '',
-      phone2: phone2 || '',
-      address: address || '',
-      facebook: facebook || '',
-      twitter: twitter || '',
-      linkedin: linkedin || '',
-      instagram: instagram || ''
-    },
-    create: {
-      id: 'default_contact',
-      title: title || '',
-      description: description || '',
-      bgImage: bgImage || '',
-      bannerImage: bannerImage || '',
-      email1: email1 || '',
-      email2: email2 || '',
-      phone1: phone1 || '',
-      phone2: phone2 || '',
-      address: address || '',
-      facebook: facebook || '',
-      twitter: twitter || '',
-      linkedin: linkedin || '',
-      instagram: instagram || ''
+  const updateData = {
+    title: title || '',
+    description: description || '',
+    bgImage: bgImage || '',
+    bannerImage: bannerImage || '',
+    email1: email1 || '',
+    email2: email2 || '',
+    phone1: phone1 || '',
+    phone2: phone2 || '',
+    address: address || '',
+    facebook: facebook || '',
+    twitter: twitter || '',
+    linkedin: linkedin || '',
+    instagram: instagram || ''
+  }
+
+  if (existing) {
+    const updateQuery = buildUpdateQuery('ContactInfo', 'default_contact', updateData);
+    if (updateQuery) {
+      await execute(updateQuery.sql, updateQuery.values);
     }
-  })
+  } else {
+    const insertQuery = buildInsertQuery('ContactInfo', { id: 'default_contact', ...updateData });
+    if (insertQuery) {
+      await execute(insertQuery.sql, insertQuery.values);
+    }
+  }
 
   if (existing) {
     if (existing.bgImage && existing.bgImage !== bgImage) {
@@ -365,7 +321,5 @@ export async function saveContactInfo(data: any) {
     }
   }
 
-  return result
+  return { id: 'default_contact', ...updateData }
 }
-
-

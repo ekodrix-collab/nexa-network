@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import prisma from '@/lib/prisma'
+import { queryOne, execute, buildUpdateQuery } from '@/lib/db'
 import { verifyToken } from '@/lib/auth'
 import { cookies } from 'next/headers'
 import { deleteUploadedFile } from '@/lib/uploads'
@@ -15,22 +15,20 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     const data = await request.json()
     const { id, ...updateData } = data
     
-    const existing = await prisma.service.findUnique({
-      where: { id: params.id },
-      select: { imageUrl: true }
-    })
+    const existing = await queryOne('SELECT imageUrl FROM Service WHERE id = ?', [params.id])
 
-    const service = await prisma.service.update({
-      where: { id: params.id },
-      data: updateData
-    })
+    const updateQuery = buildUpdateQuery('Service', params.id, updateData)
+    if (updateQuery) {
+      await execute(updateQuery.sql, updateQuery.values)
+    }
 
     if (existing && existing.imageUrl && existing.imageUrl !== data.imageUrl) {
       await deleteUploadedFile(existing.imageUrl)
     }
 
-    return NextResponse.json(service)
+    return NextResponse.json({ id: params.id, ...updateData })
   } catch (error) {
+    console.error('Admin PUT service error:', error)
     return NextResponse.json({ error: 'Failed to update service' }, { status: 500 })
   }
 }
@@ -38,14 +36,9 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
   if (!isAuthenticated()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   try {
-    const service = await prisma.service.findUnique({
-      where: { id: params.id },
-      select: { imageUrl: true }
-    })
+    const service = await queryOne('SELECT imageUrl FROM Service WHERE id = ?', [params.id])
 
-    await prisma.service.delete({
-      where: { id: params.id }
-    })
+    await execute('DELETE FROM Service WHERE id = ?', [params.id])
 
     if (service && service.imageUrl) {
       await deleteUploadedFile(service.imageUrl)
@@ -53,6 +46,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
 
     return NextResponse.json({ success: true })
   } catch (error) {
+    console.error('Admin DELETE service error:', error)
     return NextResponse.json({ error: 'Failed to delete service' }, { status: 500 })
   }
 }

@@ -1,16 +1,14 @@
 export const dynamic = 'force-dynamic'
 
 import { NextResponse } from 'next/server'
-import prisma from '@/lib/prisma'
+import { query } from '@/lib/db'
 
 export async function GET() {
   try {
-    const careers = await prisma.career.findMany({
-      where: { active: true },
-      orderBy: { createdAt: 'desc' }
-    })
+    const careers = await query('SELECT * FROM Career WHERE active = 1 ORDER BY createdAt DESC')
     return NextResponse.json(careers)
   } catch (error) {
+    console.error('Failed to fetch careers:', error)
     return NextResponse.json({ error: 'Failed to fetch careers' }, { status: 500 })
   }
 }
