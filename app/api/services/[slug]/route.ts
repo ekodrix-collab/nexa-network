@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import prisma from '@/lib/prisma'
+import { queryOne, parseRowJson } from '@/lib/db'
 
 export const dynamic = 'force-dynamic'
 
@@ -8,16 +8,16 @@ export async function GET(
   { params }: { params: { slug: string } }
 ) {
   try {
-    const service = await prisma.service.findUnique({
-      where: { slug: params.slug }
-    })
+    const service = await queryOne('SELECT * FROM Service WHERE slug = ?', [params.slug])
 
     if (!service || !service.active) {
       return NextResponse.json({ error: 'Service not found' }, { status: 404 })
     }
 
-    return NextResponse.json(service)
+    const parsedService = parseRowJson(service, ['features', 'stats', 'partners', 'projects', 'faqs'])
+    return NextResponse.json(parsedService)
   } catch (error) {
+    console.error('Failed to fetch service:', error)
     return NextResponse.json({ error: 'Failed to fetch service' }, { status: 500 })
   }
 }
