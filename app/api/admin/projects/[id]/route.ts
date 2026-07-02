@@ -15,9 +15,9 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     const data = await request.json()
     const { id, ...updateData } = data
     
-    const existing = await queryOne('SELECT imageUrl FROM Project WHERE id = ?', [params.id])
+    const existing = await queryOne('SELECT imageUrl FROM project WHERE id = ?', [params.id])
 
-    const updateQuery = buildUpdateQuery('Project', params.id, updateData)
+    const updateQuery = buildUpdateQuery('project', params.id, updateData)
     if (updateQuery) {
       await execute(updateQuery.sql, updateQuery.values)
     }
@@ -36,9 +36,9 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
   if (!isAuthenticated()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   try {
-    const project = await queryOne('SELECT imageUrl FROM Project WHERE id = ?', [params.id])
+    const project = await queryOne('SELECT imageUrl FROM project WHERE id = ?', [params.id])
 
-    await execute('DELETE FROM Project WHERE id = ?', [params.id])
+    await execute('DELETE FROM project WHERE id = ?', [params.id])
 
     if (project && project.imageUrl) {
       await deleteUploadedFile(project.imageUrl)
